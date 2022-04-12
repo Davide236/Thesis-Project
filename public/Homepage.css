@@ -1,0 +1,41 @@
+.title {
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+    text-align: center;
+    background-image: url('');
+}
+
+
+.line{
+    background:#fff;
+    display:inline-block;
+}
+
+.introduction h2{
+    text-align:center;
+    position:relative;
+    z-index:2;
+
+}
+.introduction h2:after{
+    content:"";
+    position:absolute;
+    top:50%;
+    left:0;
+    right:0;
+    border-top:solid 1px rgb(9,158,41);
+    z-index:-1;
+}
+
+.row svg {
+    color: rgb(9,158,41);
+    width: 60%;
+    height: 60%;
+}
+
+.row {
+    border-bottom: 1px solid rgb(9,158,41);
+    padding-top: 2rem;
+}
+
+

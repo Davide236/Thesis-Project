@@ -1,0 +1,19 @@
+.navbar {
+    border-bottom: 1px solid green;
+    color: green;
+    background-image: linear-gradient(180deg, white, rgba(9,158,41,0.6));
+}
+
+.navbar-toggler {
+    border: none !important;
+}
+
+
+h3 a {
+    text-decoration: none; 
+    color: black;
+}
+
+h3 a:hover {
+    color: rgb(9,158,41);
+}
