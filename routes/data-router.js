@@ -7,7 +7,6 @@ router.use(bodyParser.json());
 
 const rooms = ['room1']
 
-const datapoints = []
 const experiments = [
     {
         title: 'Experiment 1',

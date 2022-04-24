@@ -1,15 +1,6 @@
-//Get all the different modules and the setups needed
-const express = require('express');
-const path = require('path');
-const app = express();
+const app = require('./configuration/app-config');
 const PORT = 3000;
-const dataRoutes = require('./routes/data-router');
-app.use(express.urlencoded({ extended: true })); // Body parser setup
 
-app.set('view engine', 'ejs'); //use ejs as template
-app.set('views', path.join(__dirname, 'views')); //set views directory
-app.use(express.static(__dirname + '/public/')); //set public directory
-app.use("/data", dataRoutes);
 
 // Homepage
 app.get("/", (_req, res) => {
@@ -26,9 +17,6 @@ app.get("/searchexperiment", (req, res) => {
     var response = experiments.filter(element => element.title.includes(searchQuery));
     res.render("SearchExperiments", {response, searchQuery});
 });
-
-
-
 
 
 //Route not found
