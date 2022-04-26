@@ -36,6 +36,5 @@ router.use((req, res, next) => {
     next();
 });
 
-
 module.exports.router = router
 module.exports.passport = passport;

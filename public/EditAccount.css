@@ -1,0 +1,32 @@
+.container {
+    margin-top: 4rem;
+}
+
+h3 {
+    color: rgb(9,158,41);
+}
+
+label {
+    padding-bottom: 0.5rem;
+    padding-top: 1rem;
+}
+
+input {
+    width: 80% !important;
+}
+
+
+button {
+    border: 1px solid rgb(9,158,41);
+    background-color: inherit;
+    margin-top: 1rem !important;
+}
+
+button:hover {
+    color: rgb(9,158,41);
+}
+
+.col-5 {
+    border-right: 3px solid rgb(9,158,41);
+}
+

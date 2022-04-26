@@ -22,7 +22,7 @@
         <div class="row">
             <div class="col-6 signupDiv">
                 <h3>Create your account</h3>
-                <form action="/user/signup" method="POST" class="validated-form" novalidate>
+                <form action="/user/signup" method="POST" class="validated-form">
                     <!--Name -->
                     <div class="form-group">
                         <label>Full Name</label>
@@ -49,7 +49,7 @@
             </div>
             <div class="col-6">
                 <h3>Login to your account</h3>
-                <form action="/user/login" method="POST" class="validated-form" novalidate>
+                <form action="/user/login" method="POST" class="validated-form">
                     <div class="form-input">
                       <div class="form-group mt-5">
                         <label for="email">E-mail</label>
@@ -59,13 +59,26 @@
                         <label for="password">Password</label>
                         <input type="password" id="password" class="form-control" name="password" placeholder="Password" required>
                       </div>
-                      <p>If you forgot your password <a href="/reset-password">Click here</a> to receive a new one.</p>
+                      <p>If you forgot your password <span onclick="openPasswordForm()">Click here</span> to receive a new one.</p>
                     </div>
                     <button  type="submit">Log in</button>
                   </form>
+                  <div class="form-popup" id="passwordForm">
+                    <form action="/user/passwordreset" class="form-container" method="POST">
+                      <h3>Reset your Password</h3>
+                  
+                      <div class="form-group mt-5">
+                        <label for="email">E-mail</label>
+                        <input type="email" id="email" class="form-control" name="username" placeholder="Email" required>
+                      </div>
+                  
+                      <button type="submit">Send Email</button>
+                      <button type="button" onclick="closePasswordForm()">Close</button>
+                    </form>
+                  </div>
             </div>
         </div>
     </div>
-    
+    <script src="../Account.js"></script>
 </body>
 </html>

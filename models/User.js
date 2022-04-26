@@ -13,7 +13,8 @@ const userSchema = new Schema({
             type: Boolean,
             default: false
         },
-        secretToken : String
+        secretToken : String,
+        passwordReset: String
     }
 });
 

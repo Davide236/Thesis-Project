@@ -8,6 +8,7 @@ const express = require('express'),
     flash = require('connect-flash'),
     session = require('express-session'),
     secret = process.env.SECRET,
+    passport = require('passport'),
     DBController = require('./db-config');
 
 
@@ -26,7 +27,10 @@ app.set('views', path.join(__dirname, '../views')); //set views directory
 app.use(express.static(__dirname + '/../public/')); //set public directory
 app.use("/data", dataRoutes);
 app.use("/user", userRoutes);
+app.use(passport.initialize());
+app.use(passport.session());
 DBController.setupDatabase();
+
 
 //Flag for logged users and success/error flash messages
 app.use((req, res, next) => {

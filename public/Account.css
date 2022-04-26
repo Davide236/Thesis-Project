@@ -41,7 +41,22 @@ button:hover {
     color: rgb(9,158,41);
 }
 
-p a {
-    text-decoration: none;
+p span:hover {
     color: rgb(9,158,41);
+}
+
+
+#passwordForm {
+    margin-top: 1rem;
+    padding-bottom: 1rem;
+    display: none;
+    border: 1px solid rgb(9,158,41);
+}
+
+#passwordForm form {
+    margin: 1rem;
+}
+
+#passwordForm input {
+    margin-bottom: 1rem;
 }

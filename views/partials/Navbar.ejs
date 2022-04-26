@@ -24,9 +24,18 @@
             <li class="nav-item">
               <a class="nav-link active" href="/">How it Works</a>
             </li>
+            <% if (currentUser) { %>
+            <li class="nav-item">
+              <a class="nav-link active" href="/user/editaccount">Edit Account</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="/user/logout">Log Out</a>
+            </li>
+            <% } else { %>
             <li class="nav-item">
                 <a class="nav-link active" href="/user/account">Account</a>
             </li> 
+            <% } %>
           </ul>
         </div>
       </div>
