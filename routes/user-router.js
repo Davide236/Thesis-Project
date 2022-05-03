@@ -1,4 +1,4 @@
-var mod = require('../configuration/user-router-config');
+var mod = require('../configuration/router-config');
 const router = mod.router;
 const passport = mod.passport;
 const UserController = require('../controllers/user-controller');

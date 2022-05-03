@@ -1,5 +1,6 @@
 const User = require('../models/User');
 const transport = require('../configuration/email-config');
+const { v4: uuidV4 } = require('uuid');
 
 
 exports.userLogin = function(req, res) {
@@ -18,7 +19,7 @@ exports.userSignup = async function (req, res) {
     const user = new User({fullName, username});
     try {
         const newUser = await User.register(user, password);
-        const secretToken = Math.random().toString(36).substring(1,13);
+        const secretToken = uuidV4(); //Math.random().toString(36).substring(1,13);
         newUser.verification.secretToken = secretToken;
         await newUser.save();
         await transport.sendMail({
@@ -102,7 +103,7 @@ exports.setNewPassword = async function(req, res) {
 exports.resetPassword = async function(req, res) {
     const {username} = req.body;
     const user = await User.findOne({username});
-    const secretToken = Math.random().toString(36).substring(1,13);
+    const secretToken = uuidV4(); //Math.random().toString(36).substring(1,13);
     if (!user) {
         req.flash('error', 'An account with this email doesnt exist');
         return res.redirect("/user/account");

@@ -1,0 +1,14 @@
+.row {
+    padding-top: 1rem;
+    padding-bottom: 2rem;
+}
+
+#experiment-video {
+    margin-top: 1rem;
+    margin-left: 0.5rem;
+    border: 1px solid rgb(9,158,41);
+}
+
+.col-7 {
+    border-right: 2px solid rgb(9,158,41);
+}

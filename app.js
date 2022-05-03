@@ -1,22 +1,13 @@
 const app = require('./configuration/app-config');
+const socket = require('socket.io');
 const PORT = 3000;
-
+let id = '';
 
 // Homepage
 app.get("/", (_req, res) => {
     res.render("Homepage");
 });
 
-//Past Experiments page
-app.get("/pastexperiments", (_req, res) => {
-    res.render("PastExperiments");
-});
-
-app.get("/searchexperiment", (req, res) => {
-    const {searchQuery} = req.query;
-    var response = experiments.filter(element => element.title.includes(searchQuery));
-    res.render("SearchExperiments", {response, searchQuery});
-});
 
 
 //Route not found
@@ -25,6 +16,51 @@ app.use((_req,res) => {
 });
 
 // Listening to localhost:3000
-app.listen(PORT, () => {
+let server = app.listen(PORT, () => {
     console.log(`[SERVER RUNNING ON PORT ${PORT}]`);
+});
+
+
+//Upgraded server for webRTC connection 
+let io = socket(server);
+
+io.on('connection', function(socket) {
+    //Get room name from client
+    socket.on('join', function(roomName) {
+        //Find all the rooms
+        var rooms = io.sockets.adapter.rooms;
+        //Check if there is a room named 'roomName' variable
+        var room = rooms.get(roomName);
+        //If there is no room name we need to create a room
+        if (room == undefined) {
+            //Create room
+            socket.join(roomName);
+            socket.emit("created");
+        //If there is already a room let user join it 
+        } else {
+            socket.join(roomName);
+            socket.emit("joined");
+        }
+        //console.log(room);
+    });
+
+    socket.on('ready', function(roomName) {
+        //Broadcast message to a room
+        socket.broadcast.to(roomName).emit("ready");
+    });
+
+    //Exchange ICE candidate between users
+    socket.on('candidate', function(candidate, roomName) {
+        socket.broadcast.to(roomName).emit("candidate", candidate);
+    });
+
+    //We also need to exchange Offers in SDP. To the offer we need to exchange an answer
+    socket.on('offer', function(offer, roomName) {
+        socket.broadcast.to(roomName).emit("offer", offer);
+    });
+
+    //To the offer we need to exchange an answer
+    socket.on('answer', function(answer, roomName) {
+        socket.broadcast.to(roomName).emit("answer", answer);
+    });
 });

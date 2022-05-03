@@ -35,7 +35,7 @@
                 </svg>
             </div>
             <div class="col-9">
-                <h3><a href="./pastexperiments">Past Experiments</a></h3>
+                <h3><a href="./experiment/pastexperiments">Past Experiments</a></h3>
                 <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Totam, illum neque dolore fuga hic vel repellat sequi magnam laboriosam veniam id doloribus doloremque aperiam dignissimos expedita a explicabo eaque accusantium!</p>
             </div>
         </div>
@@ -59,14 +59,14 @@
                 </svg>
             </div>
             <div class="col-9">
-                <h3><a href="">Create Live</a></h3>
+                <h3><a href="./experiment/create-live">Create Live</a></h3>
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus, eligendi distinctio nesciunt ea maiores sapiente necessitatibus ipsum iusto quas odio dignissimos, excepturi debitis impedit numquam laudantium fuga magnam, nam quibusdam?</p>
             </div>
         </div>
 
         <div class="row">
             <div class="col-9">
-                <h3><a href="">Join Live</a></h3>
+                <h3><a href="#" onclick="joinRoom()">Join Live</a></h3>
                 <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Rem, similique incidunt. Eaque dolores rem, quo at, quos quasi neque nobis exercitationem nesciunt, voluptate porro pariatur recusandae fugit dolorem natus reiciendis!</p>
             </div>
             <div class="col-3">
@@ -74,8 +74,19 @@
                     <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
                   </svg>
             </div>
+            <div class="modal" id="joinLiveModal">
+                <div class="modal-form">
+                    <form action="./experiment/join-live" method="POST">
+                        <label for="roomPassword">Password for live:</label>
+                        <input type="text" class="form-control" id="roomPassword" name="roomPassword"
+                          placeholder="Password" required>
+                        <button  type="submit">Join Live</button>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
     
 </body>
+<script src="Homepage.js"></script>
 </html>

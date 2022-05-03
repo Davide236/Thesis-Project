@@ -1,0 +1,43 @@
+.container {
+    margin-top: 3rem;
+    margin-bottom: 5rem;
+    border-left: 2px solid rgb(9,158,41);
+    border-right: 2px solid rgb(9,158,41);
+}
+
+.form-group {
+    margin-bottom: 2rem;
+}
+
+
+#sensors {
+    width: 30%;
+}
+
+
+#roomPassword {
+    width: 40%;
+}
+
+
+#expName {
+    width: 60%;
+}
+
+label {
+    margin-bottom: 1rem;
+}
+
+button {
+    border: 1px solid rgb(9,158,41);
+    background-color: inherit;
+    margin-top: 1rem !important;
+}
+
+button:hover {
+    color: rgb(9,158,41);
+}
+
+#url {
+    border: 1px solid rgb(9,158,41);
+}
