@@ -1,7 +1,6 @@
 const app = require('./configuration/app-config');
 const socket = require('socket.io');
 const PORT = 3000;
-let id = '';
 
 // Homepage
 app.get("/", (_req, res) => {
@@ -44,9 +43,9 @@ io.on('connection', function(socket) {
         //console.log(room);
     });
 
-    socket.on('ready', function(roomName) {
+    socket.on('ready', function(roomName, username) {
         //Broadcast message to a room
-        socket.broadcast.to(roomName).emit("ready");
+        socket.broadcast.to(roomName).emit("ready", username);
     });
 
     //Exchange ICE candidate between users
@@ -55,12 +54,24 @@ io.on('connection', function(socket) {
     });
 
     //We also need to exchange Offers in SDP. To the offer we need to exchange an answer
-    socket.on('offer', function(offer, roomName) {
-        socket.broadcast.to(roomName).emit("offer", offer);
+    socket.on('offer', function(offer, roomName, userList) {
+        socket.broadcast.to(roomName).emit("offer", offer, userList);
     });
 
     //To the offer we need to exchange an answer
     socket.on('answer', function(answer, roomName) {
         socket.broadcast.to(roomName).emit("answer", answer);
+    });
+
+    //Once a user leave we signal it to all other users
+    socket.on('user-left', function(roomName, user) {
+        socket.broadcast.to(roomName).emit('user-left',user);
+    })
+
+    //The creator of the rooms end the stream
+    socket.on('end-stream', function(roomName) {
+        socket.leave(roomName);
+        //Broadcast the info the the other peers
+        socket.broadcast.to(roomName).emit("end-stream");
     });
 });

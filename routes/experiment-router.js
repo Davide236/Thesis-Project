@@ -21,13 +21,21 @@ router.get('/create-live', isLoggedIn, (_req, res) => {
 });
 
 
-router.post('/create-live', isLoggedIn, (req, res) => {
-    ExperimentController.createLive(req, res);
+router.post('/create-live', isLoggedIn, async (req, res) => {
+    await ExperimentController.createLive(req, res);
 });
 
+router.get('/leave', (req, res) => {
+    ExperimentController.redirectToHomepage(req, res);
+});
 
-router.post('/join-live',  isLoggedIn, (req, res) => {
-    ExperimentController.joinLive(req, res);
+router.get('/delete/:room',isLoggedIn, async (req, res) => {
+    await ExperimentController.deleteRoom(req, res);
+})
+
+
+router.post('/join-live', isLoggedIn, async (req, res) => {
+    await ExperimentController.joinLive(req, res);
 });
 
 

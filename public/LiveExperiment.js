@@ -1,8 +1,31 @@
 //Client side code
 let socket = io.connect();
 
-let roomName = document.getElementById("roomName").value;
+let roomName = document.getElementById("roomName").innerHTML;
+let user = document.getElementById("username").innerHTML;
+
 let userVideo = document.getElementById("experiment-video");
+
+let muteBtn = document.getElementById("muteBtn");
+let hideCameraBtn = document.getElementById("hideCameraBtn");
+let endStreamBtn = document.getElementById("endStreamBtn");
+let leaveRoomBtn = document.getElementById("leaveRoomBtn");
+
+
+let sidebar = document.querySelector('.sidebar');
+let sidebarContent = document.querySelector('.sidebar-content');
+let experimentData = document.getElementById('experimentData');
+
+document.getElementById("sidebarButton").addEventListener('click', toggleSidebar);
+
+//Flag to see if the audio was muted
+let muted = false;
+
+//Flag to see if camera is hidden
+let hidden = false;
+
+//List of all the users connected to the stream
+let userList = [];
 
 //Global variable for the stream
 let userStream;
@@ -23,10 +46,106 @@ let creator = false;
 
 //When the document is ready join the room
 window.onload = function() {
+    userList.push(user);
+    updateUserList();
     socket.emit('join', roomName);
 };
 
 
+function muteStream() {
+    muted = !muted;
+    if (muted) {
+        userStream.getTracks()[0].enabled = false;
+        muteBtn.textContent = "Unmute";
+    } else {
+        userStream.getTracks()[0].enabled = true;
+        muteBtn.textContent = "Mute";
+    } 
+}
+
+
+function toggleSidebar() {
+    sidebar.classList.toggle('sidebar-shown');
+
+    experimentData.classList.toggle('experimentdata-hidden');
+
+    sidebarContent.classList.toggle('sidebar-content-shown');
+}
+
+function hideStream() {
+    hidden = !hidden;
+    if (hidden) {
+        userStream.getTracks()[1].enabled = false;
+        hideCameraBtn.textContent = "Show Camera";
+    } else {
+        userStream.getTracks()[1].enabled = true;
+        hideCameraBtn.textContent = "Hide Camera";
+    }
+}
+
+
+function endStream() {
+    
+    //Ask the user if they're sure they want to end the stream
+    if (!confirm("Are you sure you want to end the stream?")) {
+        return;
+    }
+
+    socket.emit('end-stream', roomName);
+
+    //Stop audio and video
+    if (userVideo.srcObject) { //Check if there is the video
+        userVideo.srcObject.getTracks()[0].stop();
+        userVideo.srcObject.getTracks()[1].stop();  
+    }
+
+    //Close all connections to the creator
+    for (i = 0; i<index; i++) {
+        rtcPeerConnection[i].ontrack = null;
+        rtcPeerConnection[i].onicecandidate = null;
+        rtcPeerConnection[i].close();
+        rtcPeerConnection[i] = null;
+    }
+    //Redirect to homepage
+    window.location.replace(`/experiment/delete/${roomName}`);
+}
+
+
+function leaveStream(flag) {
+    //If the flag is null it means that the user wants to leave
+    if (flag != true) {
+        //Ask the user if they're sure they want to leave the stream
+        if (!confirm("Are you sure you want to leave the stream?")) {
+            return;
+        }
+        socket.emit('user-left', roomName, user);
+    } 
+    
+    //Close the rtcpeer connection
+    if (rtcPeerConnection[0]) {
+        rtcPeerConnection[0].ontrack = null;
+        rtcPeerConnection[0].onicecandidate = null;
+        rtcPeerConnection[0].close();
+        rtcPeerConnection[0] = null;
+    }
+
+    //Stop the peer video
+    if (userVideo.srcObject) { //Check if there is the video
+        userVideo.srcObject.getTracks()[0].stop();
+        userVideo.srcObject.getTracks()[1].stop();  
+    }
+
+    //Redirect to homepage
+    window.location.replace('/experiment/leave');
+
+}
+
+
+socket.on('user-left', function(user) {
+    let idx = userList.indexOf(user);
+    userList.splice(idx,1);
+    updateUserList();
+});
 
 
 
@@ -48,29 +167,37 @@ function getCamera() {
     .catch(function(err) {
         //Error
         alert("Got the following error" + err.name);
-    })
+    });
 }
 
 
 //Get user media if a room is created of joined
 socket.on('created', function() {
     creator = true;
+    hideCameraBtn.addEventListener('click', hideStream);
+    muteBtn.addEventListener('click', muteStream);
+    endStreamBtn.addEventListener('click', endStream);
     //Get the stream from the creator
     getCamera();
+    //mute video of creator
+    userVideo.muted = true;
 });
 
 //Join the room
 socket.on('joined', function() {
     creator = false;
+    leaveRoomBtn.addEventListener('click', leaveStream);
     //Tell that the user is ready to receive the media
-    socket.emit('ready', roomName);
+    socket.emit('ready', roomName, user);
 });
 
 
 
 //Once the client is ready we need to set up the ICE framework to let
 // the users communicate
-socket.on('ready', function() {
+socket.on('ready', function(username) {
+    userList.push(username);
+    updateUserList();
     //The creator of the room generates the offer
     if (creator) {
         index += 1;
@@ -89,7 +216,7 @@ socket.on('ready', function() {
         rtcPeerConnection[index].createOffer()
         .then(function(offer) {
             rtcPeerConnection[index].setLocalDescription(offer);
-            socket.emit('offer', offer, roomName);
+            socket.emit('offer', offer, roomName, userList);
         })
         .catch(function(err) {
             console.log(err);
@@ -105,9 +232,12 @@ socket.on('candidate', function(candidate) {
     }
 });
 
-socket.on('offer', function(offer) {
+socket.on('offer', function(offer, users) {
     //The person joining the room (receiving the offer) has to go through the same steps as the creator
     if (!creator && !rtcPeerConnection[0]) {
+        userList = [];
+        userList = users.slice(0);
+        updateUserList();
         rtcPeerConnection[0] = new RTCPeerConnection(iceServers);
         rtcPeerConnection[0].onicecandidate = OnIceCandidateFunction;
         rtcPeerConnection[0].ontrack = OnTrackFunction;
@@ -133,6 +263,13 @@ socket.on('answer', function(answer) {
 });
 
 
+
+socket.on('end-stream', function() {
+    leaveStream(true);
+});
+
+
+
 //Here we have to perform the handshake (exchange ice candidates)
 function OnIceCandidateFunction(event) {
     if (event.candidate) {
@@ -150,4 +287,17 @@ function OnTrackFunction(event) {
             userVideo.play();
         }
     }
+}
+
+
+function updateUserList() {
+    $('#users').html('');
+    usersListHTML = '';
+    for (username of userList) {
+        usersListHTML += `
+            <span>${username}</span>
+            <br><hr>
+        `;
+    }
+    $('#users').append(usersListHTML);
 }

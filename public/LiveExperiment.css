@@ -7,8 +7,93 @@
     margin-top: 1rem;
     margin-left: 0.5rem;
     border: 1px solid rgb(9,158,41);
+    display: flex;
+    justify-content: center;
 }
 
 .col-7 {
     border-right: 2px solid rgb(9,158,41);
+}
+
+
+.btn-group {
+    display: flex !important;
+    justify-content: center !important;
+    margin-top: 1rem;
+}
+
+
+button {
+    border: 1px solid rgb(9,158,41);
+    background-color: inherit;
+    margin: 0.2rem !important;
+}
+
+button:hover {
+    color: rgb(9,158,41);
+}
+
+.col-5 {
+    display: flex;
+    flex-direction: column;
+    margin-right: none;
+}
+
+.sidebar {
+    transition: 1s ease;
+    position: fixed;
+    overflow: auto;
+    width: 5%;
+    height: 100%;
+    background-image: linear-gradient(to left, white, rgba(9,158,41,0.6));
+    border: 1px solid rgb(9,158,41);
+    top: 10%;
+    right: 0;
+    bottom: 10%;
+}
+
+#sidebarButton {
+    border: none;
+}
+
+
+.experimentData {
+    width: 80%;
+    height: 100%;
+    transition: 1s ease;
+}
+
+.experimentdata-hidden {
+    display: none;
+}
+
+
+.sidebar-shown {
+    width: 40%;
+}
+
+
+.sidebar-content {
+    display: none;
+}
+
+.sidebar-content-shown {
+    display: flex;
+    flex-direction: column;
+}
+
+
+.experiment-info {
+    overflow: hidden;
+    margin-left: 2rem;
+    float: left;
+}
+
+span {
+    margin-left: 0.5rem;
+}
+
+.users-list {
+    margin-left: 2rem;
+    margin-top: 1rem;
 }
