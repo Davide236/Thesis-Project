@@ -11,8 +11,8 @@ router.get("/pastexperiments", (_req, res) => {
     res.render("PastExperiments");
 });
 
-router.get("/searchexperiment", (req, res) => {
-    ExperimentController.searchExperiments(req, res);
+router.get("/searchexperiment", async (req, res) => {
+    await ExperimentController.searchExperiments(req, res);
 });
 
 

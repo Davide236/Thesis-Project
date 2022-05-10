@@ -2,9 +2,9 @@ const Experiment = require('../models/Experiment');
 const CryptoJS = require('crypto-js');
 
 
-exports.searchExperiments = function(req, res) {
+exports.searchExperiments = async function(req, res) {
     const {searchQuery} = req.query;
-    let response = experiments.filter(element => element.title.includes(searchQuery));
+    let response = await Experiment.find({name: searchQuery});
     res.render("SearchExperiments", {response, searchQuery});
 }
 
@@ -17,13 +17,11 @@ exports.getLiveForm = function(res) {
 exports.createLive = async function(req, res) {
     const {expName, expDescription, sensors, roomPassword,roomName} = req.body;
     const experiment = await Experiment.findOne({roomName : roomName});
-    /*
     if (experiment) {
         console.log(experiment);
         req.flash('error', 'A room with that name already exist, choose a different one');
         return res.redirect("/");
     }
-    */
     const newExp = await new Experiment({
         author: req.user.id,
         name: expName,

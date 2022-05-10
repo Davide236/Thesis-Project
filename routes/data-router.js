@@ -1,13 +1,11 @@
 // Require express and connect it to the router
 const express = require('express');
 const router = express.Router();
+const DataController = require('../controllers/data-controller');
 
 let bodyParser = require('body-parser');
 router.use(bodyParser.json());
 
-
-
-const rooms = ['room1']
 
 const experiments = [
     {
@@ -45,26 +43,13 @@ router.get("/experiments", (_req, res) => {
 });
 
 
-//Trigger this not too often
-router.get("/live-data/:room", async (req, res) => {
-    const {room} = req.params;
-    //GET THE EXPERIMENT DATA from DB
-    console.log("SENDING DATA");
-    if (rooms.includes(room)) {
-        res.status(200).send(experiments);
-    } else {
-        res.status(404).send("Link not found");
-    }
+router.post('/add-answers/:room', async(req, res) => {
+    await DataController.addStudentAnswers(req, res);
 });
 
 
-router.post("/live-data/:room", (req, res) => {
-    console.log("HERE");
-    const {room} = req.params;
-    const {experiment, sensor, values} = req.body;
-    //Send the data to the room
-    console.log(room, values);
-    res.status(200).send("OK");
+router.get("/live-data/:room", async (req, res) => {
+    await DataController.getUserAnswers(req, res);
 });
 
 

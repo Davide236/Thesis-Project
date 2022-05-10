@@ -23,6 +23,7 @@ let studentAnswers = document.getElementById('studentAnswers');
 
 document.getElementById("sidebarButton").addEventListener('click', toggleSidebar);
 
+
 //Flag to see if the audio was muted
 let muted = false;
 
@@ -172,6 +173,7 @@ function closeQuestionForm() {
 function askQuestion() {
     let question = document.getElementById('question').value;
     socket.emit('question', roomName, question);
+    answerList.splice(0,answerList.length);
     closeQuestionForm();
 }
 
@@ -202,10 +204,21 @@ function showAnswer() {
     $('#answerList').append(answerListHTML);
 }
 
+function saveAnswers() {
+    $.ajax({
+        type: "POST",
+        url: `http://localhost:3000/data/add-answers/${roomName}`,
+        data: {answers: answerList},
+        success: function (data) { alert('Code' + data.status +':'+ data.responseText); },
+        error: function (data) { alert('Code '+data.status +':' + data.responseText); }
+    });
+    closeAnswerForm();
+}
+
 socket.on('user-answer', function(answer, username) {
     if (creator) {
-        //Send this to the script
         answerList.push({username, answer});
+        showAnswer();
     }
 });
 
