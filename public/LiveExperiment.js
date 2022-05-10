@@ -10,11 +10,16 @@ let muteBtn = document.getElementById("muteBtn");
 let hideCameraBtn = document.getElementById("hideCameraBtn");
 let endStreamBtn = document.getElementById("endStreamBtn");
 let leaveRoomBtn = document.getElementById("leaveRoomBtn");
+let askQuestionBtn = document.getElementById("askQuestionBtn");
+let showAnswerBtn = document.getElementById("showAnswerBtn");
 
 
+let questionForm = document.getElementById('questionForm');
 let sidebar = document.querySelector('.sidebar');
 let sidebarContent = document.querySelector('.sidebar-content');
 let experimentData = document.getElementById('experimentData');
+let studentAnswers = document.getElementById('studentAnswers');
+
 
 document.getElementById("sidebarButton").addEventListener('click', toggleSidebar);
 
@@ -26,6 +31,10 @@ let hidden = false;
 
 //List of all the users connected to the stream
 let userList = [];
+
+//List of all answers from the questions asked to the students
+let answerList = [];
+
 
 //Global variable for the stream
 let userStream;
@@ -65,10 +74,11 @@ function muteStream() {
 
 
 function toggleSidebar() {
+    questionForm.classList.toggle('material-hidden');
+    experimentData.classList.toggle('material-hidden');
+    studentAnswers.classList.toggle('material-hidden');
+
     sidebar.classList.toggle('sidebar-shown');
-
-    experimentData.classList.toggle('experimentdata-hidden');
-
     sidebarContent.classList.toggle('sidebar-content-shown');
 }
 
@@ -111,6 +121,13 @@ function endStream() {
 }
 
 
+
+socket.on('data', function(values) {
+    console.log(values);
+});
+
+
+
 function leaveStream(flag) {
     //If the flag is null it means that the user wants to leave
     if (flag != true) {
@@ -140,6 +157,66 @@ function leaveStream(flag) {
 
 }
 
+
+function showQuestion() {
+    questionForm.style.display = "block";
+}
+
+
+function closeQuestionForm() {
+    questionForm.style.display = "none";
+}
+
+
+
+function askQuestion() {
+    let question = document.getElementById('question').value;
+    socket.emit('question', roomName, question);
+    closeQuestionForm();
+}
+
+
+function answerQuestion() {
+    let answer = document.getElementById('answer').value;
+    socket.emit('user-answer', roomName, answer, user);
+    closeQuestionForm();
+}
+
+
+function closeAnswerForm() {
+    studentAnswers.style.display = 'none';
+}
+
+function showAnswer() {
+    studentAnswers.style.display = 'block';
+    $('#answerList').html('');
+    answerListHTML = '';
+    for (answer of answerList) {
+        answerListHTML += `
+            <div class="row">
+                <div class="col-4">${answer.username}</div>
+                <div class="col-8">${answer.answer}</div>
+            </div>
+        `;
+    }
+    $('#answerList').append(answerListHTML);
+}
+
+socket.on('user-answer', function(answer, username) {
+    if (creator) {
+        //Send this to the script
+        answerList.push({username, answer});
+    }
+});
+
+
+socket.on('question', function(question) {
+    if (!creator) {
+        $('#questionAsked').html('');
+        $('#questionAsked').append(question);
+        showQuestion();
+    }
+});
 
 socket.on('user-left', function(user) {
     let idx = userList.indexOf(user);
@@ -174,9 +251,12 @@ function getCamera() {
 //Get user media if a room is created of joined
 socket.on('created', function() {
     creator = true;
+    //Add event listeners for the creators' buttons
     hideCameraBtn.addEventListener('click', hideStream);
     muteBtn.addEventListener('click', muteStream);
     endStreamBtn.addEventListener('click', endStream);
+    askQuestionBtn.addEventListener('click', showQuestion);
+    showAnswerBtn.addEventListener('click', showAnswer);
     //Get the stream from the creator
     getCamera();
     //mute video of creator

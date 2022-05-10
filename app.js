@@ -9,10 +9,6 @@ app.get("/", (_req, res) => {
 
 
 
-//Route not found
-app.use((_req,res) => {
-    res.status(404).send("Route not found!");
-});
 
 // Listening to localhost:3000
 let server = app.listen(PORT, () => {
@@ -22,6 +18,21 @@ let server = app.listen(PORT, () => {
 
 //Upgraded server for webRTC connection 
 let io = socket(server);
+
+app.post("/live-data/:room", (req, res) => {
+    const {room} = req.params;
+    const {experiment, sensor, values} = req.body;
+    res.status(200).send("OK");
+    //Send the data to the room
+    io.sockets.to(room).emit('data', values);
+});
+
+//Route not found
+app.use((_req,res) => {
+    res.status(404).send("Route not found!");
+});
+
+
 
 io.on('connection', function(socket) {
     //Get room name from client
@@ -74,4 +85,15 @@ io.on('connection', function(socket) {
         //Broadcast the info the the other peers
         socket.broadcast.to(roomName).emit("end-stream");
     });
+
+    //Creator asks a question
+    socket.on('question', function(roomName, question) {
+        socket.broadcast.to(roomName).emit("question", question);
+    });
+
+    //User answers the question
+    socket.on('user-answer', function(roomName, answer, user) {
+        socket.broadcast.to(roomName).emit("user-answer", answer,user);
+    });
+
 });

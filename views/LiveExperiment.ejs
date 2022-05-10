@@ -21,23 +21,64 @@
 <body>
     <%- include ("./partials/Navbar") %>
     <%- include ("./partials/FlashMessage") %>
-    <p id="roomName" hidden><%=roomPassword%></p>
+    <p id="roomName" hidden><%=roomName%></p>
     <p id="username" hidden><%=username%></p>
     <div class="row">
         <div class="col-7">
             <video id="experiment-video"></video>
             <!--Add MUTE/HIDECAMERA/LEAVECHAT button-->
             <div class="btn-group">
-                <%if (creator) {%>
+                <% if (creator) { %>
                 <button id="muteBtn">Mute</button>
                 <button id="hideCameraBtn">Hide Camera</button>
                 <button id="endStreamBtn">End Stream</button>
-                <%} else { %>
+                <button id="askQuestionBtn">Ask Question</button>
+                <button id="showAnswerBtn">Show Answers</button>
+                <% } else { %>
                 <button id="leaveRoomBtn">Leave</button>
                 <% } %>
             </div>
         </div>
         <div class="col-5">
+            <div class="form-popup" id="questionForm" style="display: none;">
+                <form action="#" class="form-container">
+                    <div class="form-elements">
+                        <% if (creator) { %>
+                            <h3>Ask question</h3>
+                
+                            <div class="form-group mt-5">
+                                <label for="question">Question: </label>
+                                <input type="text" class="form-control" id="question" name="question"
+                                placeholder="Your question" required>
+                            </div>
+                
+                            <button type="button" onclick="askQuestion()">Ask</button>
+                            <button type="button" onclick="closeQuestionForm()">Close</button>
+                        <% } else { %>
+                            <h3>Answer question</h3>
+                            <p id="questionAsked"></p>
+                            <div class="form-group mt-5">
+                                <label for="answer">Answer: </label>
+                                <input type="text" class="form-control" id="answer" name="answer"
+                                placeholder="Your answer" required>
+                            </div>
+
+                            <button type="button" onclick="answerQuestion()">Answer</button>
+                            <button type="button" onclick="closeQuestionForm()">Close</button>
+                        <% } %>
+                    </div>
+                </form>
+            </div>
+            <div class="form-popup" id="studentAnswers" style="display: none;">
+                <div class="row" id="answerFirstRow">
+                    <div class="col-4"><strong><h4>User</h4></strong></div>
+                    <div class="col-8"><strong><h4>Answer</h4></strong></div>
+                </div>
+                <div id="answerList">
+                </div>
+                <button type="button" onclick="saveAnswers()">Save</button>
+                <button type="button" onclick="closeAnswerForm()">Close</button>
+            </div>
             <!--To do things-->
             <div id="experimentData">
                 Here display the graph and stuff from the experiment

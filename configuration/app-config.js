@@ -10,6 +10,7 @@ const express = require('express'),
     session = require('express-session'),
     secret = process.env.SECRET,
     passport = require('passport'),
+    bodyParser = require('body-parser');
     DBController = require('./db-config');
 
 
@@ -19,7 +20,7 @@ const sessionConfig = {
     saveUninitialized: true
 }
 
-
+app.use(bodyParser.json());
 app.use(session(sessionConfig));
 app.use(flash());
 app.use(express.urlencoded({ extended: true })); // Body parser setup

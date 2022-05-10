@@ -63,8 +63,8 @@ button:hover {
     transition: 1s ease;
 }
 
-.experimentdata-hidden {
-    display: none;
+.material-hidden {
+    display: none !important;
 }
 
 
@@ -96,4 +96,42 @@ span {
 .users-list {
     margin-left: 2rem;
     margin-top: 1rem;
+}
+
+
+.form-container {
+    border: 1px solid rgb(9,158,41);
+    margin-right: 15%;
+}
+
+.form-elements input {
+    width: 60%;
+}
+
+.form-elements {
+    margin: 1rem;
+}
+
+
+#studentAnswers {
+    border: 1px solid rgb(9,158,41);
+    margin-right: 15%;
+    overflow: auto;
+    height: 30%;
+}
+
+#answerList {
+    margin-left: 2rem;
+}
+
+#studentAnswers .col-4 {
+    border-right: 1px solid rgb(9,158,41);
+}
+
+
+#answerFirstRow {
+    margin-left: 2rem;
+    margin-right: 1rem;
+    text-align: center;
+    border-bottom: 2px solid rgb(9,158,41);
 }

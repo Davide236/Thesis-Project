@@ -77,9 +77,12 @@
             <div class="modal" id="joinLiveModal">
                 <div class="modal-form">
                     <form action="./experiment/join-live" method="POST">
+                        <label for="roomName">Name for live:</label>
+                        <input type="text" class="form-control" id="roomName" name="roomName"
+                          placeholder="Room name" required>
                         <label for="roomPassword">Password for live:</label>
-                        <input type="text" class="form-control" id="roomPassword" name="roomPassword"
-                          placeholder="Password" required>
+                        <input type="password" class="form-control" id="roomPassword" name="roomPassword"
+                          required>
                         <button  type="submit">Join Live</button>
                     </form>
                 </div>

@@ -23,7 +23,14 @@ const experimentSchema = new Schema({
     roomName: {
         type: String, 
         required: true
-    }
+    },
+    roomPassword: {
+        type: String,
+        required: true
+    },
+    studentAnswer: [{
+        type: Map
+    }]
 });
 
 
