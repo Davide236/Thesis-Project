@@ -8,8 +8,6 @@ app.get("/", (_req, res) => {
 });
 
 
-
-
 // Listening to localhost:3000
 let server = app.listen(PORT, () => {
     console.log(`[SERVER RUNNING ON PORT ${PORT}]`);
@@ -22,7 +20,7 @@ let io = socket(server);
 app.post("/live-data/:room", (req, res) => {
     const {room} = req.params;
     const {experiment, sensor, values} = req.body;
-    res.status(200).send("OK");
+    res.status(200).send("Data Received");
     //Send the data to the room
     io.sockets.to(room).emit('data', values);
 });
@@ -51,7 +49,6 @@ io.on('connection', function(socket) {
             socket.join(roomName);
             socket.emit("joined");
         }
-        //console.log(room);
     });
 
     socket.on('ready', function(roomName, username) {

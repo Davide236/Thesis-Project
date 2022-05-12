@@ -3,6 +3,7 @@ let socket = io.connect();
 
 let roomName = document.getElementById("roomName").innerHTML;
 let user = document.getElementById("username").innerHTML;
+let videoDevice = document.getElementById("videoDevice").innerHTML;
 
 let userVideo = document.getElementById("experiment-video");
 
@@ -19,7 +20,8 @@ let sidebar = document.querySelector('.sidebar');
 let sidebarContent = document.querySelector('.sidebar-content');
 let experimentData = document.getElementById('experimentData');
 let studentAnswers = document.getElementById('studentAnswers');
-
+let chart = document.getElementById('dataChart');
+let currentData = document.getElementById('currentData');
 
 document.getElementById("sidebarButton").addEventListener('click', toggleSidebar);
 
@@ -35,6 +37,12 @@ let userList = [];
 
 //List of all answers from the questions asked to the students
 let answerList = [];
+
+//Variable that keeps track of how many numbers display on the graph
+const MAX_GRAPH = 20;
+
+//For graph
+let time = 0;
 
 
 //Global variable for the stream
@@ -61,6 +69,46 @@ window.onload = function() {
     socket.emit('join', roomName);
 };
 
+window.onbeforeunload = function() {
+    if (creator) {
+        deleteRoom();
+    }
+}
+
+
+const dataChart = new Chart(
+    chart,
+    {
+        type: 'line',
+        data: {
+            labels: [],
+            datasets: [{
+                //Add kind of data
+                label: 'Sensor Data at time t',
+                backgroundColor: 'rgb(9,158,41)',
+                data: []
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    title: {
+                        display: true,
+                        //Display data
+                        text: 'Data'
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Time (t)'
+                    }
+                }
+            }
+        }
+    }
+
+)
 
 function muteStream() {
     muted = !muted;
@@ -94,12 +142,22 @@ function hideStream() {
     }
 }
 
+function deleteRoom() {
+    $.ajax({
+        url: `http://localhost:3000/experiment/delete/${roomName}`,
+        type: 'GET',
+        success: function(res) {alert(res)},
+        error: function(res) {alert('Code '+res.status +':' + res.responseText)}
+    });
+}
 
-function endStream() {
-    
-    //Ask the user if they're sure they want to end the stream
-    if (!confirm("Are you sure you want to end the stream?")) {
-        return;
+function endStream(flag) {
+    if (flag != true) {
+        //Ask the user if they're sure they want to end the stream
+        if (!confirm("Are you sure you want to end the stream?")) {
+            return;
+        }
+        window.onbeforeunload = null;
     }
 
     socket.emit('end-stream', roomName);
@@ -117,27 +175,57 @@ function endStream() {
         rtcPeerConnection[i].close();
         rtcPeerConnection[i] = null;
     }
+
+    //Delete the stream
+    deleteRoom();
     //Redirect to homepage
-    window.location.replace(`/experiment/delete/${roomName}`);
+    window.location.replace('/experiment/leave');
 }
 
 
+function addToChart(val) {
+    dataChart.data.labels.push(time);
+    dataChart.data.datasets.forEach((dataset) => {
+        dataset.data.push(val);
+    });
+    checkRemove();
+    dataChart.update();
+}
+
+
+function checkRemove() {
+    length = dataChart.data.labels.length;
+    if (length > MAX_GRAPH) {
+        dataChart.data.labels.shift();
+        dataChart.data.datasets.forEach((dataset) => {
+            dataset.data.shift();
+        });
+    }
+}
+
 
 socket.on('data', function(values) {
-    console.log(values);
+    time++;
+    addToChart(values);
+    currentData.textContent = values;
 });
 
 
 
 function leaveStream(flag) {
     //If the flag is null it means that the user wants to leave
-    if (flag != true) {
+    if (flag != 'true'&& flag != 'leave') {
         //Ask the user if they're sure they want to leave the stream
         if (!confirm("Are you sure you want to leave the stream?")) {
             return;
         }
+        window.onbeforeunload = null;
         socket.emit('user-left', roomName, user);
     } 
+
+    if (flag == 'leave') {
+        socket.emit('user-left', roomName, user);
+    }
     
     //Close the rtcpeer connection
     if (rtcPeerConnection[0]) {
@@ -209,7 +297,7 @@ function saveAnswers() {
         type: "POST",
         url: `http://localhost:3000/data/add-answers/${roomName}`,
         data: {answers: answerList},
-        success: function (data) { alert('Code' + data.status +':'+ data.responseText); },
+        success: function (data) {alert('Code 200 :'+ data); },
         error: function (data) { alert('Code '+data.status +':' + data.responseText); }
     });
     closeAnswerForm();
@@ -237,12 +325,16 @@ socket.on('user-left', function(user) {
     updateUserList();
 });
 
+async function getDeviceId() {
+    const devices = await navigator.mediaDevices.enumerateDevices();
+    return devices.filter(device => device.label == videoDevice)
+}
 
-
-function getCamera() {
+async function getCamera() {
+    let deviceId = getDeviceId();
     navigator.mediaDevices.getUserMedia({
-        audio: true,
-        video: true
+        audio: {'echoCancellation': true},
+        video: {'deviceId': deviceId}
     })
     .then(function(stream) {
         userStream = stream;
@@ -262,7 +354,7 @@ function getCamera() {
 
 
 //Get user media if a room is created of joined
-socket.on('created', function() {
+socket.on('created', async function() {
     creator = true;
     //Add event listeners for the creators' buttons
     hideCameraBtn.addEventListener('click', hideStream);
@@ -271,7 +363,7 @@ socket.on('created', function() {
     askQuestionBtn.addEventListener('click', showQuestion);
     showAnswerBtn.addEventListener('click', showAnswer);
     //Get the stream from the creator
-    getCamera();
+    await getCamera();
     //mute video of creator
     userVideo.muted = true;
 });
@@ -358,7 +450,7 @@ socket.on('answer', function(answer) {
 
 
 socket.on('end-stream', function() {
-    leaveStream(true);
+    leaveStream('true');
 });
 
 

@@ -14,7 +14,9 @@ def get_data(code):
     else:
         print("\nHTTP request non completed. Try to enter a different code\n")
 
+
 def send_data(code):
+    print('Sending Data')
     headers = {"Content-Type": "application/json; charset=utf-8"}
     data = {'experiment': 'exp1',
             'sensor':'temp',
@@ -39,7 +41,7 @@ def main():
         print("Press Ctrl-C to terminate while statement")
         pass
         
-        
+
         
 if __name__ == "__main__":
 	main()

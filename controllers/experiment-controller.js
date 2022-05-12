@@ -15,10 +15,9 @@ exports.getLiveForm = function(res) {
 }
 
 exports.createLive = async function(req, res) {
-    const {expName, expDescription, sensors, roomPassword,roomName} = req.body;
+    const {expName, expDescription, sensors, roomPassword,roomName, videoDevice} = req.body;
     const experiment = await Experiment.findOne({roomName : roomName});
     if (experiment) {
-        console.log(experiment);
         req.flash('error', 'A room with that name already exist, choose a different one');
         return res.redirect("/");
     }
@@ -31,7 +30,7 @@ exports.createLive = async function(req, res) {
         roomPassword: CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(roomPassword))
     });
     await newExp.save();
-    res.render("LiveExperiment", {expName, expDescription, sensors, roomName, creator: true, username: req.user.fullName });
+    res.render("LiveExperiment", {expName, expDescription, sensors, roomName, creator: true, username: req.user.fullName, videoDevice });
 }
 
 
@@ -48,7 +47,7 @@ exports.joinLive = async function(req, res) {
         req.flash('error', 'Wrong password');
         return res.redirect("/");
     }
-    res.render("LiveExperiment", {expName: experiment.name,expDescription: experiment.description, sensors: experiment.sensors ,roomName, creator: false, username: req.user.fullName});
+    res.render("LiveExperiment", {expName: experiment.name,expDescription: experiment.description, sensors: experiment.sensors ,roomName, creator: false, username: req.user.fullName, videoDevice: 'none'});
 }
 
 exports.redirectToHomepage = function(req, res) {
@@ -59,7 +58,10 @@ exports.redirectToHomepage = function(req, res) {
 
 exports.deleteRoom = async function(req, res) {
     const {room} = req.params;
-    await Experiment.findOneAndDelete({roomName: room, author:req.user.id});
-    req.flash('success', 'Stream ended successfully!');
-    res.redirect('/');
+    try {
+        await Experiment.findOneAndDelete({roomName: room, author:req.user.id});
+        res.status(200).send('Room deleted correctly');
+    } catch(err) {
+        res.status(400).send('Error deleting the room');
+    }
 }
