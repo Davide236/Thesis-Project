@@ -39,7 +39,7 @@ let userList = [];
 let answerList = [];
 
 //Variable that keeps track of how many numbers display on the graph
-const MAX_GRAPH = 20;
+const MAX_GRAPH = 15;
 
 //For graph
 let time = 0;

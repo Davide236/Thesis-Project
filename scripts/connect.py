@@ -1,13 +1,13 @@
 import time
 import requests
 import keyboard
-import json
 
 URL_post = 'http://localhost:3000/live-data/'
 URL_get = 'http://localhost:3000/data/live-data/'
-# Still not sure which kind of data could be sent back to the code and how
-# I could use it.
+
+
 def get_data(code):
+    print('getting data')
     response = requests.get(url = URL_get + code)
     if response.status_code == 200:
         print(response.json())
@@ -16,7 +16,6 @@ def get_data(code):
 
 
 def send_data(code):
-    print('Sending Data')
     headers = {"Content-Type": "application/json; charset=utf-8"}
     data = {'experiment': 'exp1',
             'sensor':'temp',
@@ -30,18 +29,17 @@ def main():
     print("Enter the name of the room: ")
     code = input()
     print("Press 'Ctrl-C' to stop the code\n")
-    print("Press 'g' to get data from the application\n")
-    try:
-        while True:
+    print("Press 'g' (until data is shown) to get data from the application\n")
+    while True:
+        try:
+            if keyboard.is_pressed('g'):
+                get_data(code)
+                time.sleep(1)
             time.sleep(1)
             send_data(code)
-            if keyboard.read_key() == "g":
-                get_data(code)        
-    except KeyboardInterrupt:
-        print("Press Ctrl-C to terminate while statement")
-        pass
-        
-
+        except:
+            break
+          
         
 if __name__ == "__main__":
 	main()
