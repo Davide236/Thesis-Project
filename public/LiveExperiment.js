@@ -13,7 +13,9 @@ let endStreamBtn = document.getElementById("endStreamBtn");
 let leaveRoomBtn = document.getElementById("leaveRoomBtn");
 let askQuestionBtn = document.getElementById("askQuestionBtn");
 let showAnswerBtn = document.getElementById("showAnswerBtn");
-
+let recordBtn = document.getElementById('recordBtn');
+let stopRecordBtn = document.getElementById('stopRecordBtn');
+let saveRecordBtn = document.getElementById('saveRecordBtn')
 
 let questionForm = document.getElementById('questionForm');
 let sidebar = document.querySelector('.sidebar');
@@ -25,7 +27,9 @@ let currentData = document.getElementById('currentData');
 
 document.getElementById("sidebarButton").addEventListener('click', toggleSidebar);
 
-
+//Variable used for the recording of video/audio
+let recording;
+let recordingData = [];
 //Flag to see if the audio was muted
 let muted = false;
 
@@ -337,6 +341,7 @@ async function getCamera() {
         video: {'deviceId': deviceId}
     })
     .then(function(stream) {
+        recordBtn.disabled = false;
         userStream = stream;
         //Success, use stream
         //Connect stream to video object
@@ -353,6 +358,56 @@ async function getCamera() {
 }
 
 
+function recordVideo() {
+    try {
+        //Create a new media recording element
+        recording = new MediaRecorder(userStream);
+        recordBtn.disabled = true;
+        stopRecordBtn.disabled = false;
+        //Start saving data
+        recording.ondataavailable = function(event) {
+            if (event.data && event.data.size > 0) {
+                recordingData.push(event.data);
+            }
+        }
+        recording.start();
+        alert('Started recording');
+    } catch(err) {
+        alert('Cant record due to the following error: ' + err);
+        return;
+    }
+}
+
+//Stop the video recording
+function stopRecording() {
+    saveRecordBtn.disabled = false;
+    recordBtn.disabled = false;
+    stopRecordBtn.disabled = true;
+    recording.stop();
+}
+
+//Save the recording of the video along with the data from sensors
+function saveRecording() {
+    //Save the video
+    const video_blob = new Blob(recordingData, {type: 'video/mp4'});
+    const video_blobUrl = window.URL.createObjectURL(video_blob);
+    const video_link = document.createElement('a');
+    video_link.style.display = 'none';
+    video_link.href = video_blobUrl;
+    video_link.download = 'experiment_video.mp4';
+    document.body.appendChild(video_link);
+    video_link.click();
+    //Save the data
+    const data_blob = new Blob([JSON.stringify(dataChart.data.datasets[0].data)], {type: 'application/json'});
+    const data_blobUrl = window.URL.createObjectURL(data_blob);
+    const data_link = document.createElement('a');
+    data_link.style.display = 'none';
+    data_link.href = data_blobUrl;
+    data_link.download = 'experiment_data.json';
+    document.body.appendChild(data_link);
+    data_link.click();
+}
+
 //Get user media if a room is created of joined
 socket.on('created', async function() {
     creator = true;
@@ -362,6 +417,9 @@ socket.on('created', async function() {
     endStreamBtn.addEventListener('click', endStream);
     askQuestionBtn.addEventListener('click', showQuestion);
     showAnswerBtn.addEventListener('click', showAnswer);
+    recordBtn.addEventListener('click', recordVideo);
+    stopRecordBtn.addEventListener('click', stopRecording);
+    saveRecordBtn.addEventListener('click', saveRecording);
     //Get the stream from the creator
     await getCamera();
     //mute video of creator

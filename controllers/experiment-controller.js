@@ -1,6 +1,17 @@
+require('dotenv').config();
+
 const Experiment = require('../models/Experiment');
 const CryptoJS = require('crypto-js');
+const cloudinary = require('cloudinary').v2;
 
+const fs = require('fs');
+
+
+cloudinary.config({
+    cloud_name: process.env.CLOUD_NAME,
+    api_key: process.env.CLOUD_KEY,
+    api_secret: process.env.CLOUD_SECRET
+})
 
 exports.searchExperiments = async function(req, res) {
     const {searchQuery} = req.query;
@@ -63,5 +74,41 @@ exports.deleteRoom = async function(req, res) {
         res.status(200).send('Room deleted correctly');
     } catch(err) {
         res.status(400).send('Error deleting the room');
+    }
+}
+
+exports.uploadExperiment = async function(req, res) {
+    const {expName, expDescription, minutes, seconds} = req.body;
+    const {expVideo, expData} = req.files;
+    let url, filename = '';
+    let rawdata = fs.readFileSync(expData[0].path);
+    let parsedData = JSON.parse(rawdata);
+    try {
+        await cloudinary.uploader.upload(expVideo[0].path, {resource_type: 'video'}, function(err, data) {
+            if (err) {console.warn(err);}
+            if (!data) {return;}
+            url = data.url;
+            filename = data.public_id;
+        });
+        const newExperiment = await new Experiment({
+            author: req.user.id,
+            name: expName,
+            description: expDescription,
+            startingTime: {
+                minutes: minutes,
+                seconds: seconds
+            },
+            data: parsedData,
+            video: {
+                url: url,
+                filename: filename
+            }
+        });
+        await newExperiment.save();
+        req.flash('success', 'Experiment saved successfully');
+        res.redirect('/');
+    } catch(err) {
+        req.flash('error', 'Error in saving the experiment, try again');
+        res.redirect('/');
     }
 }

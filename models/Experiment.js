@@ -17,20 +17,33 @@ const experimentSchema = new Schema({
         required: true
     },
     sensors: {
-        type: String,
-        required: true
+        type: String
     },
     roomName: {
-        type: String, 
-        required: true
+        type: String
     },
     roomPassword: {
-        type: String,
-        required: true
+        type: String
     },
     studentAnswer: [{
         type: Map
-    }]
+    }],
+    video: {
+        url: String,
+        filename: String
+    },
+    data: {
+        type: {type: Number},
+        value: [Number]
+    },
+    startingTime: {
+        minutes: Number,
+        seconds: Number
+    },
+    date: {
+        type: Date, 
+        default: Date.now
+    }
 });
 
 

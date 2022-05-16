@@ -27,6 +27,13 @@
     <p id="videoDevice" hidden><%=videoDevice%></p>
     <div class="row">
         <div class="col-7">
+            <div class="btn-group">
+                <% if (creator) { %>
+                <button id="recordBtn" disabled>Record</button>
+                <button id="stopRecordBtn" disabled>Stop</button>
+                <button id="saveRecordBtn" disabled>Save Recording</button>
+                <% } %>
+            </div>
             <video id="experiment-video"></video>
             <!--Add MUTE/HIDECAMERA/LEAVECHAT button-->
             <div class="btn-group">
