@@ -54,5 +54,10 @@ router.post('/upload-experiment', isLoggedIn, upload.fields([{name: 'expVideo'},
 });
 
 
+router.get('/display-exp/:id', async (req, res) => {
+    await ExperimentController.showExperiment(req, res);
+});
+
+
 
 module.exports = router;

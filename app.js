@@ -84,8 +84,8 @@ io.on('connection', function(socket) {
     });
 
     //Creator asks a question
-    socket.on('question', function(roomName, question) {
-        socket.broadcast.to(roomName).emit("question", question);
+    socket.on('question', function(roomName, question, answerPoll) {
+        socket.broadcast.to(roomName).emit("question", question, answerPoll);
     });
 
     //User answers the question

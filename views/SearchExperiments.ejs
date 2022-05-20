@@ -25,10 +25,12 @@
     <% for (exp of response) { %>
         <div class="row">
             <div class="col-4">
-                <%=exp.video%>
+                <video width="80%" height="80%" controls>
+                    <source src="<%=exp.video.url%>">
+                </video>
             </div>
             <div class="col-8">
-                <h3><a href=""><%=exp.title%></a></h3>
+                <h3><a href="../experiment/display-exp/<%=exp._id%>"><%=exp.name%></a></h3>
                 <p><%=exp.description%></p>
             </div>
         </div>

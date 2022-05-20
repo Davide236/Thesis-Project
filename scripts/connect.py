@@ -1,6 +1,6 @@
 import time
 import requests
-import keyboard
+#import keyboard
 
 URL_post = 'http://localhost:3000/live-data/'
 URL_get = 'http://localhost:3000/data/live-data/'
@@ -32,10 +32,10 @@ def main():
     print("Press 'g' (until data is shown) to get data from the application\n")
     while True:
         try:
-            if keyboard.is_pressed('g'):
-                get_data(code)
-                time.sleep(1)
-            time.sleep(1)
+            #if keyboard.is_pressed('g'):
+                #get_data(code)
+                #time.sleep(1)
+            time.sleep(2)
             send_data(code)
         except:
             break

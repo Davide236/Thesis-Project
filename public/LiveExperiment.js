@@ -4,6 +4,7 @@ let socket = io.connect();
 let roomName = document.getElementById("roomName").innerHTML;
 let user = document.getElementById("username").innerHTML;
 let videoDevice = document.getElementById("videoDevice").innerHTML;
+let dataType = document.getElementById('dataType').innerHTML;
 
 let userVideo = document.getElementById("experiment-video");
 
@@ -30,6 +31,11 @@ document.getElementById("sidebarButton").addEventListener('click', toggleSidebar
 //Variable used for the recording of video/audio
 let recording;
 let recordingData = [];
+
+//Array used for saving the data of the experiment
+let recordingExperiment = [];
+
+
 //Flag to see if the audio was muted
 let muted = false;
 
@@ -88,7 +94,7 @@ const dataChart = new Chart(
             labels: [],
             datasets: [{
                 //Add kind of data
-                label: 'Sensor Data at time t',
+                label: `${dataType} at time t`,
                 backgroundColor: 'rgb(9,158,41)',
                 data: []
             }]
@@ -98,8 +104,7 @@ const dataChart = new Chart(
                 y: {
                     title: {
                         display: true,
-                        //Display data
-                        text: 'Data'
+                        text: dataType
                     }
                 },
                 x: {
@@ -111,8 +116,7 @@ const dataChart = new Chart(
             }
         }
     }
-
-)
+);
 
 function muteStream() {
     muted = !muted;
@@ -188,6 +192,7 @@ function endStream(flag) {
 
 
 function addToChart(val) {
+    recordingExperiment.push(val);
     dataChart.data.labels.push(time);
     dataChart.data.datasets.forEach((dataset) => {
         dataset.data.push(val);
@@ -200,9 +205,10 @@ function addToChart(val) {
 function checkRemove() {
     length = dataChart.data.labels.length;
     if (length > MAX_GRAPH) {
-        dataChart.data.labels.shift();
+        //dataChart.data.labels.shift();
+        dataChart.data.labels.splice(0,1);
         dataChart.data.datasets.forEach((dataset) => {
-            dataset.data.shift();
+            dataset.data.splice(0,1);
         });
     }
 }
@@ -264,14 +270,20 @@ function closeQuestionForm() {
 
 function askQuestion() {
     let question = document.getElementById('question').value;
-    socket.emit('question', roomName, question);
+    const answers = document.querySelectorAll('.answers');
+    let answerPoll = [];
+    answers.forEach(answer => {
+        answerPoll.push(Number(answer.innerText));
+        answer.remove();
+    });
+    socket.emit('question', roomName, question, answerPoll);
     answerList.splice(0,answerList.length);
     closeQuestionForm();
 }
 
 
 function answerQuestion() {
-    let answer = document.getElementById('answer').value;
+    let answer = document.getElementById('select-answer').value;
     socket.emit('user-answer', roomName, answer, user);
     closeQuestionForm();
 }
@@ -315,10 +327,20 @@ socket.on('user-answer', function(answer, username) {
 });
 
 
-socket.on('question', function(question) {
+socket.on('question', function(question, answers) {
     if (!creator) {
         $('#questionAsked').html('');
         $('#questionAsked').append(question);
+        $('#select-answer').html('');
+        let selectHTML = '';
+        console.log(answers);
+        console.log(answers[0]);
+        answers.forEach(answer => {
+            selectHTML += `
+            <option value=${answer}>${answer}</option>
+            `;
+        });
+        $('#select-answer').append(selectHTML);
         showQuestion();
     }
 });
@@ -338,7 +360,7 @@ async function getCamera() {
     let deviceId = getDeviceId();
     navigator.mediaDevices.getUserMedia({
         audio: {'echoCancellation': true},
-        video: {'deviceId': deviceId}
+        video: {'deviceId': deviceId, width: 640, height: 480}
     })
     .then(function(stream) {
         recordBtn.disabled = false;
@@ -398,7 +420,7 @@ function saveRecording() {
     document.body.appendChild(video_link);
     video_link.click();
     //Save the data
-    const data_blob = new Blob([JSON.stringify(dataChart.data.datasets[0].data)], {type: 'application/json'});
+    const data_blob = new Blob([JSON.stringify(recordingExperiment)], {type: 'application/json'});
     const data_blobUrl = window.URL.createObjectURL(data_blob);
     const data_link = document.createElement('a');
     data_link.style.display = 'none';
@@ -543,4 +565,27 @@ function updateUserList() {
         `;
     }
     $('#users').append(usersListHTML);
+}
+
+function addToAnswerList(value) {
+    let inputHTML = `
+    <span class='answers'>${value}</span>`;
+    $('#answer-list').append(inputHTML);
+}
+
+function addAnswerValue() {
+    let value = document.getElementById('answerOption').value;
+    $('#answer-input').html('');
+    addToAnswerList(value);
+}
+
+function addAnswerInput() {
+    $('#answer-input').html('');
+    let inputHTML = `
+    <form action="javascript:void(0);">
+        <input id="answerOption" name="answerOption" type="number">
+        <button type="submit" id="plus-btn" onclick='addAnswerValue()'><strong>+</strong></button>
+    </form>
+    `
+    $('#answer-input').append(inputHTML);
 }

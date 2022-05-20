@@ -32,10 +32,10 @@ const experimentSchema = new Schema({
         url: String,
         filename: String
     },
-    data: {
-        type: {type: Number},
-        value: [Number]
+    dataType: {
+        type: String
     },
+    data: [Number],
     startingTime: {
         minutes: Number,
         seconds: Number

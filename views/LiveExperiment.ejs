@@ -25,6 +25,7 @@
     <p id="roomName" hidden><%=roomName%></p>
     <p id="username" hidden><%=username%></p>
     <p id="videoDevice" hidden><%=videoDevice%></p>
+    <p id="dataType" hidden><%=dataType%></p>
     <div class="row">
         <div class="col-7">
             <div class="btn-group">
@@ -60,7 +61,13 @@
                                 <input type="text" class="form-control" id="question" name="question"
                                 placeholder="Your question" required>
                             </div>
-                
+                            <br><hr>
+                            <label>Answer List</label>
+                            <div id="answer-list"></div>
+                            <div id="answer-input"></div>
+                            <br><hr>
+                            <button type="button" onclick="addAnswerInput()">Add Answer</button>
+                            <br><hr>
                             <button type="button" onclick="askQuestion()">Ask</button>
                             <button type="button" onclick="closeQuestionForm()">Close</button>
                         <% } else { %>
@@ -68,8 +75,8 @@
                             <p id="questionAsked"></p>
                             <div class="form-group mt-5">
                                 <label for="answer">Answer: </label>
-                                <input type="text" class="form-control" id="answer" name="answer"
-                                placeholder="Your answer" required>
+                                <select class="form-select" id="select-answer">
+                                </select>
                             </div>
 
                             <button type="button" onclick="answerQuestion()">Answer</button>
@@ -108,7 +115,7 @@
                         <br><hr>
                         <strong>Description: </strong> <span><%=expDescription%></span>
                         <br><hr>
-                        <strong>Sensors: </strong> <span><%=sensors%></span>
+                        <strong>Data Type: </strong> <span><%=dataType%></span>
                         <br><hr>
                     </div>
                     <div class="users-list">

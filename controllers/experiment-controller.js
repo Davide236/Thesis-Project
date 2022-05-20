@@ -1,6 +1,7 @@
 require('dotenv').config();
 
 const Experiment = require('../models/Experiment');
+const User = require('../models/User');
 const CryptoJS = require('crypto-js');
 const cloudinary = require('cloudinary').v2;
 
@@ -15,7 +16,7 @@ cloudinary.config({
 
 exports.searchExperiments = async function(req, res) {
     const {searchQuery} = req.query;
-    let response = await Experiment.find({name: searchQuery});
+    let response = await Experiment.find({name: {$regex: searchQuery, $options: 'i'}, video: {$exists: true, $ne: []}});
     res.render("SearchExperiments", {response, searchQuery});
 }
 
@@ -26,7 +27,7 @@ exports.getLiveForm = function(res) {
 }
 
 exports.createLive = async function(req, res) {
-    const {expName, expDescription, sensors, roomPassword,roomName, videoDevice} = req.body;
+    const {expName, expDescription, dataType, roomPassword,roomName, videoDevice} = req.body;
     const experiment = await Experiment.findOne({roomName : roomName});
     if (experiment) {
         req.flash('error', 'A room with that name already exist, choose a different one');
@@ -36,12 +37,12 @@ exports.createLive = async function(req, res) {
         author: req.user.id,
         name: expName,
         description: expDescription,
-        sensors: sensors,
         roomName: roomName,
+        dataType: dataType,
         roomPassword: CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(roomPassword))
     });
     await newExp.save();
-    res.render("LiveExperiment", {expName, expDescription, sensors, roomName, creator: true, username: req.user.fullName, videoDevice });
+    res.render("LiveExperiment", {expName, expDescription, dataType, roomName, creator: true, username: req.user.fullName, videoDevice });
 }
 
 
@@ -58,7 +59,7 @@ exports.joinLive = async function(req, res) {
         req.flash('error', 'Wrong password');
         return res.redirect("/");
     }
-    res.render("LiveExperiment", {expName: experiment.name,expDescription: experiment.description, sensors: experiment.sensors ,roomName, creator: false, username: req.user.fullName, videoDevice: 'none'});
+    res.render("LiveExperiment", {expName: experiment.name,expDescription: experiment.description, dataType: experiment.dataType ,roomName, creator: false, username: req.user.fullName, videoDevice: 'none'});
 }
 
 exports.redirectToHomepage = function(req, res) {
@@ -78,11 +79,14 @@ exports.deleteRoom = async function(req, res) {
 }
 
 exports.uploadExperiment = async function(req, res) {
-    const {expName, expDescription, minutes, seconds} = req.body;
+    const {expName, expDescription, minutes, seconds, dataType} = req.body;
     const {expVideo, expData} = req.files;
     let url, filename = '';
     let rawdata = fs.readFileSync(expData[0].path);
     let parsedData = JSON.parse(rawdata);
+    const data = parsedData.map(str => {
+        return Number(str);
+    });
     try {
         await cloudinary.uploader.upload(expVideo[0].path, {resource_type: 'video'}, function(err, data) {
             if (err) {console.warn(err);}
@@ -98,7 +102,8 @@ exports.uploadExperiment = async function(req, res) {
                 minutes: minutes,
                 seconds: seconds
             },
-            data: parsedData,
+            data: data,
+            dataType: dataType,
             video: {
                 url: url,
                 filename: filename
@@ -108,7 +113,20 @@ exports.uploadExperiment = async function(req, res) {
         req.flash('success', 'Experiment saved successfully');
         res.redirect('/');
     } catch(err) {
+        console.log(err);
         req.flash('error', 'Error in saving the experiment, try again');
         res.redirect('/');
     }
+}
+
+
+exports.showExperiment = async function(req, res) {
+    const {id} = req.params;
+    const experiment = await Experiment.findById(id);
+    if (!experiment) {
+        req.flash('error', 'Error in retrieving the experiment');
+        return res.redirect('/');
+    }
+    const user = await User.findById(experiment.author);
+    res.render('Experiment', {experiment, user});
 }

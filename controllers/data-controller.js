@@ -22,3 +22,18 @@ exports.getUserAnswers = async function(req, res) {
     }
     res.status(404).send("Experiment not found");
 }
+
+
+exports.sendExperiments = async function(res) {
+    let experiments = await Experiment.find({video: {$exists: true, $ne: []}});
+    res.send(experiments);
+}
+
+exports.getExperimentData = async function(req, res) {
+    const {id} = req.params;
+    const experiment = await Experiment.findById(id);
+    if (! experiment) {
+        return res.status(400).send('Did not find data for the experiment');
+    }
+    res.status(200).send(experiment.data);
+}

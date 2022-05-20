@@ -61,10 +61,12 @@ function displayExperiments() {
         experimentsHTML += 
             `<div class="row">
                 <div class="col-4">
-                    ${experiments[i].video}
+                    <video width="80%" height="80%" controls>
+                        <source src="${experiments[i].video.url}">
+                    </video>
                 </div>
                 <div class="col-8">
-                    <h3><a href="">${experiments[i].title}</a></h3>
+                    <h3><a href="../experiment/display-exp/${experiments[i]._id}">${experiments[i].name}</a></h3>
                     <p>${experiments[i].description}</p>
                 </div>
             </div>
@@ -79,13 +81,13 @@ function sortExperiments(experiments) {
         if ($('#sortSelect').val() == 'date') {
             experiments.sort((a, b) => (a.date < b.date) ? 1 : -1);
         } else {
-            experiments.sort((a, b) => (a.length < b.length) ? 1 : -1);
+            experiments.sort((a, b) => (a.name > b.name) ? 1 : -1);
         }
     } else {
         if ($('#sortSelect').val() == 'date') {
             experiments.sort((a, b) => (a.date > b.date) ? 1 : -1);
         } else {
-            experiments.sort((a, b) => (a.length > b.length) ? 1 : -1);
+            experiments.sort((a, b) => (a.name < b.name) ? 1 : -1);
         }
     }
     return experiments;
