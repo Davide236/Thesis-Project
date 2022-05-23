@@ -1,5 +1,5 @@
 require('dotenv').config();
-
+//Configuration of the database
 const mongoose = require('mongoose'),
     database = mongoose.connection,
     DB_USER = process.env.DB_USER,

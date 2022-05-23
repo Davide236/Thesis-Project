@@ -72,7 +72,8 @@
                             <button type="button" onclick="closeQuestionForm()">Close</button>
                         <% } else { %>
                             <h3>Answer question</h3>
-                            <p id="questionAsked"></p>
+                            <br><hr>
+                            <span>Question: </span><p id="questionAsked"></p>
                             <div class="form-group mt-5">
                                 <label for="answer">Answer: </label>
                                 <select class="form-select" id="select-answer">
@@ -80,7 +81,6 @@
                             </div>
 
                             <button type="button" onclick="answerQuestion()">Answer</button>
-                            <button type="button" onclick="closeQuestionForm()">Close</button>
                         <% } %>
                     </div>
                 </form>
@@ -98,6 +98,8 @@
             <!--To do things-->
             <div id="experimentData">
                 <canvas id="dataChart"></canvas>
+                <br><hr>
+                <canvas id="studentChart" style="display: none;"></canvas>
                 <br><hr>
                 <strong>Current Data: </strong> <span id="currentData"></span>
             </div>

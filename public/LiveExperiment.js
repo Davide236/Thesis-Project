@@ -23,7 +23,8 @@ let sidebar = document.querySelector('.sidebar');
 let sidebarContent = document.querySelector('.sidebar-content');
 let experimentData = document.getElementById('experimentData');
 let studentAnswers = document.getElementById('studentAnswers');
-let chart = document.getElementById('dataChart');
+let dChart = document.getElementById('dataChart');
+let sChart = document.getElementById('studentChart');
 let currentData = document.getElementById('currentData');
 
 document.getElementById("sidebarButton").addEventListener('click', toggleSidebar);
@@ -87,14 +88,45 @@ window.onbeforeunload = function() {
 
 
 const dataChart = new Chart(
-    chart,
+    dChart,
     {
         type: 'line',
         data: {
             labels: [],
             datasets: [{
-                //Add kind of data
                 label: `${dataType} at time t`,
+                backgroundColor: 'rgb(9,158,41)',
+                data: []
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    title: {
+                        display: true,
+                        text: dataType
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Time (t)'
+                    }
+                }
+            }
+        }
+    }
+);
+
+
+const studentChart = new Chart(
+    sChart,
+    {
+        type: 'line',
+        data: {
+            labels: [],
+            datasets: [{
+                label: `${dataType} at time t based on students answers`,
                 backgroundColor: 'rgb(9,158,41)',
                 data: []
             }]
@@ -191,33 +223,36 @@ function endStream(flag) {
 }
 
 
-function addToChart(val) {
+function addToChart(chart,val) {
     recordingExperiment.push(val);
-    dataChart.data.labels.push(time);
-    dataChart.data.datasets.forEach((dataset) => {
+    chart.data.labels.push(time);
+    chart.data.datasets.forEach((dataset) => {
         dataset.data.push(val);
     });
-    checkRemove();
-    dataChart.update();
+    checkRemove(chart);
+    chart.update();
 }
 
 
-function checkRemove() {
-    length = dataChart.data.labels.length;
+function checkRemove(chart) {
+    length = chart.data.labels.length;
     if (length > MAX_GRAPH) {
-        //dataChart.data.labels.shift();
-        dataChart.data.labels.splice(0,1);
-        dataChart.data.datasets.forEach((dataset) => {
+        chart.data.labels.splice(0,1);
+        chart.data.datasets.forEach((dataset) => {
             dataset.data.splice(0,1);
         });
     }
 }
 
 
-socket.on('data', function(values) {
+socket.on('data', function(values, student_val) {
     time++;
-    addToChart(values);
+    addToChart(dataChart,values);
     currentData.textContent = values;
+    if (student_val) {
+        sChart.style.display = 'block';
+        addToChart(studentChart, student_val);
+    }
 });
 
 
@@ -569,9 +604,10 @@ function updateUserList() {
 
 function addToAnswerList(value) {
     let inputHTML = `
-    <span class='answers'>${value}</span>`;
+    <span class='answers' onclick='this.remove()'><span>${value}</span></span>`;
     $('#answer-list').append(inputHTML);
 }
+
 
 function addAnswerValue() {
     let value = document.getElementById('answerOption').value;

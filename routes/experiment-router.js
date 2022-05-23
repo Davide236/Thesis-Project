@@ -2,6 +2,7 @@
 const mod = require('../configuration/router-config');
 const router = mod.router;
 
+//Setup of Multer, used to save temporarily the files (.mp4/.json) uploaded by the user
 const multer = require("multer");
 var storage = multer.diskStorage({});
 const upload = multer({storage: storage});
@@ -21,7 +22,7 @@ router.get('/searchexperiment', async (req, res) => {
 
 
 router.get('/create-live', isLoggedIn, (_req, res) => {
-    ExperimentController.getLiveForm(res);
+    res.render('CreateLiveForm');
 });
 
 

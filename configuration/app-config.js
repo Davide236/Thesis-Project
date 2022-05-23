@@ -14,20 +14,22 @@ const express = require('express'),
     DBController = require('./db-config');
 
 
+
 const sessionConfig = {
     secret,
     resave: false,
     saveUninitialized: true
 }
 
+
 app.use(bodyParser.json());
 app.use(session(sessionConfig));
-app.use(flash());
+app.use(flash()); //Flash messages setup
 app.use(express.urlencoded({ extended: true })); // Body parser setup
 app.set('view engine', 'ejs'); //use ejs as template
 app.set('views', path.join(__dirname, '../views')); //set views directory
 app.use(express.static(__dirname + '/../public/')); //set public directory
-app.use('/data', dataRoutes);
+app.use('/data', dataRoutes); 
 app.use('/user', userRoutes);
 app.use('/experiment', experimentRoutes);
 app.use(passport.initialize());

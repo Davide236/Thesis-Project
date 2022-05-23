@@ -1,5 +1,5 @@
 require('dotenv').config();
-
+//Configuration of nodemailer, API used for email verifications
 const nodemailer = require('nodemailer');
 
 const transport = nodemailer.createTransport({

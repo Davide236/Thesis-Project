@@ -2,8 +2,9 @@ const User = require('../models/User');
 const transport = require('../configuration/email-config');
 const { v4: uuidV4 } = require('uuid');
 
-
+//Function which logs in a user
 exports.userLogin = function(req, res) {
+    //Check if the users' account has already been verified
     if (req.user.verification.verified == false) {
         req.flash('error', 'You need to verify your email first to access your account');
         req.logout();
@@ -14,14 +15,17 @@ exports.userLogin = function(req, res) {
 }
 
 
+//Function which takes care of the signing up for the user
 exports.userSignup = async function (req, res) {
     const {fullName, username, password} = req.body;
     const user = new User({fullName, username});
     try {
         const newUser = await User.register(user, password);
-        const secretToken = uuidV4(); //Math.random().toString(36).substring(1,13);
+        //Create a secret token for the email verification
+        const secretToken = uuidV4();
         newUser.verification.secretToken = secretToken;
         await newUser.save();
+        //Send confirmation email
         await transport.sendMail({
             from: process.env.EMAIL, to: newUser.username, subject: 'AllReviews email verification',
             html: `
@@ -39,21 +43,23 @@ exports.userSignup = async function (req, res) {
     }
 }
 
-
+//Function for user logout
 exports.userLogout = function(req, res) {
     req.flash('success', 'You logged out your account');
     req.logout();
     res.redirect("/");
 }
 
-
+//Function that implements the email verification for the users
 exports.verifyEmail = async function(req, res) {
     const {secretToken} = req.params;
     const user = await User.findOne({'verification.secretToken': secretToken});
+    //Check if the user exists
     if (!user) {
         req.flash('error', 'Wrong url, contact the team to get help with your verification');
         return res.redirect("/");
     }
+    //Change the users' status to verified
     user.verification.verified = true;
     user.verification.secretToken = '';
     await user.save();
@@ -61,6 +67,8 @@ exports.verifyEmail = async function(req, res) {
     res.redirect("/");
 }
 
+
+//Function which edits an account of a user
 exports.editAccount = async function(req, res) {
     const {fullName, password} = req.body;
     const user = await User.findById(req.user.id);
@@ -75,6 +83,7 @@ exports.editAccount = async function(req, res) {
     res.redirect('/');
 }
 
+//Function which deletes the account of a user given its' ID
 exports.userDelete = async function(req, res) {
     const userID = req.user.id;
     req.logout();
@@ -83,10 +92,11 @@ exports.userDelete = async function(req, res) {
     res.redirect("/");
 }
 
-
+//Function which sets a new password for a user
 exports.setNewPassword = async function(req, res) {
     const {secretToken} = req.params;
     const {password} = req.body;
+    //Find the user corresponding to the token
     const user = await User.findOne({'verification.passwordReset': secretToken});
     if (!user) {
         req.flash('error', 'Error in finding your accound, try again');
@@ -99,17 +109,18 @@ exports.setNewPassword = async function(req, res) {
     res.redirect("/");
 }
 
-
+//Function which sends an email to user to reset their password
 exports.resetPassword = async function(req, res) {
     const {username} = req.body;
     const user = await User.findOne({username});
-    const secretToken = uuidV4(); //Math.random().toString(36).substring(1,13);
+    const secretToken = uuidV4();
     if (!user) {
         req.flash('error', 'An account with this email doesnt exist');
         return res.redirect("/user/account");
     }
     user.verification.passwordReset = secretToken;
     await user.save();
+    //Send email to user to reset their password
     await transport.sendMail({
         from: process.env.EMAIL, to: username, subject: 'Chemical twins new password',
         html: `

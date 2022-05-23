@@ -1,5 +1,5 @@
 require('dotenv').config();
-//Get all the different modules and the setups needed for user-router.js
+//Get all the different modules and the setups needed for all different router.js
 const express = require('express'),
     router = express.Router(),
     passport = require('passport'),

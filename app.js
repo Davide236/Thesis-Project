@@ -17,13 +17,16 @@ let server = app.listen(PORT, () => {
 //Upgraded server for webRTC connection 
 let io = socket(server);
 
+
+//Post request to send data (from the script) to the application
 app.post("/live-data/:room", (req, res) => {
     const {room} = req.params;
-    const {experiment, sensor, values} = req.body;
+    const {value, student_val} = req.body;
     res.status(200).send("Data Received");
     //Send the data to the room
-    io.sockets.to(room).emit('data', values);
+    io.sockets.to(room).emit('data', value, student_val);
 });
+
 
 //Route not found
 app.use((_req,res) => {
@@ -31,7 +34,7 @@ app.use((_req,res) => {
 });
 
 
-
+//Setup of socket.io
 io.on('connection', function(socket) {
     //Get room name from client
     socket.on('join', function(roomName) {
