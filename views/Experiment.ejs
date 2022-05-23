@@ -2,6 +2,7 @@
 <html>
 <head>
 	<meta charset="utf-8">
+    <!--Page used for the view of an experiment saved on the website-->
 	<title>Live Experiment</title>
 
 	<link rel="stylesheet" href="../../LiveExperiment.css">
@@ -25,18 +26,20 @@
     <p id="seconds" hidden><%=experiment.startingTime.seconds%></p>
     <p id="dataType" hidden><%=experiment.dataType%></p>
     <div class="row">
+        <!--Video of the experiment-->
         <div class="col-7">
             <video id="recorded-video" width="80%" height="80%" controls>
                 <source src="<%=experiment.video.url%>">
             </video>
         </div>
         <div class="col-5">
-            <!--To do things-->
+            <!--Data of the experiment-->
             <div id="experimentData">
                 <canvas id="dataChart"></canvas>
                 <br><hr>
                 <strong>Current Data: </strong> <span id="currentData"></span>
             </div>
+            <!--Sidebar of the experiment-->
             <div class="sidebar">
                 <button id="sidebarButton">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-left-square" viewBox="0 0 16 16">

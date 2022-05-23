@@ -17,6 +17,7 @@
     z-index:2;
 
 }
+
 .introduction h2:after{
     content:"";
     position:absolute;

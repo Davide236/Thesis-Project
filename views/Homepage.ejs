@@ -2,6 +2,7 @@
 <html>
 <head>
 	<meta charset="utf-8">
+    <!--Landing page of the website-->
 	<title>Homepage</title>
 
 	<link rel="stylesheet" href="Homepage.css">
@@ -18,16 +19,17 @@
     <%- include ("./partials/Navbar") %>
     <%- include ("./partials/FlashMessage") %>
 
+    <!--Header of the page-->
     <div class="container title">
         <h1>Chemical Twins</h1>
         <h5>Digital twins for chemistry experiments</h5>
     </div>
-
+    <!--Second section of the page, containing the different functionalities of the app-->
     <div class="introduction">
         <h2><span class="line">What to Do?</span></h2>
     </div>
     <div class="container">
-
+        <!--The following row and columns contain the different functionalities of the app-->
         <div class="row">
             <div class="col-3">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-circle" viewBox="0 0 16 16">
@@ -36,14 +38,14 @@
             </div>
             <div class="col-9">
                 <h3><a href="./experiment/pastexperiments">Past Experiments</a></h3>
-                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Totam, illum neque dolore fuga hic vel repellat sequi magnam laboriosam veniam id doloribus doloremque aperiam dignissimos expedita a explicabo eaque accusantium!</p>
+                <p>Here you can find and replay the different experiments uploaded by the users on the platform.</p>
             </div>
         </div>
 
         <div class="row">
             <div class="col-9">
                 <h3><a href="./experiment/upload-experiment">Upload Experiment</a></h3>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos possimus, inventore ea quasi nulla consectetur laboriosam, dolores in perferendis doloribus voluptatibus aperiam ipsa rem. Cum, sapiente. Repellat vitae rem iusto.</p>
+                <p>Here you can upload an experiment to the webapplication provided that you have a video of it and some recorded data from the sensors so that other users will be able to view it</p>
             </div>
             <div class="col-3">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
@@ -60,20 +62,21 @@
             </div>
             <div class="col-9">
                 <h3><a href="./experiment/create-live">Create Live</a></h3>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus, eligendi distinctio nesciunt ea maiores sapiente necessitatibus ipsum iusto quas odio dignissimos, excepturi debitis impedit numquam laudantium fuga magnam, nam quibusdam?</p>
+                <p>Here you can create a live stream for an experiment. You will need to choose a streaming camera and the data to be displayed. On top of that you will be able to connect your sensors to the application to get live data!</p>
             </div>
         </div>
 
         <div class="row">
             <div class="col-9">
                 <h3><a href="#" onclick="joinRoom()">Join Live</a></h3>
-                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Rem, similique incidunt. Eaque dolores rem, quo at, quos quasi neque nobis exercitationem nesciunt, voluptate porro pariatur recusandae fugit dolorem natus reiciendis!</p>
+                <p>Click this button to join an already existing livestream providing the name and password of the room you want to enter</p>
             </div>
             <div class="col-3">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
                     <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
                   </svg>
             </div>
+            <!--Modal which 'opens' once the user wants to join a livestream, displaying a form with the name and password of the room to join-->
             <div class="modal" id="joinLiveModal">
                 <div class="modal-form">
                     <form action="./experiment/join-live" method="POST">

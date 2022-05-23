@@ -2,6 +2,7 @@
 <html>
 <head>
 	<meta charset="utf-8">
+  <!--Page used to allow users to either login or signup to the website-->
 	<title>Account</title>
 
 	<link rel="stylesheet" href="../Account.css">
@@ -20,6 +21,7 @@
     
     <div class="container">
         <div class="row">
+          <!--Signup-->
             <div class="col-6 signupDiv">
                 <h3>Create your account</h3>
                 <form action="/user/signup" method="POST" class="validated-form">
@@ -47,6 +49,7 @@
                       <button type="submit">Create Account</button>
                 </form>
             </div>
+            <!--Login-->
             <div class="col-6">
                 <h3>Login to your account</h3>
                 <form action="/user/login" method="POST" class="validated-form">
@@ -63,6 +66,7 @@
                     </div>
                     <button  type="submit">Log in</button>
                   </form>
+                  <!--Password reset form-->
                   <div class="form-popup" id="passwordForm">
                     <form action="/user/passwordreset" class="form-container" method="POST">
                       <h3>Reset your Password</h3>

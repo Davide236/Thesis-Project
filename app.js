@@ -36,6 +36,7 @@ app.use((_req,res) => {
 
 //Setup of socket.io
 io.on('connection', function(socket) {
+    
     //Get room name from client
     socket.on('join', function(roomName) {
         //Find all the rooms

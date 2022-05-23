@@ -2,6 +2,7 @@
 <html>
 <head>
 	<meta charset="utf-8">
+    <!--Page used for the uploading of experiments to the website-->
 	<title>Upload Experiment</title>
 
 	<link rel="stylesheet" href="../CreateLiveForm.css">
@@ -19,6 +20,7 @@
     <div class="container">
         <div id="loader" style="display: none;"></div>
         <div id="loader-text" style="display: none;"><p>Saving the experiment, this might take a while</p></div>
+        <!--Form to submit an experiment. It supports file submissions from the users-->
         <form action="/experiment/upload-experiment" id="exp-form" enctype="multipart/form-data" method="POST">
             <div class="form-input">
                 <div class="form-group">

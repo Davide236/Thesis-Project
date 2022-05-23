@@ -2,6 +2,7 @@
 <html>
 <head>
 	<meta charset="utf-8">
+    <!--Page of the website used to display a live stream of an experiment-->
 	<title>Live Experiment</title>
 
 	<link rel="stylesheet" href="../LiveExperiment.css">
@@ -29,6 +30,7 @@
     <div class="row">
         <div class="col-7">
             <div class="btn-group">
+                <!--Recording buttons for the creator-->
                 <% if (creator) { %>
                 <button id="recordBtn" disabled>Record</button>
                 <button id="stopRecordBtn" disabled>Stop</button>
@@ -36,8 +38,8 @@
                 <% } %>
             </div>
             <video id="experiment-video"></video>
-            <!--Add MUTE/HIDECAMERA/LEAVECHAT button-->
             <div class="btn-group">
+                <!--Buttons for the creator only-->
                 <% if (creator) { %>
                 <button id="muteBtn">Mute</button>
                 <button id="hideCameraBtn">Hide Camera</button>
@@ -45,12 +47,14 @@
                 <button id="askQuestionBtn">Ask Question</button>
                 <button id="showAnswerBtn">Show Answers</button>
                 <% } else { %>
+                <!--Button for users other than the creator-->
                 <button id="leaveRoomBtn">Leave</button>
                 <% } %>
             </div>
         </div>
         <div class="col-5">
             <div class="form-popup" id="questionForm" style="display: none;">
+                <!--Form used to ask questions to users (by the creator) and for the users to answer them-->
                 <form action="#" class="form-container">
                     <div class="form-elements">
                         <% if (creator) { %>
@@ -85,6 +89,7 @@
                     </div>
                 </form>
             </div>
+            <!--This part displays for the creator only all the different answers that students gave to a question-->
             <div class="form-popup" id="studentAnswers" style="display: none;">
                 <div class="row" id="answerFirstRow">
                     <div class="col-4"><strong><h4>User</h4></strong></div>
@@ -95,7 +100,7 @@
                 <button type="button" onclick="saveAnswers()">Save</button>
                 <button type="button" onclick="closeAnswerForm()">Close</button>
             </div>
-            <!--To do things-->
+            <!--Displaying of the recorded data during the experiment-->
             <div id="experimentData">
                 <canvas id="dataChart"></canvas>
                 <br><hr>
@@ -103,6 +108,7 @@
                 <br><hr>
                 <strong>Current Data: </strong> <span id="currentData"></span>
             </div>
+            <!--Sidebar for the experiment, where information such as the experiment name, description and user list are found-->
             <div class="sidebar">
                 <button id="sidebarButton">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-left-square" viewBox="0 0 16 16">

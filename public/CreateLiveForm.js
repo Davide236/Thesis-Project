@@ -1,3 +1,4 @@
+//Get a list of all the connected video devices so that the user can choose which one to use
 window.onload = async function() {
     $('#videoDevice').html('');
     let devices = await getVideoDevices();

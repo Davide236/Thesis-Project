@@ -84,7 +84,8 @@ button:hover {
     border: 1px solid rgb(9,158,41);
     padding: 0.5rem;
 }
-  
+
+/*Spinning animation on the loading for saving an experiment*/
 @-webkit-keyframes spin {
     0% { -webkit-transform: rotate(0deg); }
     100% { -webkit-transform: rotate(360deg); }

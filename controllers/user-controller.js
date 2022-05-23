@@ -45,8 +45,8 @@ exports.userSignup = async function (req, res) {
 
 //Function for user logout
 exports.userLogout = function(req, res) {
-    req.flash('success', 'You logged out your account');
     req.logout();
+    req.flash('success', 'You logged out your account');
     res.redirect("/");
 }
 
@@ -59,12 +59,16 @@ exports.verifyEmail = async function(req, res) {
         req.flash('error', 'Wrong url, contact the team to get help with your verification');
         return res.redirect("/");
     }
-    //Change the users' status to verified
-    user.verification.verified = true;
-    user.verification.secretToken = '';
-    await user.save();
-    req.flash('success', 'Email verified correctly!');
-    res.redirect("/");
+    try {
+        //Change the users' status to verified
+        user.verification.verified = true;
+        user.verification.secretToken = '';
+        await user.save();
+        req.flash('success', 'Email verified correctly!');
+        res.redirect("/");
+    } catch(err) {
+        res.status(400).send('Error in verifying you account');
+    }
 }
 
 
@@ -78,18 +82,26 @@ exports.editAccount = async function(req, res) {
     if (password) {
         await user.setPassword(password);
     }
-    await user.save();
-    req.flash('success', 'Changes Applied Correctly');
-    res.redirect('/');
+    try {
+        await user.save();
+        req.flash('success', 'Changes Applied Correctly');
+        res.redirect('/');
+    } catch (err) {
+        res.status(400).send('Error in saving the changes to your account');
+    }
 }
 
 //Function which deletes the account of a user given its' ID
 exports.userDelete = async function(req, res) {
-    const userID = req.user.id;
-    req.logout();
-    await User.deleteOne({_id: userID});
-    req.flash('success', 'Account deleted successfully');
-    res.redirect("/");
+    try {
+        const userID = req.user.id;
+        req.logout();
+        await User.deleteOne({_id: userID});
+        req.flash('success', 'Account deleted successfully');
+        res.redirect("/");
+    } catch (err) {
+        res.status(400).send('Couldnt delete your account, try again');
+    }
 }
 
 //Function which sets a new password for a user
@@ -102,12 +114,17 @@ exports.setNewPassword = async function(req, res) {
         req.flash('error', 'Error in finding your accound, try again');
         return res.redirect("/");
     }
-    user.verification.passwordReset = '';
-    await user.setPassword(password);
-    await user.save();
-    req.flash("success", "Password changed correctly! Try to login to your account again");
-    res.redirect("/");
+    try {
+        user.verification.passwordReset = '';
+        await user.setPassword(password);
+        await user.save();
+        req.flash("success", "Password changed correctly! Try to login to your account again");
+        res.redirect("/");
+    } catch(err) {
+        res.status(400).send('There was an error in changing your password, try again');
+    }
 }
+
 
 //Function which sends an email to user to reset their password
 exports.resetPassword = async function(req, res) {
@@ -119,16 +136,20 @@ exports.resetPassword = async function(req, res) {
         return res.redirect("/user/account");
     }
     user.verification.passwordReset = secretToken;
-    await user.save();
-    //Send email to user to reset their password
-    await transport.sendMail({
-        from: process.env.EMAIL, to: username, subject: 'Chemical twins new password',
-        html: `
-        <h1>Reset your Chemical Twins password </h1>
-        Hello ${user.fullName},
-        To reset your password for the website <br> Chemical Twins click on the following link: <a href="http://localhost:3000/user/newpassword/${secretToken}">New password</a>
-        <br>`, 
-    });
-    req.flash('success', 'An email was sent to your account to get a new password');
-    res.redirect("/");
+    try {
+        await user.save();
+        //Send email to user to reset their password
+        await transport.sendMail({
+            from: process.env.EMAIL, to: username, subject: 'Chemical twins new password',
+            html: `
+            <h1>Reset your Chemical Twins password </h1>
+            Hello ${user.fullName},
+            To reset your password for the website <br> Chemical Twins click on the following link: <a href="http://localhost:3000/user/newpassword/${secretToken}">New password</a>
+            <br>`, 
+        });
+        req.flash('success', 'An email was sent to your account to get a new password');
+        res.redirect("/");
+    } catch(err) {
+        res.status(400).send('An unexpected error occurred, try again later');
+    }
 }

@@ -26,7 +26,10 @@ exports.getUserAnswers = async function(req, res) {
 //Function which retrieves all experiment who are saved on the website
 exports.sendExperiments = async function(res) {
     let experiments = await Experiment.find({video: {$exists: true, $ne: []}});
-    res.send(experiments);
+    if (experiments) {
+        return res.send(experiments);
+    }
+    res.status(400).send('Failed to find any experiments, try again later');
 }
 
 //Function which retrieves and sends an experiment given it's ID

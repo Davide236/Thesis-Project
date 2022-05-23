@@ -92,4 +92,5 @@ if send_data_thread:
     send_data_thread.terminate()
 if send_twins_thread:
     send_twins_thread.terminate()
+
 window.close()

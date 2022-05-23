@@ -1,3 +1,4 @@
+<!--File used for the navbar of the webapplication-->
 <nav class="navbar navbar-light sticky-top">
     <div class="container-fluid">
       <a class="navbar-brand" href="/">
@@ -13,6 +14,7 @@
         </div>
         <div class="offcanvas-body">
           <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+            <!--Homepage Button-->
             <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="/">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house-fill" viewBox="0 0 16 16">
@@ -21,9 +23,11 @@
                     </svg>
                 </a>
             </li>
+            <!--Navbar items-->
             <li class="nav-item">
               <a class="nav-link active" href="/">How it Works</a>
             </li>
+            <!--Show different things if the user is logged in-->
             <% if (currentUser) { %>
             <li class="nav-item">
               <a class="nav-link active" href="/user/editaccount">Edit Account</a>

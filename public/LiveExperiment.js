@@ -1,13 +1,14 @@
 //Client side code
 let socket = io.connect();
 
+//Load all the different variables
 let roomName = document.getElementById("roomName").innerHTML;
 let user = document.getElementById("username").innerHTML;
 let videoDevice = document.getElementById("videoDevice").innerHTML;
 let dataType = document.getElementById('dataType').innerHTML;
 
-let userVideo = document.getElementById("experiment-video");
 
+//Select all the different buttons
 let muteBtn = document.getElementById("muteBtn");
 let hideCameraBtn = document.getElementById("hideCameraBtn");
 let endStreamBtn = document.getElementById("endStreamBtn");
@@ -18,6 +19,8 @@ let recordBtn = document.getElementById('recordBtn');
 let stopRecordBtn = document.getElementById('stopRecordBtn');
 let saveRecordBtn = document.getElementById('saveRecordBtn')
 
+//Select all the different HTML elements that will be used later
+let userVideo = document.getElementById("experiment-video");
 let questionForm = document.getElementById('questionForm');
 let sidebar = document.querySelector('.sidebar');
 let sidebarContent = document.querySelector('.sidebar-content');
@@ -62,8 +65,8 @@ let userStream;
 let rtcPeerConnection = [];
 let index = -1;
 
+//Provide a list of STUN servers used for the connection
 let iceServers = {
-    //Provide a list of STUN servers used for the connection
     iceServers: [
         {urls: "stun:stun.services.mozilla.com"},
         {urls: "stun:stun1.l.google.com:19302"},
@@ -80,13 +83,14 @@ window.onload = function() {
     socket.emit('join', roomName);
 };
 
+//Before the page get unloaded we delete the room from the database
 window.onbeforeunload = function() {
     if (creator) {
         deleteRoom();
     }
 }
 
-
+//Chart used to display the data from the sensors
 const dataChart = new Chart(
     dChart,
     {
@@ -118,7 +122,7 @@ const dataChart = new Chart(
     }
 );
 
-
+//Chart used to display the data from the student answers
 const studentChart = new Chart(
     sChart,
     {
@@ -150,6 +154,7 @@ const studentChart = new Chart(
     }
 );
 
+//Function used to mute the stream
 function muteStream() {
     muted = !muted;
     if (muted) {
@@ -161,7 +166,7 @@ function muteStream() {
     } 
 }
 
-
+//Function used to hide the 'data elements' once the user opens the sidebar
 function toggleSidebar() {
     questionForm.classList.toggle('material-hidden');
     experimentData.classList.toggle('material-hidden');
@@ -171,6 +176,7 @@ function toggleSidebar() {
     sidebarContent.classList.toggle('sidebar-content-shown');
 }
 
+//Function used to hide the camera during the stream
 function hideStream() {
     hidden = !hidden;
     if (hidden) {
@@ -182,6 +188,7 @@ function hideStream() {
     }
 }
 
+//Function which sends a GET request to the application in order to delete the room
 function deleteRoom() {
     $.ajax({
         url: `http://localhost:3000/experiment/delete/${roomName}`,
@@ -191,6 +198,7 @@ function deleteRoom() {
     });
 }
 
+//Function, fired by the creator of the stream, used to end the stream
 function endStream(flag) {
     if (flag != true) {
         //Ask the user if they're sure they want to end the stream
@@ -200,6 +208,7 @@ function endStream(flag) {
         window.onbeforeunload = null;
     }
 
+    //Tell all connected users that the stream is ending
     socket.emit('end-stream', roomName);
 
     //Stop audio and video
@@ -222,7 +231,7 @@ function endStream(flag) {
     window.location.replace('/experiment/leave');
 }
 
-
+//Function used to add a value in a given chart
 function addToChart(chart,val) {
     recordingExperiment.push(val);
     chart.data.labels.push(time);
@@ -233,7 +242,7 @@ function addToChart(chart,val) {
     chart.update();
 }
 
-
+//Function which is used to remove the first value (if MAX_GRAPH is exceeded) from a given graph
 function checkRemove(chart) {
     length = chart.data.labels.length;
     if (length > MAX_GRAPH) {
@@ -244,11 +253,12 @@ function checkRemove(chart) {
     }
 }
 
-
+//Socket listens when data arrives and adds it to the chart
 socket.on('data', function(values, student_val) {
     time++;
     addToChart(dataChart,values);
     currentData.textContent = values;
+    //If we're also receiving data from the student answers then we display the second chart
     if (student_val) {
         sChart.style.display = 'block';
         addToChart(studentChart, student_val);
@@ -259,6 +269,8 @@ socket.on('data', function(values, student_val) {
 
 function leaveStream(flag) {
     //If the flag is null it means that the user wants to leave
+    //if the flag is true than it means that the creator ended the stream and the other users
+    //are being 'kicked out'
     if (flag != 'true'&& flag != 'leave') {
         //Ask the user if they're sure they want to leave the stream
         if (!confirm("Are you sure you want to leave the stream?")) {
@@ -291,22 +303,24 @@ function leaveStream(flag) {
 
 }
 
-
+//Display the question
 function showQuestion() {
     questionForm.style.display = "block";
 }
 
-
+//Close the question form
 function closeQuestionForm() {
     questionForm.style.display = "none";
 }
 
 
-
+//The creator of the stream ask a question to all the connected users. This question
+//will also consist of some numeric values that the user can decide from, to answer it
 function askQuestion() {
     let question = document.getElementById('question').value;
     const answers = document.querySelectorAll('.answers');
     let answerPoll = [];
+    //list of all possible answers
     answers.forEach(answer => {
         answerPoll.push(Number(answer.innerText));
         answer.remove();
@@ -316,18 +330,20 @@ function askQuestion() {
     closeQuestionForm();
 }
 
-
+//The user answer the questions and send its answer to the creator
 function answerQuestion() {
     let answer = document.getElementById('select-answer').value;
     socket.emit('user-answer', roomName, answer, user);
     closeQuestionForm();
 }
 
-
+//Close the answer form (where the creator can see the students answers)
 function closeAnswerForm() {
     studentAnswers.style.display = 'none';
 }
 
+//Function which displays the answer form where the creator of the stream
+//can see the answer each connected-user gave in response to the question
 function showAnswer() {
     studentAnswers.style.display = 'block';
     $('#answerList').html('');
@@ -343,6 +359,7 @@ function showAnswer() {
     $('#answerList').append(answerListHTML);
 }
 
+//Function which saves the student answers to the database
 function saveAnswers() {
     $.ajax({
         type: "POST",
@@ -354,6 +371,7 @@ function saveAnswers() {
     closeAnswerForm();
 }
 
+//The creator gets the answers from the students and saves them
 socket.on('user-answer', function(answer, username) {
     if (creator) {
         answerList.push({username, answer});
@@ -361,15 +379,14 @@ socket.on('user-answer', function(answer, username) {
     }
 });
 
-
+//When the 'creator' asks a question then the other users will receive this event
+//and they will be displayed as well as the possible options for it
 socket.on('question', function(question, answers) {
     if (!creator) {
         $('#questionAsked').html('');
         $('#questionAsked').append(question);
         $('#select-answer').html('');
         let selectHTML = '';
-        console.log(answers);
-        console.log(answers[0]);
         answers.forEach(answer => {
             selectHTML += `
             <option value=${answer}>${answer}</option>
@@ -380,17 +397,20 @@ socket.on('question', function(question, answers) {
     }
 });
 
+//Event which signals that a user left the stream
 socket.on('user-left', function(user) {
     let idx = userList.indexOf(user);
     userList.splice(idx,1);
     updateUserList();
 });
 
+//Get the device ID for the video of the stream
 async function getDeviceId() {
     const devices = await navigator.mediaDevices.enumerateDevices();
     return devices.filter(device => device.label == videoDevice)
 }
 
+//Function which connects the user camera to the stream
 async function getCamera() {
     let deviceId = getDeviceId();
     navigator.mediaDevices.getUserMedia({
@@ -414,7 +434,7 @@ async function getCamera() {
     });
 }
 
-
+//Function which is used to record the video stream of the creator
 function recordVideo() {
     try {
         //Create a new media recording element
@@ -445,7 +465,7 @@ function stopRecording() {
 
 //Save the recording of the video along with the data from sensors
 function saveRecording() {
-    //Save the video
+    //Save the video on a Blob element and then save it to mp4
     const video_blob = new Blob(recordingData, {type: 'video/mp4'});
     const video_blobUrl = window.URL.createObjectURL(video_blob);
     const video_link = document.createElement('a');
@@ -454,7 +474,7 @@ function saveRecording() {
     video_link.download = 'experiment_video.mp4';
     document.body.appendChild(video_link);
     video_link.click();
-    //Save the data
+    //Save the data on a Blob element and then save it to json
     const data_blob = new Blob([JSON.stringify(recordingExperiment)], {type: 'application/json'});
     const data_blobUrl = window.URL.createObjectURL(data_blob);
     const data_link = document.createElement('a');
@@ -483,7 +503,7 @@ socket.on('created', async function() {
     userVideo.muted = true;
 });
 
-//Join the room
+//A user joins the room
 socket.on('joined', function() {
     creator = false;
     leaveRoomBtn.addEventListener('click', leaveStream);
@@ -532,6 +552,7 @@ socket.on('candidate', function(candidate) {
     }
 });
 
+//The person joining the room gets an offer from the creator to establish the connection
 socket.on('offer', function(offer, users) {
     //The person joining the room (receiving the offer) has to go through the same steps as the creator
     if (!creator && !rtcPeerConnection[0]) {
@@ -555,6 +576,7 @@ socket.on('offer', function(offer, users) {
     }
 });
 
+//The creator gets back the answer from the user
 socket.on('answer', function(answer) {
     if (creator) {
         //Set the answer as remote description
@@ -563,7 +585,7 @@ socket.on('answer', function(answer) {
 });
 
 
-
+//Signal of ending the stream
 socket.on('end-stream', function() {
     leaveStream('true');
 });
@@ -589,7 +611,7 @@ function OnTrackFunction(event) {
     }
 }
 
-
+//Update the users list whenever a user wants to join a room
 function updateUserList() {
     $('#users').html('');
     usersListHTML = '';
@@ -602,19 +624,21 @@ function updateUserList() {
     $('#users').append(usersListHTML);
 }
 
+//Function used to add a possible answer choice among the answer list
 function addToAnswerList(value) {
     let inputHTML = `
     <span class='answers' onclick='this.remove()'><span>${value}</span></span>`;
     $('#answer-list').append(inputHTML);
 }
 
-
+//Get the value of one of the answer choice and add it to the list
 function addAnswerValue() {
     let value = document.getElementById('answerOption').value;
     $('#answer-input').html('');
     addToAnswerList(value);
 }
 
+//Function which adds different possible answers to be asked in combination with a question
 function addAnswerInput() {
     $('#answer-input').html('');
     let inputHTML = `

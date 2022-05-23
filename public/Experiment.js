@@ -1,9 +1,10 @@
+//Get variables
 let id = document.getElementById('exp_id').innerHTML;
 let minutes = document.getElementById('minutes').innerHTML;
 let seconds = document.getElementById('seconds').innerHTML;
 let dataType = document.getElementById('dataType').innerHTML;
 
-
+//Select html elements
 let sidebar = document.querySelector('.sidebar');
 let sidebarContent = document.querySelector('.sidebar-content');
 let experimentData = document.getElementById('experimentData');
@@ -20,14 +21,15 @@ let data;
 //Variable that keeps track of how many numbers display on the graph
 const MAX_GRAPH = 15;
 
+//Index used to keep track of the data array and to be used as label for the graph
 let index = 0;
 
-//For graph
-let time = 0;
 
-
+//Flag for signalling the beginning of the data display
 let sendingData = false;
 
+
+//Chart which displays the recorded data
 const dataChart = new Chart(
     chart,
     {
@@ -35,7 +37,6 @@ const dataChart = new Chart(
         data: {
             labels: [],
             datasets: [{
-                //Add kind of data
                 label: `${dataType} at time t`,
                 backgroundColor: 'rgb(9,158,41)',
                 data: []
@@ -61,7 +62,7 @@ const dataChart = new Chart(
 
 );
 
-//When the document is ready join the room
+//Get the recorded data from the database
 window.onload = function() {
     $.ajax({
         url: `http://localhost:3000/data/get-data/${id}`,
@@ -72,36 +73,44 @@ window.onload = function() {
     });
 };
 
-
+//Add listeners to the video element
 function addListeners() {
-    console.log(minutes, seconds);
+    //If the user pauses the video then also the data stream is paused
     video.addEventListener('pause', ()=> {
         sendingData = false;
     });
+    //The data stream starts at a certain timestamp (minutes/seconds) that the user previously specified
+    //This function checks whether we reached that timestamp and if so set the flag to True
     video.addEventListener('timeupdate', () => {
         if (video.currentTime >= (minutes*60) + seconds) {
             sendingData = true;
         }
     });
+    //Check if the video has been completed
     video.addEventListener('completed', () => {
         sendingData = false;
     });
+    //Check if video started playing (especially after pausing it)
     video.addEventListener('play', () => {
         if (video.currentTime >= (minutes*60) + seconds) {
             sendingData = true;
         }
     });
-    
+    //Update the chart every 2 seconds
     setInterval(updateChart, 2000);
 }
 
+//Function which (if flag == True) sends data to the graph and updates it
 function updateChart() {
     if (sendingData) {
+        //Check if the data is finished
         if (index >= data.length) {
             sendingData = false;
             return;
         }
+        //Push label on 'x-axis' (x.coordinates)
         dataChart.data.labels.push(index);
+        //Push data on 'y-axis' (y.coordinates)
         dataChart.data.datasets.forEach((dataset) => {
             dataset.data.push(data[index]);
         });
@@ -113,7 +122,8 @@ function updateChart() {
     }
 }
 
-
+//This function checks if we're reached the maximum amount of data points displayed
+//in the chart, if so we remove some previous ones
 function checkRemove() {
     length = dataChart.data.labels.length;
     if (length > MAX_GRAPH) {
@@ -126,7 +136,7 @@ function checkRemove() {
 }
 
 
-
+//Function to hide the contents containing the data if the user opens the sidebar
 function toggleSidebar() {
     experimentData.classList.toggle('material-hidden');
 
@@ -134,26 +144,5 @@ function toggleSidebar() {
     sidebarContent.classList.toggle('sidebar-content-shown');
 }
 
-
-
-function addToChart(val) {
-    dataChart.data.labels.push(time);
-    dataChart.data.datasets.forEach((dataset) => {
-        dataset.data.push(val);
-    });
-    checkRemove();
-    dataChart.update();
-}
-
-
-function checkRemove() {
-    length = dataChart.data.labels.length;
-    if (length > MAX_GRAPH) {
-        dataChart.data.labels.shift();
-        dataChart.data.datasets.forEach((dataset) => {
-            dataset.data.shift();
-        });
-    }
-}
 
 

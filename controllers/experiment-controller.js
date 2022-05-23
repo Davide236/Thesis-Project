@@ -18,8 +18,11 @@ cloudinary.config({
 //Function which retrieves the experiments with a certain query in their title
 exports.searchExperiments = async function(req, res) {
     const {searchQuery} = req.query;
-    let response = await Experiment.find({name: {$regex: searchQuery, $options: 'i'}, video: {$exists: true, $ne: []}});
-    res.render("SearchExperiments", {response, searchQuery});
+    let experiments = await Experiment.find({name: {$regex: searchQuery, $options: 'i'}, video: {$exists: true, $ne: []}});
+    if (!experiments) {
+        return res.status(400).send(`No experiments found with ${searchQuery} in the title`);
+    }
+    res.render("SearchExperiments", {experiments, searchQuery});
 }
 
 
@@ -33,17 +36,21 @@ exports.createLive = async function(req, res) {
         req.flash('error', 'A room with that name already exist, choose a different one');
         return res.redirect("/");
     }
-    //Create and save the experiment to Database
-    const newExp = await new Experiment({
-        author: req.user.id,
-        name: expName,
-        description: expDescription,
-        roomName: roomName,
-        dataType: dataType,
-        roomPassword: CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(roomPassword))
-    });
-    await newExp.save();
-    res.render("LiveExperiment", {expName, expDescription, dataType, roomName, creator: true, username: req.user.fullName, videoDevice });
+    try {
+        //Create and save the experiment to Database
+        const newExp = await new Experiment({
+            author: req.user.id,
+            name: expName,
+            description: expDescription,
+            roomName: roomName,
+            dataType: dataType,
+            roomPassword: CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(roomPassword))
+        });
+        await newExp.save();
+        res.render("LiveExperiment", {expName, expDescription, dataType, roomName, creator: true, username: req.user.fullName, videoDevice });
+    } catch(err) {
+        res.status(400).send('Error creating and saving the room, try again');
+    }
 }
 
 
