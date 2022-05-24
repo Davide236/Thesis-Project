@@ -7,6 +7,9 @@ app.get("/", (_req, res) => {
     res.render("Homepage");
 });
 
+app.get("/how-it-works", (_req, res) => {
+    res.render("HowItWorks");
+});
 
 // Listening to localhost:3000
 let server = app.listen(PORT, () => {

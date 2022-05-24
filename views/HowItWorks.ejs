@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <!--Landing page of the website-->
+	<title>How It Works</title>
+
+	<link rel="stylesheet" href="css/Homepage.css">
+    <link rel="stylesheet" href="css/HowItWorks.css">
+    <link rel="stylesheet" href="css/General.css">
+
+    <!--BOOTSTRAP Links-->
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    
+</head>
+<body>
+    <%- include ("./partials/Navbar") %>
+    <%- include ("./partials/FlashMessage") %>
+    <div class="container title">
+        <h1>How does the application work?</h1>
+        <h4>Follow those simple steps in order to get started with the application</h4>
+    </div>
+    <div class="row">
+        <div class="col-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="90" height="90" fill="currentColor" class="bi bi-person-plus" viewBox="0 0 16 16">
+                <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H1s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C9.516 10.68 8.289 10 6 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
+                <path fill-rule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z"/>
+            </svg>
+        </div>
+        <div class="col-3"><h3>Sign Up</h3></div>
+        <div class="col-7">
+            <p>Create an account on Chemical Twins in order to access all the functionalities of the application. You will be able to upload experiments as well as 
+                creating and joining livestream. In case you don't want to do that do not worry, you will still be able to view past experiments in the website uploaded by other users
+                but you won't be able to upload your own.
+            </p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="90" height="90" fill="currentColor" class="bi bi-wrench-adjustable-circle" viewBox="0 0 16 16">
+                <path d="M12.496 8a4.491 4.491 0 0 1-1.703 3.526L9.497 8.5l2.959-1.11c.027.2.04.403.04.61Z"/>
+                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0Zm-1 0a7 7 0 1 0-13.202 3.249l1.988-1.657a4.5 4.5 0 0 1 7.537-4.623L7.497 6.5l1 2.5 1.333 3.11c-.56.251-1.18.39-1.833.39a4.49 4.49 0 0 1-1.592-.29L4.747 14.2A7 7 0 0 0 15 8Zm-8.295.139a.25.25 0 0 0-.288-.376l-1.5.5.159.474.808-.27-.595.894a.25.25 0 0 0 .287.376l.808-.27-.595.894a.25.25 0 0 0 .287.376l1.5-.5-.159-.474-.808.27.596-.894a.25.25 0 0 0-.288-.376l-.808.27.596-.894Z"/>
+            </svg>
+        </div>
+        <div class="col-3"><h3>Raspberry PI</h3></div>
+        <div class="col-7">
+            <p>Chemical Twins works together with any Raspberry PI board, so all you need is to connect your board to the internet and download the following 
+                <a href="script/connect.py" download>script</a> and use it on your PI in order to send and receive data from the application
+            </p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="90" height="90" fill="currentColor" class="bi bi-filetype-py" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M14 4.5V14a2 2 0 0 1-2 2H7v-1h5a1 1 0 0 0 1-1V4.5h-2A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v9H2V2a2 2 0 0 1 2-2h5.5L14 4.5ZM0 11.85h1.6c.289 0 .533.06.732.179.201.117.355.276.46.477.105.201.158.427.158.677 0 .25-.054.476-.16.677-.106.199-.26.357-.464.474a1.452 1.452 0 0 1-.732.173H.79v1.342H0V11.85Zm2.06 1.714a.795.795 0 0 0 .085-.381c0-.227-.062-.4-.185-.521-.123-.122-.294-.182-.513-.182H.788v1.406h.66a.794.794 0 0 0 .374-.082.574.574 0 0 0 .238-.24Zm2.963.75v1.535H4.23v-1.52L2.89 11.85h.876l.853 1.696h.032l.856-1.696h.855l-1.339 2.464Z"/>
+            </svg>
+        </div>
+        <div class="col-3"><h3>Set up the script</h3></div>
+        <div class="col-7"><p> Once you've downloaded the script integrate your code for getting data from the sensors in place of the <strong>get_value()</strong> function. Make sure you have all the libraries installed and once you do run the code
+            and you should be able to see a simple GUI which you'll use for the experiment. The first step to do is to specify a formula by 
+            which the data will change given the value of a certain variable
+            </p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="90" height="90" fill="currentColor" class="bi bi-signpost-2-fill" viewBox="0 0 16 16">
+                <path d="M7.293.707A1 1 0 0 0 7 1.414V2H2a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h5v1H2.5a1 1 0 0 0-.8.4L.725 8.7a.5.5 0 0 0 0 .6l.975 1.3a1 1 0 0 0 .8.4H7v5h2v-5h5a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1H9V6h4.5a1 1 0 0 0 .8-.4l.975-1.3a.5.5 0 0 0 0-.6L14.3 2.4a1 1 0 0 0-.8-.4H9v-.586A1 1 0 0 0 7.293.707z"/>
+            </svg>
+        </div>
+        <div class="col-3"><h3>Connect</h3></div>
+        <div class="col-7"><p>Create a livestream on the website and connect your board to it through the second input text in the GUI. Input the name of the room you've created and soon after you should see your data
+            being displayed in a graph format in the application
+        </p></div>
+    </div>
+    <div class="row">
+        <div class="col-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="90" height="90" fill="currentColor" class="bi bi-send-fill" viewBox="0 0 16 16">
+                <path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 3.178 4.995.002.002.26.41a.5.5 0 0 0 .886-.083l6-15Zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471-.47 1.178Z"/>
+            </svg>
+        </div>
+        <div class="col-3"><h3>Data Exchange</h3></div>
+        <div class="col-7"><p>During the experiment you will be able to ask questions with multiple choice answers to all the users connected. You can decide to save the answers at any point and retrieve them through the last button
+            in the GUI which will get and display those answers.
+        </p></div>
+    </div>
+    <div class="row">
+        <div class="col-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="90" height="90" fill="currentColor" class="bi bi-people-fill" viewBox="0 0 16 16">
+                <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+                <path fill-rule="evenodd" d="M5.216 14A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216z"/>
+                <path d="M4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z"/>
+            </svg>
+        </div>
+        <div class="col-3"><h3>Digital Twins</h3></div>
+        <div class="col-7"><p>The program will compile the average value of the answers and send back a new 'value' for the data based on the previously typed formula which
+            will determine how this new data will look based on the values of the sensors and the average answer from the users. Then this new values will be sent simultaneously with
+            the sensor data and appear in a second graph during the stream
+        </p></div>
+    </div>
+</body>
+</html>

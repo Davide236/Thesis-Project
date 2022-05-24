@@ -412,7 +412,8 @@ async function getDeviceId() {
 
 //Function which connects the user camera to the stream
 async function getCamera() {
-    let deviceId = getDeviceId();
+    let device = await getDeviceId();
+    let deviceId = device[0].deviceId
     navigator.mediaDevices.getUserMedia({
         audio: {'echoCancellation': true},
         video: {'deviceId': deviceId, width: 640, height: 480}
