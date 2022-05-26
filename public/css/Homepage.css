@@ -1,12 +1,31 @@
+body {
+    background-image: linear-gradient(rgba(255,255,255,0.5), rgba(255,255,255,0.5)), url("../images/background_home.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    padding-bottom: 3rem;
+}
+
+
 .title {
     padding-top: 5rem;
     padding-bottom: 5rem;
     text-align: center;
 }
 
+.col-3 {
+    transition: transform 500ms;
+}
+
+.left-arrow:hover {
+    transform: translateX(3.5rem);
+}
+
+.right-arrow:hover {
+    transform: translateX(-2.5rem);
+}
 
 .line{
-    background:#fff;
+    background:white;
     display:inline-block;
 }
 
@@ -37,6 +56,10 @@
     border-bottom: 1px solid rgb(9,158,41);
     padding-top: 2rem;
 }
+
+.row:nth-last-of-type(1) {
+    border: none;
+} 
 
 
 .modal {

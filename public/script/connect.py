@@ -19,7 +19,7 @@ formula = None
 allowed_terms = ['x', 'var', '(', ')', '+', '-', '*', '/']
 
 # Layout of the GUI for the user
-layout = [[sg.Text("The input formula has to be of the kind 'x(*|+|/|-)var',\n where 'x' is the data being collected by the sensors,\n 'var' corresponds to the answers from the student.\n The combination of the two should evaluate to a new measure x1 which is going to be sent\n back to the application as a new graph")],
+layout = [[sg.Text("The input formula can contain the term 'x', 'var' and the following operands (/,*,+,-) as well as numbers,\n where 'x' is the data being collected by the sensors, 'var' corresponds to the answers from the student.\n The formula will be evaluated and sent back to the application as a new graph")],
           [sg.Text("Make sure to add space between terms in the formula", font=('Arial', 13, 'bold'))],
           [sg.Text("Add input formula:",font=('Arial', 13, 'bold')), sg.InputText(size=(20,0), key='formula_input'), sg.Button("Add formula")],
           [sg.Text('The room name has to be the same name used \n in the application to create the stream')],
@@ -31,6 +31,10 @@ layout = [[sg.Text("The input formula has to be of the kind 'x(*|+|/|-)var',\n w
 
 # Initialize the window
 window = sg.Window('Chemical Twins', layout, size=(1500,1000))
+
+#CHANGE THIS
+def get_value():
+    return 1
 
 
 # Function which gets data (students' answers) from the application during a live stream  
@@ -54,9 +58,6 @@ def get_data():
         print("\nHTTP request non completed. Try to enter a different code and make sure that you have an active stream\n")
         return []
 
-#Function that returns the recorded value of the experiment
-def get_value():
-    return 1
 
 # Function which checks if the input formula is
 def check_formula():
@@ -64,7 +65,11 @@ def check_formula():
     # Check if the tokens are amongs the terms allowed
     for tok in tokens:
         if not tok in allowed_terms:
-            return False
+            #Also numbers are allowed
+            try:
+                float(tok)
+            except:
+                return False
     try:
     # Try to evaluate the formula once to see if it's valid
         eval(formula, {'x': 1, 'var': 1})
@@ -126,9 +131,9 @@ while True:
         send_twins_thread.start()
 
 # If the threads are still active then we terminate them
-if send_data_thread:
+if send_data_thread.is_alive():
     send_data_thread.terminate()
-if send_twins_thread:
+if send_twins_thread.is_alive():
     send_twins_thread.terminate()
 
 window.close()

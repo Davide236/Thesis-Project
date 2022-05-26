@@ -2,7 +2,7 @@ var experiments;
 var totalExperiments;
 
 //Number of experiments to show
-var toShow = 10;
+var toShow = 5;
 
 //Flag to keep track of the order of the experiments
 var order = true;
@@ -35,7 +35,7 @@ $('#sortDirection').click(function() {
 
 //We add more experiments to show to the user
 $('#loadExperiments svg').click(function() {
-    toShow += 10;
+    toShow += 5;
     loadExperiments();
 });
 

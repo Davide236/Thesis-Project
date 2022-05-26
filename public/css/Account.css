@@ -42,6 +42,7 @@ button:hover {
 }
 
 p span:hover {
+    cursor: pointer;
     color: rgb(9,158,41);
 }
 
@@ -59,4 +60,11 @@ p span:hover {
 
 #passwordForm input {
     margin-bottom: 1rem;
+}
+
+.passwordEye {
+    cursor: pointer;
+    float: right;
+    margin-top: -1.6rem;
+    margin-right: 1rem;
 }
