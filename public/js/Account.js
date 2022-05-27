@@ -11,13 +11,20 @@ function closePasswordForm() {
 function showPassword(action) {
   let eye;
   let password;
-  //Check if the user wants to see login or signup password
-  if (action == 'login') {
-    eye = document.getElementById('logEye');
-    password = document.getElementById('passwordLog');
-  } else {
-    eye = document.getElementById('signEye');
-    password = document.getElementById('passwordSign');
+  //Check which 'eye' the user wants to toggle
+  switch (action) {
+    case 'login':
+      eye = document.getElementById('logEye');
+      password = document.getElementById('passwordLog');
+      break;
+    case 'signup':
+      eye = document.getElementById('signEye');
+      password = document.getElementById('passwordSign');
+      break;
+    default:
+      eye = document.getElementById('eye');
+      password = document.getElementById('password');
+      break;
   }
   //Check if password is shown or not
   let type = password.getAttribute('type') === 'password' ? 'text' : 'password';

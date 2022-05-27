@@ -8,9 +8,9 @@ exports.addStudentAnswers = async function(req, res) {
     if (experiment && answers) {
         experiment.studentAnswer = Object.assign(answers);
         await experiment.save();
-        return res.status(200).send("Experiment saved correctly");
+        return res.status(200).send("Student asnwers saved correctly");
     }
-    res.status(400).send("Error in saving the experiments");
+    res.status(400).send("Error in saving the answers");
 }
 
 //Function which retrieves all the student answers during a certain live-stream
