@@ -1,6 +1,6 @@
 const app = require('./configuration/app-config');
 const socket = require('socket.io');
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 // Homepage
 app.get("/", (_req, res) => {
@@ -11,7 +11,7 @@ app.get("/how-it-works", (_req, res) => {
     res.render("HowItWorks");
 });
 
-// Listening to localhost:3000
+// Listening to the Heroku port
 let server = app.listen(PORT, () => {
     console.log(`[SERVER RUNNING ON PORT ${PORT}]`);
 });

@@ -1,12 +1,13 @@
 {
-  "name": "website",
+  "name": "chemical_twins",
   "version": "1.0.0",
-  "description": "",
+  "description": "Thesis project application",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
   },
-  "author": "",
+  "author": "Davide Rigoni",
   "license": "ISC",
   "dependencies": {
     "cloudinary": "^1.30.0",
