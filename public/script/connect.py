@@ -7,8 +7,8 @@ import sys
 sys.tracebacklimit = None
 
 # Get and post address for sending and retrieving data
-URL_post = 'http://localhost:3000/live-data/'
-URL_get = 'http://localhost:3000/data/live-data/'
+URL_post = 'https://chemical-twins.herokuapp.com/live-data/'
+URL_get = 'https://chemical-twins.herokuapp.com/data/live-data/'
 
 # Global variables used in the program
 student_answers = []

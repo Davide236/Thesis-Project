@@ -7,6 +7,7 @@ app.get("/", (_req, res) => {
     res.render("Homepage");
 });
 
+//How it works page
 app.get("/how-it-works", (_req, res) => {
     res.render("HowItWorks");
 });

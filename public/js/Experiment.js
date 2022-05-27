@@ -65,7 +65,7 @@ const dataChart = new Chart(
 //Get the recorded data from the database
 window.onload = function() {
     $.ajax({
-        url: `http://localhost:3000/data/get-data/${id}`,
+        url: `https://chemical-twins.herokuapp.com/data/get-data/${id}`,
         type: 'GET',
         success: function(res) {data = res.slice();},
         error: function(res) {alert('Code '+res.status +':' + res.responseText)},

@@ -191,7 +191,7 @@ function hideStream() {
 //Function which sends a GET request to the application in order to delete the room
 function deleteRoom() {
     $.ajax({
-        url: `http://localhost:3000/experiment/delete/${roomName}`,
+        url: `https://chemical-twins.herokuapp.com/experiment/delete/${roomName}`,
         type: 'GET',
         success: function(res) {alert(res)},
         error: function(res) {alert('Code '+res.status +':' + res.responseText)}
@@ -363,7 +363,7 @@ function showAnswer() {
 function saveAnswers() {
     $.ajax({
         type: "POST",
-        url: `http://localhost:3000/data/add-answers/${roomName}`,
+        url: `https://chemical-twins.herokuapp.com/data/add-answers/${roomName}`,
         data: {answers: answerList},
         success: function (data) {alert('Code 200 :'+ data); },
         error: function (data) { alert('Code '+data.status +':' + data.responseText); }
