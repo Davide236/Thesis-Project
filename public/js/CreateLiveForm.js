@@ -1,7 +1,7 @@
 //Get a list of all the connected video devices so that the user can choose which one to use
 window.onload = async function() {
-    getPermission().then(
-        async (_message) => {
+    await getPermission().then(
+        (_message) => {
             $('#videoDevice').html('');
             let devices = await getVideoDevices();
             videoDeviceHTML = '';
@@ -19,7 +19,7 @@ window.onload = async function() {
 };
 
 //Ask the users for permission to access video and audio devices
-function getPermission() {
+async function getPermission() {
     navigator.mediaDevices.getUserMedia({
         audio: true,
         video: true
