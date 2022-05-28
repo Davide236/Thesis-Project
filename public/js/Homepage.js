@@ -25,10 +25,10 @@ async function askPermission() {
   .then(function(stream) {
       stream.getTracks()[0].stop();
       stream.getTracks()[1].stop(); 
-      return Promise.resolve("Success");
+      window.location.replace("https://chemical-twins.herokuapp.com/experiment/create-live");
   })
   .catch(function(_err) {
       //Error
-      return Promise.resolve("Error");
+      alert('Couldnt get permission to access the camera');
   });
 }
