@@ -1,22 +1,27 @@
 //Get a list of all the connected video devices so that the user can choose which one to use
 window.onload = async function() {
-    await getPermission().then(
+    getPermission().then(
         (_message) => {
-            $('#videoDevice').html('');
-            let devices = await getVideoDevices();
-            videoDeviceHTML = '';
-            for (dev of devices) {
-                videoDeviceHTML += `
-                <option>${dev.label}</option>
-                `;
-            }
-            $('#videoDevice').append(videoDeviceHTML);
+            await showDevices();
         },
         (_message) => {
             alert("Couldn't get permission to access camera");
         }
     )
 };
+
+//Function which shows the available devices to the user
+async function showDevices() {
+    $('#videoDevice').html('');
+    let devices = await getVideoDevices();
+    videoDeviceHTML = '';
+    for (dev of devices) {
+        videoDeviceHTML += `
+        <option>${dev.label}</option>
+        `;
+    }
+    $('#videoDevice').append(videoDeviceHTML);
+}
 
 //Ask the users for permission to access video and audio devices
 async function getPermission() {
