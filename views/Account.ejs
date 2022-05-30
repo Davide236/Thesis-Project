@@ -44,9 +44,7 @@
                           <input type="password" pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" class="form-control register-input" name="password" placeholder="password" id="passwordSign"
                           required>
                           <i class="far fa-eye passwordEye" id="signEye" onclick="showPassword('signup')"></i>
-                        <div class="invalid-feedback">
-                          Password needs to have a number and upper case letter
-                        </div>
+                        <div id="feedback"></div>
                       </div>
                       <button type="submit">Create Account</button>
                 </form>

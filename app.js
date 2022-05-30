@@ -2,7 +2,7 @@ const app = require('./configuration/app-config');
 const socket = require('socket.io');
 const PORT = process.env.PORT || 3000;
 
-// Homepage
+//Homepage
 app.get("/", (_req, res) => {
     res.render("Homepage");
 });
@@ -10,6 +10,10 @@ app.get("/", (_req, res) => {
 //How it works page
 app.get("/how-it-works", (_req, res) => {
     res.render("HowItWorks");
+});
+
+app.get("/survey", (_req, res) => {
+    res.render("survey/Survey");
 });
 
 // Listening to the Heroku port

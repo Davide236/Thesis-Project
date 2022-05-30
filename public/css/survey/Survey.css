@@ -1,0 +1,35 @@
+.container {
+    margin-top: 4rem;
+    border: 2px solid rgb(9,158,41);
+    padding-bottom: 1rem;
+}
+
+#surveyIntro h3 {
+    margin-top: 1rem;
+    text-align: center;
+    margin-bottom: 0.5rem;
+}
+
+#progressBar {
+    width: 100%;
+    background-color: grey;
+}
+  
+#progress {
+    width: 0.5%;
+    height: 2rem;
+    background-color: rgb(9,158,41);
+}
+
+button {
+    border: 1px solid rgb(9,158,41);
+    background-color: inherit;
+}
+
+button:hover {
+    color: rgb(9,158,41);
+}
+
+form {
+    margin-top: 2rem;
+}

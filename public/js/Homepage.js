@@ -9,26 +9,26 @@ function joinRoom() {
 
 //Close the modal
 window.onclick = function(event) {
-  if (event.target == modal) {
-    modal.style.display = "none";
-  }
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
 }
 
 
 //Ask the users for permission to access video and audio devices
 async function askPermission() {
-  navigator.mediaDevices.getUserMedia({
-      audio: true,
-      video: true
-  })
-  //Start and immediately stop the stream
-  .then(function(stream) {
-      stream.getTracks()[0].stop();
-      stream.getTracks()[1].stop(); 
-      window.location.replace("https://chemical-twins.herokuapp.com/experiment/create-live");
-  })
-  .catch(function(_err) {
-      //Error
-      alert('Couldnt get permission to access the camera');
-  });
+    navigator.mediaDevices.getUserMedia({
+        audio: true,
+        video: true
+    })
+    //Start and immediately stop the stream
+    .then(function(stream) {
+        stream.getTracks()[0].stop();
+        stream.getTracks()[1].stop(); 
+        window.location.replace("https://chemical-twins.herokuapp.com/experiment/create-live");
+    })
+    .catch(function(_err) {
+        //Error
+        alert('Couldnt get permission to access the camera. Please give permission before accessing this functionality!');
+    });
 }
