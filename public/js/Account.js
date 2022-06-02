@@ -11,7 +11,7 @@ passwordControl.addEventListener('input', checkValidPassword);
 function checkValidPassword() {
     if ((!pattern.test(passwordControl.value) && !show) || !passwordControl.value) {
       feedback.style.color = 'red';
-      feedback.textContent = 'Password needs to have a uppercase letter and a number';
+      feedback.textContent = 'Password needs to have 8 characters including a uppercase letter and a number';
     } else {
       feedback.style.color = 'rgb(9,158,41)';
       feedback.textContent = 'Password valid';
@@ -28,6 +28,7 @@ function closePasswordForm() {
 }
 
 
+//Function which shows the password based on which password eye is clicked
 function showPassword(action) {
     let eye;
     let password;

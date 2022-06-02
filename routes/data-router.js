@@ -12,6 +12,11 @@ router.get("/experiments", async (_req, res) => {
 });
 
 
+router.post("/submit-survey", async (req, res) => {
+    await DataController.saveSurvey(req, res);
+});
+
+
 router.post('/add-answers/:room', async(req, res) => {
     await DataController.addStudentAnswers(req, res);
 });

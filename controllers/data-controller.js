@@ -41,3 +41,24 @@ exports.getExperimentData = async function(req, res) {
     }
     res.status(200).send(experiment.data);
 }
+
+//Function which gets the data from a survey and saves it to the database
+exports.saveSurvey = async function(req, res) {
+    //Get the keys of all the answers
+    let keys = Object.keys(req.body);
+    let answers = []
+    for (let i = 0; i < keys.length; i++) {
+        let value = req.body[keys[i]];
+        //If it's a yes/no answer then it might also have an explanation to it
+        if (value == 'yes' || value == 'no') {
+            i++;
+            let explanation = req.body[keys[i]];
+            answers.push({'answer': value, 'explanation': explanation});
+        } else {
+            //It's a 1-5 answer
+            answers.push({'satisfaction': value});
+        }
+    }
+    console.log(answers);
+    res.redirect('/');
+}
