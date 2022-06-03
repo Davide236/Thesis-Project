@@ -264,9 +264,10 @@ socket.on('data', function(values, student_val, average_answer) {
     //If we're also receiving data from the student answers then we display the second chart
     if (student_val) {
         if (!digitalCount) {
+            digitalCount++;
             sChart.style.display = 'block';
             averageStudentAnswer.style.display = 'block';
-            averageStudentAnswer.append(`<strong>Average Answer</strong> ${average_answer}`);
+            averageStudentAnswer.innerHTML = `<strong>Average Answer</strong> ${average_answer}`;
         }
         addToChart(studentChart, student_val);
     }
