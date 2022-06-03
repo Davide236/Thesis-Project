@@ -4,9 +4,13 @@ import time
 import PySimpleGUI as sg
 import sys
 
+#Import sensor data
+from sensor import get_value
+
 sys.tracebacklimit = None
 
 # Get and post address for sending and retrieving data
+
 URL_post = 'https://chemical-twins.herokuapp.com/live-data/'
 URL_get = 'https://chemical-twins.herokuapp.com/data/live-data/'
 
@@ -32,9 +36,6 @@ layout = [[sg.Text("The input formula can contain the term 'x', 'var' and the fo
 # Initialize the window
 window = sg.Window('Chemical Twins', layout, size=(1500,1000))
 
-#CHANGE THIS
-def get_value():
-    return 1
 
 
 # Function which gets data (students' answers) from the application during a live stream  
@@ -92,6 +93,7 @@ def send_data():
         # If flag is true then we also send data from the student answer
         if flag:
             data['student_val'] = resolve_formula(value)
+            data['average_answer'] = average_value
         try:
             requests.post(url = URL_post + room,headers=headers, json=data, timeout=1)
         except:

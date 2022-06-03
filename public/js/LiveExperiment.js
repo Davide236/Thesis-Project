@@ -29,6 +29,7 @@ let studentAnswers = document.getElementById('studentAnswers');
 let dChart = document.getElementById('dataChart');
 let sChart = document.getElementById('studentChart');
 let currentData = document.getElementById('currentData');
+let averageStudentAnswer = document.getElementById('averageAnswer');
 
 document.getElementById("sidebarButton").addEventListener('click', toggleSidebar);
 
@@ -39,6 +40,8 @@ let recordingData = [];
 //Array used for saving the data of the experiment
 let recordingExperiment = [];
 
+//See if we already displayed a second graph
+let digitalCount = 0;
 
 //Flag to see if the audio was muted
 let muted = false;
@@ -254,13 +257,17 @@ function checkRemove(chart) {
 }
 
 //Socket listens when data arrives and adds it to the chart
-socket.on('data', function(values, student_val) {
+socket.on('data', function(values, student_val, average_answer) {
     time++;
     addToChart(dataChart,values);
     currentData.textContent = values;
     //If we're also receiving data from the student answers then we display the second chart
     if (student_val) {
-        sChart.style.display = 'block';
+        if (!digitalCount) {
+            sChart.style.display = 'block';
+            averageStudentAnswer.style.display = 'block';
+            averageStudentAnswer.append(`<strong>Average Answer</strong> ${average_answer}`);
+        }
         addToChart(studentChart, student_val);
     }
 });

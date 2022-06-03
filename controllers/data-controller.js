@@ -1,4 +1,5 @@
 const Experiment = require('../models/Experiment');
+const Survey = require('../models/Survey');
 
 //Function which saves the answers of students (during a live stream) to the database
 exports.addStudentAnswers = async function(req, res) {
@@ -46,19 +47,21 @@ exports.getExperimentData = async function(req, res) {
 exports.saveSurvey = async function(req, res) {
     //Get the keys of all the answers
     let keys = Object.keys(req.body);
-    let answers = []
+    let saved_answers = [];
     for (let i = 0; i < keys.length; i++) {
         let value = req.body[keys[i]];
-        //If it's a yes/no answer then it might also have an explanation to it
-        if (value == 'yes' || value == 'no') {
+        //If it's a no answer then it might also have an explanation to it
+        if (value == 'no' || value == 'yes' || value == 'skip') {
             i++;
             let explanation = req.body[keys[i]];
-            answers.push({'answer': value, 'explanation': explanation});
+            saved_answers.push({'answer': value, 'explanation': explanation});
         } else {
             //It's a 1-5 answer
-            answers.push({'satisfaction': value});
+            saved_answers.push({'answer': value, 'explanation': ''});
         }
     }
-    console.log(answers);
+    let survey = await new Survey();
+    survey.answers = saved_answers;
+    await survey.save();
     res.redirect('/');
 }

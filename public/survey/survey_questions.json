@@ -1,0 +1,91 @@
+{
+  "questions": [
+    {
+      "title": "Create an Account",
+      "text": "Try to create an account in the web application with a your email. You can do this by opening the navigation bar and by clicking on 'account'. You'll be redirected to the page to create a new account. Once you do that a you should be redirected to the homepage and receive an email to verify your account."
+    },
+    {
+      "title": "Verify your Account",
+      "text": "Now you should go to your emails and have a new email from chemicaltwinsrug@gmail.com with a link to verify your account. Click on the link and you should be redirected to the homepage with a notification that your account is now verified."
+    },
+    {
+      "title": "Login",
+      "text": "Now try to login the website with your email and password. To see that it worked open the navbar and you should see your username displayed there \n along with some links that you weren't previously able to see."
+    },
+    {
+      "title": "Edit your account",
+      "text": "Now that you've logged in your account you should be able to view different links on the navbar, one of those links goes to a page to edit your account. \nClick on the link and try to change your username through that. Once you do open the navbar and you should see a different name displayed on top (your new username)"
+    },
+    {
+      "title": "Logout",
+      "text": "Now open the navbar once more and logout from the website. You should be able to see a log out button. Click on it and you should logout from the website \n To confirm that open the navbar once more and then you should't see your username anymore as well as the links to logout and edit your account"
+    },
+    {
+      "title": "Password reset",
+      "text": "Now, after you logged out the website, go again to the login page. Under login click on 'Click Here' to open a new form to reset your password. \nInput the email you used to create the account and click on send email. Now go to your email inbox and check your new email from chemicaltwinsrug@gmail.com \nThis link should bring you to a new page where you can set a new password; do that and then try to login again with your new password."
+    },
+    {
+      "title": "Start Stream",
+      "text": "Be sure that you're logged in the website for this. Click on 'create live' (you'll need to give access to your camera for that) and you should be redirected to a form. \nFill in the form with whatever you want but keep in mind the room name and password you set. Complete the form and you should be redirected to a live streaming page."
+    },
+    {
+      "title": "Test Mute/Hide",
+      "text": "Now try to use the buttons to hide your camera and mute the stream to hide and mute the stream"
+    },
+    {
+      "title": "Save Recordings",
+      "text": "Now try to record your stream. Click on the record button and let it run for a couple of second at least. Then press on 'stop' and then 'save recording'.\n You should then be able to download a .mp4 file with your video and a .json file with the experiment data (empty for now)"
+    },
+    {
+      "title": "Join The Stream",
+      "text": "Now open a new tab on a different browser, in incognite mode or on a different google account. Go to the website and login with the following credentials.\n Email: student@gmail.com, Password: Experiment1 \n. Once you've done that click on 'Join live' and input the room name and password you used on your other page (provided that you didn't end the stream).\n Now you should be able to see your stream from this account too. "
+    },
+    {
+      "title": "Check connected users",
+      "text": "Open the sidebar on the stream and see the list of connected users. It should be you and this 'student' account"
+    },
+    {
+      "title": "Ask Questions",
+      "text": "From your main account click on the 'ask question' button. Add some answers to your question through the 'Add Answer' button and then ask the question. \nIn the student account you should see a question form with as answers choice having the answers you added before."
+    },
+    {
+      "title": "Answer and Save Question",
+      "text": "Answer the question from the student account and then go back to your main one. You should be able to see the answers to the question (if not click on 'Show Answers'). Click on 'Save' and you should see a message telling you that the answers were saved"
+    },
+    {
+      "title": "Send Data Through Script",
+      "text": "Answer this question only if you're knowledgeable on Python, if not feel free to skip it.\n Download the given script and run it on your machine. Input any working formula for the first input and for the second input your room name. Now you should see a sequence of 1s displayed in the graph on the right",
+      "python": "Yes"
+    },
+    {
+      "title": "Retrieve Data Through Script",
+      "text": "Answer this question only if you're knowledgeable on Python, if not feel free to skip it.\n Now click on 'Retrieve Student Answers' and you should see the answer you previously saved. On top of that you should see a new graph with the data based on the retrieved answer and the formula you had in input",
+      "python": "Yes"
+    },
+    {
+      "title": "Leave Stream",
+      "text": "Through the 'student' profile try to leave the stream by clicking on 'Leave'. Once you do go back to your stream tab and check the users list. You should be able to see only your name now."
+    },
+    {
+      "title": "End Stream",
+      "text": "Click on end stream and a message from the application should tell you that the room was deleted correctly and send you back to the homepage."
+    },
+    {
+      "title": "Upload Experiment",
+      "text": "Save the following video and data file and, while being logged in, click on upload experiment and upload the video and data while filling the rest of the form however you prefer. \n Click on 'Upload' and after some time you should be redirected to the homepage with a text saying that the experiment was uploaded correctly",
+      "files": "Yes"
+    },
+    {
+      "title": "Past Experiments",
+      "text": "Click on 'Past Experiments' and you should be redirected to a page with some previously uploaded experiment. Try to click on one of them and then play it to see that it works correctly"
+    },
+    {
+      "title": "Search Experiment",
+      "text": "Go again to 'Past Experiments' and this time search for an experiment. Once you do you should see a list (can also be empty) of experiments that contain you searched words in their title"
+    },
+    {
+      "title": "Delete your account",
+      "text": "While logged in open the navbar, go to edit your account and click on 'delete your account'. Now you should be logged out and if you try to login again you won't be able to."
+    }
+  ]
+}

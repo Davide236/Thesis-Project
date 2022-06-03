@@ -10,7 +10,7 @@ let total = 0;
 
 function nextQuestion() {
     if (counter < total) {
-        if (document.querySelector(`input[name="answer${counter+1}"]:checked`) == null) {
+        if (document.querySelector(`input[name="answer${counter}"]:checked`) == null) {
             return alert('Please answer the question before proceeding');
         }
         questions[counter].style.display = 'none';

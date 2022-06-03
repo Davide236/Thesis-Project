@@ -13,7 +13,9 @@ app.get("/how-it-works", (_req, res) => {
 });
 
 app.get("/survey", (_req, res) => {
-    res.render("survey/Survey");
+    let questions_list = require('./public/survey/survey_questions.json');
+    let questions = questions_list['questions'];
+    res.render("survey/Survey", {questions});
 });
 
 // Listening to the Heroku port
@@ -29,10 +31,11 @@ let io = socket(server);
 //Post request to send data (from the script) to the application
 app.post("/live-data/:room", (req, res) => {
     const {room} = req.params;
-    const {value, student_val} = req.body;
+    const {value, student_val, average_answer} = req.body;
+    console.log(average_answer);
     res.status(200).send("Data Received");
     //Send the data to the room
-    io.sockets.to(room).emit('data', value, student_val);
+    io.sockets.to(room).emit('data', value, student_val, average_answer);
 });
 
 

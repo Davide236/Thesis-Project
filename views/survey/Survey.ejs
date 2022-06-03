@@ -27,118 +27,59 @@
         <div id="progressBar" style="display: none;">
             <div id="progress">0%</div>
         </div>
-        <form action="./data/submit-survey" id="surveyForm" method="POST" style="display: none;">
+        <form action="../data/submit-survey" id="surveyForm" method="POST" style="display: none;">
+            <%let i = 0%>
+            <% for (question of questions) { %>
+                <div class="form-group questions" style="display: none;">
+                    <h3><%=question['title']%></h3>
+                    <p><%=question['text']%></p>
+                    <% if (question['files']) {%>
+                    <br>
+                    <a href="../survey/survey_video.mp4" download>Video</a>, <a href="../survey/survey_data.json" download>Data</a>
+                    <% } %>
+                    <% if (question['python']) { %>
+                    <br>
+                    <a href="../script/connect.py" download>Script</a>
+                    <% } %>
+                    <br><br> Did it work?</p>
+                    <input class="form-check-input" type="radio" name="answer<%=i%>" id="answer<%=i%>yes" value="yes">
+                    <label class="form-check-label" for="answer<%=i%>">Yes</label>
+                    <input class="form-check-input" type="radio" name="answer<%=i%>" id="answer<%=i%>no" value="no">
+                    <label class="form-check-label" for="answer<%=i%>">No</label>
+                    <% if (question['python']) { %>
+                    <input class="form-check-input" type="radio" name="answer<%=i%>" id="answer<%=i%>skip" value="skip">
+                    <label class="form-check-label" for="answer<%=i%>">Skip</label>
+                    <% } %>
+                    <br><hr>
+                    <label for="answer<%=i%>no_why">If 'No' then what went wrong?</label>
+                    <textarea class="form-control" id="justification" name="answer<%=i%>no_why" rows="2"></textarea>
+                    <br><hr>
+                    <button onclick="nextQuestion()" type="button">Continue</button>
+                </div>
+                <%i++%>
+            <% } %>
             <div class="form-group questions" style="display: none;">
-                <h3>Create an Account</h3>
-                <p>Try to create an account in the web application with a unique email. You can do this by opening the navigation bar and by clicking on 'account'. <br>
-                You'll be redirected to the page to create a new account. Once you do that a you should be redirected to the homepage and receive an email to verify your account.
-                <br><br> Did it work?</p>
-                <input class="form-check-input" type="radio" name="answer1" id="answer1yes" value="yes">
-                <label class="form-check-label" for="answer1">Yes</label>
-                <input class="form-check-input" type="radio" name="answer1" id="answer1no" value="no">
-                <label class="form-check-label" for="answer1">No</label>
-                <br><hr>
-                <label for="answer1no_why">If 'No' then what went wrong?</label>
-                <textarea class="form-control" id="justification" name="answer1no_why" rows="2"></textarea>
+                <p>Was the website easy to navigate? (1 being 'it was not easy' and 5 being 'it was very easy')</p>
+                <input type="radio" name="answer<%=i%>" value="1">1
+                <input type="radio" name="answer<%=i%>" value="2">2
+                <input type="radio" name="answer<%=i%>" value="3">3
+                <input type="radio" name="answer<%=i%>" value="4">4
+                <input type="radio" name="answer<%=i%>" value="5">5
                 <br><hr>
                 <button onclick="nextQuestion()" type="button">Continue</button>
             </div>
             <div class="form-group questions" style="display: none;">
-                <h3>Verify your Account</h3>
-                <p>Now you should go to your emails and have a new email from <strong>chemicaltwinsrug@gmail.com</strong> with a link to 
-                verify your account. Click on the link and you should be redirected to the homepage with a notification that your account is now verified.
-                <br><br> Did it work?</p>
-                <input class="form-check-input" type="radio" name="answer2" id="answer2yes" value="yes">
-                <label class="form-check-label" for="answer2">Yes</label>
-                <input class="form-check-input" type="radio" name="answer2" id="answer2no" value="no">
-                <label class="form-check-label" for="answer2">No</label>
-                <br><hr>
-                <label for="answer2no_why">If 'No' then what went wrong?</label>
-                <textarea class="form-control" id="justification" name="answer2no_why" rows="2"></textarea>
-                <br><hr>
-                <button onclick="nextQuestion()" type="button">Continue</button>
-            </div>
-            <div class="form-group questions" style="display: none;">
-                <h3>Login</h3>
-                <p>Now try to login the website with your email and password. To see that it worked open the navbar and you should see your username displayed there <br>
-                along with some links that you weren't previously able to see.
-                <br><br>
-                Did it work?
-                </p>
-                <input class="form-check-input" type="radio" name="answer3" id="answer3yes" value="yes">
-                <label class="form-check-label" for="answer3">Yes</label>
-                <input class="form-check-input" type="radio" name="answer3" id="answer3no" value="no">
-                <label class="form-check-label" for="answer3">No</label>
-                <br><hr>
-                <label for="answer3no_why">If 'No' then what went wrong?</label>
-                <textarea class="form-control" id="justification" name="answer3no_why" rows="2"></textarea>
-                <br><hr>
-                <button onclick="nextQuestion()" type="button">Continue</button>
-            </div>
-            <div class="form-group questions" style="display: none;">
-                <h3>Edit your account</h3>
-                <p>Now that you've logged in your account you should be able to view different links on the navbar, one of those links goes to a page to edit your account. <br>
-                Click on the link and try to change your username through that. Once you do open the navbar and you should see a different name displayed on top (your username)
-                <br><br>
-                Did it work?
-                </p>
-                <input class="form-check-input" type="radio" name="answer4" id="answer4yes" value="yes">
-                <label class="form-check-label" for="answer4">Yes</label>
-                <input class="form-check-input" type="radio" name="answer4" id="answer4no" value="no">
-                <label class="form-check-label" for="answer4">No</label>
-                <br><hr>
-                <label for="answer4no_why">If 'No' then what went wrong?</label>
-                <textarea class="form-control" id="justification" name="answer4no_why" rows="2"></textarea>
-                <br><hr>
-                <button onclick="nextQuestion()" type="button">Continue</button>
-            </div>
-            <div class="form-group questions" style="display: none;">
-                <h3>Logout</h3>
-                <p>Now open the navbar once more and logout from the website. You should be able to see a log out button. Click on it and you should logout from the website <br>
-                To confirm that open the navbar once more and then you should't see your username anymore as well as the links to logout and edit your account
-                <br><br>
-                Did it work?
-                </p>
-                <input class="form-check-input" type="radio" name="answer5" id="answer5yes" value="yes">
-                <label class="form-check-label" for="answer5">Yes</label>
-                <input class="form-check-input" type="radio" name="answer5" id="answer5no" value="no">
-                <label class="form-check-label" for="answer5">No</label>
-                <br><hr>
-                <label for="answer5no_why">If 'No' then what went wrong?</label>
-                <textarea class="form-control" id="justification" name="answer5no_why" rows="2"></textarea>
-                <br><hr>
-                <button onclick="nextQuestion()" type="button">Continue</button>
-            </div>
-            <div class="form-group questions" style="display: none;">
-                <h3>Password reset</h3>
-                <p> Now, after you logged out the website, go again to the login page. Under login click on 'Click Here' to open a new form to reset your password. <br>
-                Input the email you used to create the account and click on send email. Now go to your email inbox and check your new email from <strong>chemicaltwinsrug@gmail.com</strong> <br>
-                This link should bring you to a new page where you can set a new password; do that and then try to login again with your new password.
-                <br><br>
-                Did it work?
-                </p>
-                <input class="form-check-input" type="radio" name="answer6" id="answer6yes" value="yes">
-                <label class="form-check-label" for="answer6">Yes</label>
-                <input class="form-check-input" type="radio" name="answer5" id="answer6no" value="no">
-                <label class="form-check-label" for="answer6">No</label>
-                <br><hr>
-                <label for="answer6no_why">If 'No' then what went wrong?</label>
-                <textarea class="form-control" id="justification" name="answer6no_why" rows="2"></textarea>
-                <br><hr>
-                <button onclick="nextQuestion()" type="button">Continue</button>
-            </div>
-            <div class="form-group questions" style="display: none;">
-                <p>How happy are u about the thing?</p>
-                <input type="radio" name="answer4" value="1">1
-                <input type="radio" name="answer4" value="2">2
-                <input type="radio" name="answer4" value="3">3
-                <input type="radio" name="answer4" value="4">4
-                <input type="radio" name="answer4" value="5">5
+                <p>Were the functionalities of the website easy to understand? (1 being 'it was not easy' and 5 being 'it was very easy')</p>
+                <input type="radio" name="answer<%=i+1%>" value="1">1
+                <input type="radio" name="answer<%=i+1%>" value="2">2
+                <input type="radio" name="answer<%=i+1%>" value="3">3
+                <input type="radio" name="answer<%=i+1%>" value="4">4
+                <input type="radio" name="answer<%=i+1%>" value="5">5
                 <br><hr>
                 <button onclick="nextQuestion()" type="button">Finish</button>
             </div>
             <div id="finishSurvey" style="display: none;">
-                <p>Thank u for partecipating in the survey, now the questions are over</p>
+                <p>Thank you for partecipating in the survey, now the questions are over!</p>
                 <button>Submit your answers</button>
             </div>
         </form>
