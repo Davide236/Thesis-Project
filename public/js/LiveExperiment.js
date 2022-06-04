@@ -75,13 +75,13 @@ let iceServers = {
         {urls: "stun:stun1.l.google.com:19302"},
         {
             urls: "turn:numb.viagenie.ca",
-            username: "rigodavi99@gmail.com",
-            credential: "ChemicalTwinsTURN"
+            credential: "ChemicalTwinsTURN",
+            username: "rigodavi99@gmail.com"
         },
         {
             urls: "turn:numb.viagenie.ca",
-            username: "chemicaltwinsRUG@gmail.com",
-            credential: "ChemicalTwins"
+            credential: "ChemicalTwins",
+            username: "chemicaltwinsRUG@gmail.com"
         },
         {
             urls: "turn:openrelay.metered.ca:80",
