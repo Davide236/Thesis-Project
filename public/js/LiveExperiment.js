@@ -74,12 +74,12 @@ let iceServers = {
         {urls: "stun:stun.services.mozilla.com"},
         {urls: "stun:stun1.l.google.com:19302"},
         {
-            urls: "numb.viagenie.ca",
+            urls: "turn:numb.viagenie.ca",
             username: "rigodavi99@gmail.com",
             credential: "ChemicalTwinsTURN"
         },
         {
-            urls: "numb.viagenie.ca",
+            urls: "turn:numb.viagenie.ca",
             username: "chemicaltwinsRUG@gmail.com",
             credential: "ChemicalTwins"
         },
