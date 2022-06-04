@@ -71,15 +71,11 @@ let index = -1;
 //Provide a list of STUN servers used for the connection
 let iceServers = {
     iceServers: [
+        {urls: "turn:turn01.hubl.in?transport=udp"}
         /*
         {urls: "stun:stun.services.mozilla.com"},
         {urls: "stun:stun1.l.google.com:19302"},
         */
-        {
-            url: 'turn:numb.viagenie.ca',
-            credential: 'muazkh',
-            username: 'webrtc@live.com'
-        }
     ]
 }
 
