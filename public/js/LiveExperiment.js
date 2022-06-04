@@ -71,9 +71,16 @@ let index = -1;
 //Provide a list of STUN servers used for the connection
 let iceServers = {
     iceServers: [
+        /*
         {urls: "stun:stun.services.mozilla.com"},
         {urls: "stun:stun1.l.google.com:19302"},
-    ],
+        */
+        {
+            url: 'turn:numb.viagenie.ca',
+            credential: 'muazkh',
+            username: 'webrtc@live.com'
+        }
+    ]
 }
 
 //Check if the user created or joined the room
