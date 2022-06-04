@@ -71,8 +71,13 @@ let index = -1;
 //Provide a list of STUN servers used for the connection
 let iceServers = {
     iceServers: [
-        {urls: "stun:stun.services.mozilla.com"},
-        {urls: "stun:stun1.l.google.com:19302"},
+        //{urls: "stun:stun.services.mozilla.com"},
+        //{urls: "stun:stun1.l.google.com:19302"},
+        {
+            urls: "numb.viagenie.ca",
+            username: "chemicaltwinsRUG@gmail.com",
+            credential: "ChemicalTwins"
+        },
         {
             urls: "turn:openrelay.metered.ca:80",
             username: "openrelayproject",

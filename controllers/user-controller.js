@@ -27,7 +27,7 @@ exports.userSignup = async function (req, res) {
         await newUser.save();
         //Send confirmation email
         await transport.sendMail({
-            from: process.env.EMAIL, to: newUser.username, subject: 'AllReviews email verification',
+            from: process.env.EMAIL, to: newUser.username, subject: 'Chemical Twins email verification',
             html: `
             <h1>Register on Chemical Twins</h1>
             <p>Hello ${newUser.fullName}, thank you for your registration on our website. <br/><br/>
