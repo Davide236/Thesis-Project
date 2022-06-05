@@ -73,31 +73,8 @@ let iceServers = {
     iceServers: [
         {urls: "stun:stun.services.mozilla.com"},
         {urls: "stun:stun1.l.google.com:19302"},
-        {
-            urls: "turn:numb.viagenie.ca",
-            credential: "ChemicalTwinsTURN",
-            username: "rigodavi99@gmail.com"
-        },
-        {
-            urls: "turn:numb.viagenie.ca",
-            credential: "ChemicalTwins",
-            username: "chemicaltwinsRUG@gmail.com"
-        },
-        {
-            urls: "turn:openrelay.metered.ca:80",
-            username: "openrelayproject",
-            credential: "openrelayproject",
-          },
-          {
-            urls: "turn:openrelay.metered.ca:443",
-            username: "openrelayproject",
-            credential: "openrelayproject",
-          },
-          {
-            urls: "turn:openrelay.metered.ca:443?transport=tcp",
-            username: "openrelayproject",
-            credential: "openrelayproject",
-          },
+        {urls: "stun3.l.google.com:19302"}, 
+        {urls: "stun2.l.google.com:19302"}
     ]
 }
 
