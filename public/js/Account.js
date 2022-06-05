@@ -30,8 +30,6 @@ function closePasswordForm() {
 
 //Function which shows the password based on which password eye is clicked
 function showPassword(action) {
-    console.log('SHOWING PASSWORD');
-    console.log(action);
     let eye;
     let password;
     //Check which 'eye' the user wants to toggle
