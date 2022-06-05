@@ -515,7 +515,6 @@ socket.on('created', async function(server) {
 
 //A user joins the room
 socket.on('joined', function() {
-    console.log('JOINED socket');
     creator = false;
     leaveRoomBtn.addEventListener('click', leaveStream);
     //Tell that the user is ready to receive the media
@@ -540,7 +539,6 @@ socket.on('ready', function(username) {
         rtcPeerConnection[index].ontrack = OnTrackFunction;
         //Send media information to the peer. This function takes 0 for audio and 1 for video
         //Sending audio
-        console.log('SENDING AUDIO/VIDEO');
         rtcPeerConnection[index].addTrack(userStream.getTracks()[0], userStream);
         //Sending video
         rtcPeerConnection[index].addTrack(userStream.getTracks()[1], userStream);
@@ -568,7 +566,6 @@ socket.on('candidate', function(candidate) {
 socket.on('offer', function(offer, users, server) {
     //The person joining the room (receiving the offer) has to go through the same steps as the creator
     if (!creator && !rtcPeerConnection[0]) {
-        console.log('GETTING OFFER');
         //Setting ICE servers sent from the creator
         iceServers = JSON.parse(JSON.stringify(server));
         console.log(iceServers);
@@ -624,6 +621,7 @@ function OnTrackFunction(event) {
         userVideo.srcObject = event.streams[0];
         console.log(userVideo.srcObject);
         userVideo.onloadeddata = function(e) {
+            console.log('LOADING DATA FROM STREAM');
             userVideo.play();
         }
     }
