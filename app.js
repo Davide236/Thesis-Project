@@ -64,7 +64,7 @@ io.on('connection', function(socket) {
             const client = require('twilio')(accountSid, authToken);
             let server;
             client.tokens.create().then(token => {
-                server = JSON.parse(JSON.stringify(token));
+                server = JSON.parse(JSON.stringify(token.iceServers));
             })
             .then(()=>{
                 socket.emit("created", server);
