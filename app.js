@@ -58,6 +58,7 @@ io.on('connection', function(socket) {
         if (room == undefined) {
             //Create room
             socket.join(roomName);
+            //Create a list of STUN/TURN servers to be used during the connection
             const accountSid = process.env.TWILIO_SID;
             const authToken = process.env.TWILIO_TOKEN;
             const client = require('twilio')(accountSid, authToken);

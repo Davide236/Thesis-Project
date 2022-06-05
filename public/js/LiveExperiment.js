@@ -570,6 +570,7 @@ socket.on('offer', function(offer, users, server) {
         console.log('GETTING OFFER');
         //Setting ICE servers sent from the creator
         iceServers = JSON.parse(JSON.stringify(server));
+        console.log(iceServers);
         userList = [];
         userList = users.slice(0);
         updateUserList();
