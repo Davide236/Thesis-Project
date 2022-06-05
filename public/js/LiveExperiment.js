@@ -620,14 +620,11 @@ function OnTrackFunction(event) {
         console.log('GETTING STREAM');
         userVideo.srcObject = event.streams[0];
         console.log(userVideo.srcObject);
-        userVideo.play();
         //onloadedmetadata onloadeddata
-        /*
         userVideo.onloadedmetadata = function(e) {
             console.log('LOADING DATA FROM STREAM');
             userVideo.play();
         }
-        */
     }
 }
 
