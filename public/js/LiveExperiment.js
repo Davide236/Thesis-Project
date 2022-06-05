@@ -83,6 +83,9 @@ let creator = false;
 
 //When the document is ready join the room
 window.onload = function() {
+    if (navigator.userAgent.indexOf("Firefox") != -1) {
+        alert('Click ok to continue');
+    }
     userList.push(user);
     updateUserList();
     socket.emit('join', roomName);
