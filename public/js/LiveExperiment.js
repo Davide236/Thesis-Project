@@ -498,8 +498,6 @@ socket.on('created', async function(server) {
     //Add list of STUN and TURN servers
     //iceServers = JSON.parse(JSON.stringify(server));
     iceServers = { iceServers: server};
-    console.log("CREATED");
-    console.log(iceServers);
     //Add event listeners for the creators' buttons
     hideCameraBtn.addEventListener('click', hideStream);
     muteBtn.addEventListener('click', muteStream);
@@ -572,11 +570,8 @@ socket.on('offer', function(offer, users, server) {
     if (!creator && !rtcPeerConnection[0]) {
         console.log('GETTING OFFER');
         //Setting ICE servers sent from the creator
-        /*
         iceServers = JSON.parse(JSON.stringify(server));
         console.log(iceServers);
-        */
-        iceServers = { iceServers: server};
         userList = [];
         userList = users.slice(0);
         updateUserList();
