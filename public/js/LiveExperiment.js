@@ -71,7 +71,7 @@ let index = -1;
 let clientRtcPeerConnection;
 
 //Provide a list of STUN servers used for the connection
-let iceServers = {
+let iceServers;/* = {
     iceServers: [
         {
             urls: 'turn:numb.viagenie.ca:5766',
@@ -92,6 +92,7 @@ let iceServers = {
         {urls: "stun:stun1.l.google.com:19302"},
     ]
 }
+*/
 
 //Check if the user created or joined the room
 let creator = false;
@@ -518,8 +519,11 @@ function saveRecording() {
 }
 
 //Get user media if a room is created of joined
-socket.on('created', async function() {
+socket.on('created', async function(server) {
     creator = true;
+    //
+    iceServers = { iceServers: server};
+    //
     //Add event listeners for the creators' buttons
     hideCameraBtn.addEventListener('click', hideStream);
     muteBtn.addEventListener('click', muteStream);
@@ -568,7 +572,7 @@ socket.on('ready', function(username) {
         rtcPeerConnection[index].createOffer()
         .then(function(offer) {
             rtcPeerConnection[index].setLocalDescription(offer);
-            socket.emit('offer', offer, roomName, userList);
+            socket.emit('offer', offer, roomName, userList, iceServers);
         })
         .catch(function(err) {
             console.log(err);
@@ -587,9 +591,12 @@ socket.on('candidate', function(candidate) {
 });
 
 //The person joining the room gets an offer from the creator to establish the connection
-socket.on('offer', function(offer, users) {
+socket.on('offer', function(offer, users, server) {
     //The person joining the room (receiving the offer) has to go through the same steps as the creator
     if (!creator && !clientRtcPeerConnection) {
+        //
+        iceServers = { iceServers: server};
+        //
         userList = [];
         userList = users.slice(0);
         updateUserList();

@@ -7,10 +7,12 @@ app.get("/", (_req, res) => {
     res.render("Homepage");
 });
 
+
 //How it works page
 app.get("/how-it-works", (_req, res) => {
     res.render("HowItWorks");
 });
+
 
 app.get("/survey", (_req, res) => {
     let questions_list = require('./public/survey/survey_questions.json');
@@ -58,7 +60,20 @@ io.on('connection', function(socket) {
         if (room == undefined) {
             //Create room
             socket.join(roomName);
-            socket.emit("created", server);
+            //Create a list of STUN/TURN servers to be used during the connection
+            const accountSid = process.env.TWILIO_SID;
+            const authToken = process.env.TWILIO_TOKEN;
+            const client = require('twilio')(accountSid, authToken);
+            let server;
+            client.tokens.create().then(token => {
+                server = JSON.parse(JSON.stringify(token.iceServers));
+            })
+            .then(()=>{
+                socket.emit("created", server);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
         //If there is already a room let user join it 
         } else {
             socket.join(roomName);
@@ -77,8 +92,8 @@ io.on('connection', function(socket) {
     });
 
     //We also need to exchange Offers in SDP. To the offer we need to exchange an answer
-    socket.on('offer', function(offer, roomName, userList) {
-        socket.broadcast.to(roomName).emit("offer", offer, userList);
+    socket.on('offer', function(offer, roomName, userList, iceServers) {
+        socket.broadcast.to(roomName).emit("offer", offer, userList, iceServers);
     });
 
     //To the offer we need to exchange an answer
