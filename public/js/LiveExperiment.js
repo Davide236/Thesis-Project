@@ -66,6 +66,9 @@ let time = 0;
 let userStream;
 //We use RTCPeerConnection to establish the connection
 let rtcPeerConnection;
+let index = -1;
+
+let clientRtcPeerConnection;
 
 //Provide a list of STUN servers used for the connection
 let iceServers = {
@@ -309,11 +312,11 @@ function leaveStream(flag) {
     }
     
     //Close the rtcpeer connection
-    if (rtcPeerConnection) {
-        rtcPeerConnection.ontrack = null;
-        rtcPeerConnection.onicecandidate = null;
-        rtcPeerConnection.close();
-        rtcPeerConnection = null;
+    if (clientRtcPeerConnection) {
+        clientRtcPeerConnection.ontrack = null;
+        clientRtcPeerConnection.onicecandidate = null;
+        clientRtcPeerConnection.close();
+        clientRtcPeerConnection = null;
     }
 
     //Stop the peer video
@@ -571,25 +574,29 @@ socket.on('ready', function(username) {
 //Exchange of public address information between ICE candidates
 socket.on('candidate', function(candidate) {
     let icecandidate = new RTCIceCandidate(candidate);
-    rtcPeerConnection.addIceCandidate(icecandidate);
+    if (creator) {
+        rtcPeerConnection.addIceCandidate(icecandidate);
+    } else {
+        clientRtcPeerConnection.addIceCandidate(icecandidate);
+    }
 });
 
 //The person joining the room gets an offer from the creator to establish the connection
 socket.on('offer', function(offer, users) {
     //The person joining the room (receiving the offer) has to go through the same steps as the creator
-    if (!creator && !rtcPeerConnection) {
+    if (!creator && !clientRtcPeerConnection) {
         userList = [];
         userList = users.slice(0);
         updateUserList();
-        rtcPeerConnection = new RTCPeerConnection(iceServers);
-        rtcPeerConnection.onicecandidate = OnIceCandidateFunction;
-        rtcPeerConnection.ontrack = OnTrackFunction;
+        clientRtcPeerConnection = new RTCPeerConnection(iceServers);
+        clientRtcPeerConnection.onicecandidate = OnIceCandidateFunction;
+        clientRtcPeerConnection.ontrack = OnTrackFunction;
         //Set offer as remote description
-        rtcPeerConnection.setRemoteDescription(offer);
+        clientRtcPeerConnection.setRemoteDescription(offer);
         //The one joining doesn't create an offer but instead creates an answer
-        rtcPeerConnection.createAnswer()
+        clientRtcPeerConnection.createAnswer()
         .then(function(answer) {
-            rtcPeerConnection.setLocalDescription(answer)
+            clientRtcPeerConnection.setLocalDescription(answer)
             socket.emit('answer', answer, roomName);
         })
         .catch(function(err) {
@@ -598,7 +605,7 @@ socket.on('offer', function(offer, users) {
     }
 });
 
-//The creator gets back the answer from the user
+//The creator gets back the answer from the user and saves it
 socket.on('answer', function(answer) {
     if (creator) {
         rtcPeerConnection.setRemoteDescription(answer);
