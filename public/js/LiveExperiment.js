@@ -65,7 +65,7 @@ let time = 0;
 //Global variable for the stream
 let userStream;
 //We use RTCPeerConnection to establish the connection
-let rtcPeerConnection;
+let rtcPeerConnection = [];
 let index = -1;
 
 let clientRtcPeerConnection;
@@ -245,8 +245,12 @@ function endStream(flag) {
     }
 
     //Close the connection to the creator
-    rtcPeerConnection.close();
-    rtcPeerConnection = null;
+    for (i = 0; i<index; i++) {
+        rtcPeerConnection[i].ontrack = null;
+        rtcPeerConnection[i].onicecandidate = null;
+        rtcPeerConnection[i].close();
+        rtcPeerConnection[i] = null;
+    }
     //Delete the stream
     deleteRoom();
     //Redirect to homepage
@@ -548,21 +552,22 @@ socket.on('ready', function(username) {
     updateUserList();
     //The creator of the room generates the offer
     if (creator) {
+        index += 1
         //We establish a connection through our Stun servers
-        rtcPeerConnection = new RTCPeerConnection(iceServers);
+        rtcPeerConnection[index] = new RTCPeerConnection(iceServers);
         //This is called every time we get a new ice candidate
-        rtcPeerConnection.onicecandidate = OnIceCandidateFunction;
+        rtcPeerConnection[index].onicecandidate = OnIceCandidateFunction;
         //This function get triggered when we get media stream from the peer with which we're connected
-        rtcPeerConnection.ontrack = OnTrackFunction;
+        rtcPeerConnection[index].ontrack = OnTrackFunction;
         //Send media information to the peer. This function takes 0 for audio and 1 for video
         //Sending audio
-        rtcPeerConnection.addTrack(userStream.getTracks()[0], userStream);
+        rtcPeerConnection[index].addTrack(userStream.getTracks()[0], userStream);
         //Sending video
-        rtcPeerConnection.addTrack(userStream.getTracks()[1], userStream);
+        rtcPeerConnection[index].addTrack(userStream.getTracks()[1], userStream);
         //Create an offer which takes a success callback function and an error one
-        rtcPeerConnection.createOffer()
+        rtcPeerConnection[index].createOffer()
         .then(function(offer) {
-            rtcPeerConnection.setLocalDescription(offer);
+            rtcPeerConnection[index].setLocalDescription(offer);
             socket.emit('offer', offer, roomName, userList);
         })
         .catch(function(err) {
@@ -575,7 +580,7 @@ socket.on('ready', function(username) {
 socket.on('candidate', function(candidate) {
     let icecandidate = new RTCIceCandidate(candidate);
     if (creator) {
-        rtcPeerConnection.addIceCandidate(icecandidate);
+        rtcPeerConnection[index].addIceCandidate(icecandidate);
     } else {
         clientRtcPeerConnection.addIceCandidate(icecandidate);
     }
@@ -608,7 +613,7 @@ socket.on('offer', function(offer, users) {
 //The creator gets back the answer from the user and saves it
 socket.on('answer', function(answer) {
     if (creator) {
-        rtcPeerConnection.setRemoteDescription(answer);
+        rtcPeerConnection[index].setRemoteDescription(answer);
     }
 });
 
