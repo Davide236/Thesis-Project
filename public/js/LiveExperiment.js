@@ -69,7 +69,22 @@ let rtcPeerConnection = [];
 let index = -1;
 
 //Provide a list of STUN servers used for the connection
-let iceServers;
+let iceServers = {
+    iceServers: [
+        {
+            urls: 'turn:numb.viagenie.ca:5766',
+            credential: 'ChemicalTwins',
+            username: 'chemicaltwinsRUG@gmail.com'
+        },
+        {
+            urls: 'turn:numb.viagenie.ca:6156',
+            credential: 'ChemicalTwins',
+            username: 'chemicaltwinsRUG@gmail.com'
+        },
+        {urls: "stun:stun.services.mozilla.com"},
+        {urls: "stun:stun1.l.google.com:19302"},
+    ]
+}
 
 //Check if the user created or joined the room
 let creator = false;
@@ -497,7 +512,7 @@ socket.on('created', async function(server) {
     creator = true;
     //Add list of STUN and TURN servers
     //iceServers = JSON.parse(JSON.stringify(server));
-    iceServers = { iceServers: server};
+    //iceServers = { iceServers: server};
     //Add event listeners for the creators' buttons
     hideCameraBtn.addEventListener('click', hideStream);
     muteBtn.addEventListener('click', muteStream);
@@ -567,7 +582,7 @@ socket.on('offer', function(offer, users, server) {
     //The person joining the room (receiving the offer) has to go through the same steps as the creator
     if (!creator && !rtcPeerConnection[0]) {
         //Setting ICE servers sent from the creator
-        iceServers = JSON.parse(JSON.stringify(server));
+        //iceServers = JSON.parse(JSON.stringify(server));
         console.log(iceServers);
         userList = [];
         userList = users.slice(0);
@@ -621,13 +636,10 @@ function OnTrackFunction(event) {
         userVideo.srcObject = event.streams[0];
         console.log(userVideo.srcObject);
         //onloadedmetadata onloadeddata ontrack
-        userVideo.play();
-        /*
-        userVideo.ontrack = function(e) {
+        userVideo.onloadedmetadata = function(e) {
             console.log('LOADING DATA FROM STREAM');
             userVideo.play();
         }
-        */
     }
 }
 
