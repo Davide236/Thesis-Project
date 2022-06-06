@@ -98,12 +98,14 @@ let creator = false;
 window.onload = function() {
     if (navigator.userAgent.indexOf("Firefox") != -1) {
         alert('Click ok to continue');
-    }
-    setTimeout(() => {
         userList.push(user);
         updateUserList();
         socket.emit('join', roomName);
-    }, 3000);
+    } else {
+        userList.push(user);
+        updateUserList();
+        socket.emit('join', roomName);
+    }
 };
 
 //Before the page get unloaded we delete the room from the database
@@ -592,7 +594,6 @@ socket.on('offer', function(offer, users, server) {
     if (!creator && !rtcPeerConnection[0]) {
         //Setting ICE servers sent from the creator
         //iceServers = JSON.parse(JSON.stringify(server));
-        console.log(iceServers);
         userList = [];
         userList = users.slice(0);
         updateUserList();
@@ -645,15 +646,15 @@ function OnTrackFunction(event) {
         userVideo.id = event.streams[0].id;
         userVideo.srcObject = event.streams[0];
         console.log(userVideo);
-        /*
         userVideo.autoplay = true;
         userVideo.playsInline = true;
         userVideo.muted = true;
-        */
+        /*
         //onloadedmetadata onloadeddata ontrack
         userVideo.onloadedmetadata = function(e) {
             userVideo.play();
         }
+        */
     }
 }
 
