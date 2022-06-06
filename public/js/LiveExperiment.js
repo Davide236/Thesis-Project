@@ -65,9 +65,7 @@ let time = 0;
 //Global variable for the stream
 let userStream;
 //We use RTCPeerConnection to establish the connection
-//let rtcPeerConnection = [];
 let rtcPeerConnection;
-//let index = -1;
 
 //Provide a list of STUN servers used for the connection
 let iceServers = {
@@ -95,32 +93,19 @@ let iceServers = {
 //Check if the user created or joined the room
 let creator = false;
 
-//When the document is ready join the room
-/*
-window.onload = function() {
-    if (navigator.userAgent.indexOf("Firefox") != -1) {
-        alert('Click ok to continue');
-        userList.push(user);
-        updateUserList();
-        socket.emit('join', roomName);
-    } else {
-        userList.push(user);
-        updateUserList();
-        socket.emit('join', roomName);
-    }
-};
-*/
-///////////////////////////////////////////////
-let exampleBTN = document.getElementById("exampleBTN");
-exampleBTN.addEventListener('click', () => {
+//The join room event is handled by a button click. This happens
+//because some browsers don't allow the video to be shown if the 
+//user hasn't interacted with the page yet
+let joinBtn = document.getElementById("joinBtn");
+joinBtn.addEventListener('click', () => {
     userList.push(user);
     updateUserList();
     socket.emit('join', roomName);
     let row = document.getElementById('hiddenRow');
     row.style.display = 'flex';
-    exampleBTN.style.display = 'none';
+    joinBtn.style.display = 'none';
 });
-//////////////////////////////////////////////
+
 
 //Before the page get unloaded we delete the room from the database
 window.onbeforeunload = function() {
@@ -256,17 +241,7 @@ function endStream(flag) {
         userVideo.srcObject.getTracks()[1].stop();  
     }
 
-    //Close all connections to the creator
-    /*
-    for (i = 0; i<index; i++) {
-        rtcPeerConnection[i].ontrack = null;
-        rtcPeerConnection[i].onicecandidate = null;
-        rtcPeerConnection[i].close();
-        rtcPeerConnection[i] = null;
-    }
-    */
-    //rtcPeerConnection.ontrack = null;
-    //rtcPeerConnection.onicecandidate = null;
+    //Close the connection to the creator
     rtcPeerConnection.close();
     rtcPeerConnection = null;
     //Delete the stream
@@ -550,7 +525,6 @@ socket.on('created', async function() {
     //Get the stream from the creator
     await getCamera();
     //mute video of creator
-    
     userVideo.muted = true;
 });
 
@@ -576,9 +550,7 @@ socket.on('ready', function(username) {
         //This is called every time we get a new ice candidate
         rtcPeerConnection.onicecandidate = OnIceCandidateFunction;
         //This function get triggered when we get media stream from the peer with which we're connected
-        //#################
         rtcPeerConnection.ontrack = OnTrackFunction;
-        //#############à####
         //Send media information to the peer. This function takes 0 for audio and 1 for video
         //Sending audio
         rtcPeerConnection.addTrack(userStream.getTracks()[0], userStream);
@@ -598,10 +570,8 @@ socket.on('ready', function(username) {
 
 //Exchange of public address information between ICE candidates
 socket.on('candidate', function(candidate) {
-    //if (creator) {
     let icecandidate = new RTCIceCandidate(candidate);
     rtcPeerConnection.addIceCandidate(icecandidate);
-    //}
 });
 
 //The person joining the room gets an offer from the creator to establish the connection
@@ -630,10 +600,9 @@ socket.on('offer', function(offer, users) {
 
 //The creator gets back the answer from the user
 socket.on('answer', function(answer) {
-    //if (creator) {
-        //Set the answer as remote description
-    rtcPeerConnection.setRemoteDescription(answer);
-    //}
+    if (creator) {
+        rtcPeerConnection.setRemoteDescription(answer);
+    }
 });
 
 
