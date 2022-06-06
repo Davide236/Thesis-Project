@@ -58,20 +58,7 @@ io.on('connection', function(socket) {
         if (room == undefined) {
             //Create room
             socket.join(roomName);
-            //Create a list of STUN/TURN servers to be used during the connection
-            const accountSid = process.env.TWILIO_SID;
-            const authToken = process.env.TWILIO_TOKEN;
-            const client = require('twilio')(accountSid, authToken);
-            let server;
-            client.tokens.create().then(token => {
-                server = JSON.parse(JSON.stringify(token.iceServers));
-            })
-            .then(()=>{
-                socket.emit("created", server);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+            socket.emit("created", server);
         //If there is already a room let user join it 
         } else {
             socket.join(roomName);
@@ -90,8 +77,8 @@ io.on('connection', function(socket) {
     });
 
     //We also need to exchange Offers in SDP. To the offer we need to exchange an answer
-    socket.on('offer', function(offer, roomName, userList, iceServers) {
-        socket.broadcast.to(roomName).emit("offer", offer, userList, iceServers);
+    socket.on('offer', function(offer, roomName, userList) {
+        socket.broadcast.to(roomName).emit("offer", offer, userList);
     });
 
     //To the offer we need to exchange an answer

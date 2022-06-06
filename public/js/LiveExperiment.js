@@ -517,11 +517,8 @@ function saveRecording() {
 }
 
 //Get user media if a room is created of joined
-socket.on('created', async function(server) {
+socket.on('created', async function() {
     creator = true;
-    //Add list of STUN and TURN servers
-    //iceServers = JSON.parse(JSON.stringify(server));
-    //iceServers = { iceServers: server};
     //Add event listeners for the creators' buttons
     hideCameraBtn.addEventListener('click', hideStream);
     muteBtn.addEventListener('click', muteStream);
@@ -572,7 +569,7 @@ socket.on('ready', function(username) {
         rtcPeerConnection[index].createOffer()
         .then(function(offer) {
             rtcPeerConnection[index].setLocalDescription(offer);
-            socket.emit('offer', offer, roomName, userList, iceServers);
+            socket.emit('offer', offer, roomName, userList);
         })
         .catch(function(err) {
             console.log(err);
@@ -589,11 +586,9 @@ socket.on('candidate', function(candidate) {
 });
 
 //The person joining the room gets an offer from the creator to establish the connection
-socket.on('offer', function(offer, users, server) {
+socket.on('offer', function(offer, users) {
     //The person joining the room (receiving the offer) has to go through the same steps as the creator
     if (!creator && !rtcPeerConnection[0]) {
-        //Setting ICE servers sent from the creator
-        //iceServers = JSON.parse(JSON.stringify(server));
         userList = [];
         userList = users.slice(0);
         updateUserList();
@@ -645,16 +640,12 @@ function OnTrackFunction(event) {
         console.log('GETTING STREAM');
         userVideo.id = event.streams[0].id;
         userVideo.srcObject = event.streams[0];
-        console.log(userVideo);
-        userVideo.autoplay = true;
-        userVideo.playsInline = true;
-        userVideo.muted = true;
-        /*
+        console.log(event.streams[0]);
         //onloadedmetadata onloadeddata ontrack
         userVideo.onloadedmetadata = function(e) {
+            console.log('Loading video');
             userVideo.play();
         }
-        */
     }
 }
 
