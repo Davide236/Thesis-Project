@@ -118,6 +118,7 @@ exampleBTN.addEventListener('click', () => {
     socket.emit('join', roomName);
     let row = document.getElementById('hiddenRow');
     row.style.display = 'flex';
+    exampleBTN.style.display = 'none';
 });
 //////////////////////////////////////////////
 
@@ -256,13 +257,18 @@ function endStream(flag) {
     }
 
     //Close all connections to the creator
+    /*
     for (i = 0; i<index; i++) {
         rtcPeerConnection[i].ontrack = null;
         rtcPeerConnection[i].onicecandidate = null;
         rtcPeerConnection[i].close();
         rtcPeerConnection[i] = null;
     }
-
+    */
+    rtcPeerConnection.ontrack = null;
+    rtcPeerConnection.onicecandidate = null;
+    rtcPeerConnection.close();
+    rtcPeerConnection = null;
     //Delete the stream
     deleteRoom();
     //Redirect to homepage
@@ -328,11 +334,11 @@ function leaveStream(flag) {
     }
     
     //Close the rtcpeer connection
-    if (rtcPeerConnection[0]) {
-        rtcPeerConnection[0].ontrack = null;
-        rtcPeerConnection[0].onicecandidate = null;
-        rtcPeerConnection[0].close();
-        rtcPeerConnection[0] = null;
+    if (rtcPeerConnection) {
+        rtcPeerConnection.ontrack = null;
+        rtcPeerConnection.onicecandidate = null;
+        rtcPeerConnection.close();
+        rtcPeerConnection = null;
     }
 
     //Stop the peer video
@@ -458,7 +464,7 @@ async function getCamera() {
     let device = await getDeviceId();
     let deviceId = device[0].deviceId
     navigator.mediaDevices.getUserMedia({
-        audio: {'echoCancellation': true},
+        audio: true,
         video: {'deviceId': deviceId, width: 640, height: 480}
     })
     .then(function(stream) {
@@ -542,8 +548,9 @@ socket.on('created', async function() {
     stopRecordBtn.addEventListener('click', stopRecording);
     saveRecordBtn.addEventListener('click', saveRecording);
     //Get the stream from the creator
-    await getCamera();
+    //await getCamera();
     //mute video of creator
+    
     userVideo.muted = true;
 });
 
@@ -642,7 +649,7 @@ socket.on('end-stream', function() {
 function OnIceCandidateFunction(event) {
     if (event.candidate) {
         //We send the candidate and the roomname
-        socket.emit('candidate',event.candidate,roomName);
+        socket.emit('candidate', event.candidate, roomName);
     }
 }
 
@@ -652,7 +659,6 @@ function OnTrackFunction(event) {
     if (!creator) {
         userVideo.srcObject = event.streams[0];
         userVideo.onloadedmetadata = function(e) {
-            console.log('Loading video');
             userVideo.play();
         }
     }
