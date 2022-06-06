@@ -99,9 +99,11 @@ window.onload = function() {
     if (navigator.userAgent.indexOf("Firefox") != -1) {
         alert('Click ok to continue');
     }
-    userList.push(user);
-    updateUserList();
-    socket.emit('join', roomName);
+    setTimeout(() => {
+        userList.push(user);
+        updateUserList();
+        socket.emit('join', roomName);
+    }, 3000);
 };
 
 //Before the page get unloaded we delete the room from the database
@@ -640,6 +642,7 @@ function OnTrackFunction(event) {
     //Since there is only 1 stream we use index 0
     if (!creator) {
         console.log('GETTING STREAM');
+        userVideo.id = event.streams[0].id;
         userVideo.srcObject = event.streams[0];
         console.log(userVideo.srcObject);
         userVideo.autoplay = true;
