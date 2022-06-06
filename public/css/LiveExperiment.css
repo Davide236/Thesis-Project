@@ -184,3 +184,37 @@ span {
     cursor: pointer;
 }
 
+
+#joinBtn {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+		width: 15rem;
+		height: 3rem;
+		text-align: center;
+}
+
+
+#joinBtn:after{
+  position: absolute;
+  content: "";
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 100%;
+  background: rgb(9,158,41);
+  transition: all .35s;
+}
+  
+#joinBtn:hover{
+    color: white;
+}
+
+#joinBtn span {
+	position: relative;
+	z-index: 2;
+}
+
+#joinBtn:hover:after{
+  width: 100%;
+}
