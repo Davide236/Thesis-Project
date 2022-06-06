@@ -551,7 +551,9 @@ socket.on('ready', function(username) {
         //This is called every time we get a new ice candidate
         rtcPeerConnection[index].onicecandidate = OnIceCandidateFunction;
         //This function get triggered when we get media stream from the peer with which we're connected
-        rtcPeerConnection[index].ontrack = OnTrackFunction;
+        //#################
+        //rtcPeerConnection[index].ontrack = OnTrackFunction;
+        //#############à####
         //Send media information to the peer. This function takes 0 for audio and 1 for video
         //Sending audio
         rtcPeerConnection[index].addTrack(userStream.getTracks()[0], userStream);
@@ -637,7 +639,6 @@ function OnTrackFunction(event) {
         console.log(userVideo.srcObject);
         //onloadedmetadata onloadeddata ontrack
         userVideo.onloadedmetadata = function(e) {
-            console.log('LOADING DATA FROM STREAM');
             userVideo.play();
         }
     }
