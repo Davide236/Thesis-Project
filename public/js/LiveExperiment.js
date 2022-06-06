@@ -593,8 +593,7 @@ socket.on('ready', function(username) {
 //Exchange of public address information between ICE candidates
 socket.on('candidate', function(candidate) {
     //if (creator) {
-        
-    var icecandidate = new RTCIceCandidate(candidate);
+    let icecandidate = new RTCIceCandidate(candidate);
     rtcPeerConnection.addIceCandidate(icecandidate);
     //}
 });
@@ -627,7 +626,7 @@ socket.on('offer', function(offer, users) {
 socket.on('answer', function(answer) {
     //if (creator) {
         //Set the answer as remote description
-        rtcPeerConnection.setRemoteDescription(answer);
+    rtcPeerConnection.setRemoteDescription(answer);
     //}
 });
 
@@ -651,11 +650,7 @@ function OnIceCandidateFunction(event) {
 function OnTrackFunction(event) {
     //Since there is only 1 stream we use index 0
     if (!creator) {
-        console.log('GETTING STREAM');
-        userVideo.id = event.streams[0].id;
         userVideo.srcObject = event.streams[0];
-        console.log(event.streams[0]);
-        //onloadedmetadata onloadeddata ontrack
         userVideo.onloadedmetadata = function(e) {
             console.log('Loading video');
             userVideo.play();
