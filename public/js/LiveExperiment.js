@@ -265,8 +265,8 @@ function endStream(flag) {
         rtcPeerConnection[i] = null;
     }
     */
-    rtcPeerConnection.ontrack = null;
-    rtcPeerConnection.onicecandidate = null;
+    //rtcPeerConnection.ontrack = null;
+    //rtcPeerConnection.onicecandidate = null;
     rtcPeerConnection.close();
     rtcPeerConnection = null;
     //Delete the stream
@@ -571,7 +571,6 @@ socket.on('ready', function(username) {
     updateUserList();
     //The creator of the room generates the offer
     if (creator) {
-        index += 1;
         //We establish a connection through our Stun servers
         rtcPeerConnection = new RTCPeerConnection(iceServers);
         //This is called every time we get a new ice candidate
