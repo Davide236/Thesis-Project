@@ -81,6 +81,11 @@ let iceServers = {
             credential: 'ChemicalTwins',
             username: 'chemicaltwinsRUG@gmail.com'
         },
+        {
+            "urls":"turn:numb.viagenie.ca", 
+            "username":"webrtc@live.com", 
+            "credential":"muazkh"
+        },
         {urls: "stun:stun.services.mozilla.com"},
         {urls: "stun:stun1.l.google.com:19302"},
     ]
@@ -637,10 +642,15 @@ function OnTrackFunction(event) {
         console.log('GETTING STREAM');
         userVideo.srcObject = event.streams[0];
         console.log(userVideo.srcObject);
+        userVideo.autoplay = true;
+        userVideo.playsInline = true;
+        userVideo.muted = true;
         //onloadedmetadata onloadeddata ontrack
+        /*
         userVideo.onloadedmetadata = function(e) {
             userVideo.play();
         }
+        */
     }
 }
 
