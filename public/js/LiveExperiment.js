@@ -548,7 +548,7 @@ socket.on('created', async function() {
     stopRecordBtn.addEventListener('click', stopRecording);
     saveRecordBtn.addEventListener('click', saveRecording);
     //Get the stream from the creator
-    //await getCamera();
+    await getCamera();
     //mute video of creator
     
     userVideo.muted = true;
