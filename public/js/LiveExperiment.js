@@ -595,7 +595,7 @@ socket.on('offer', function(offer, users, server) {
     //The person joining the room (receiving the offer) has to go through the same steps as the creator
     if (!creator && !clientRtcPeerConnection) {
         //
-        iceServers = { iceServers: server};
+        iceServers = JSON.parse(JSON.stringify(server));
         //
         userList = [];
         userList = users.slice(0);
