@@ -65,8 +65,9 @@ let time = 0;
 //Global variable for the stream
 let userStream;
 //We use RTCPeerConnection to establish the connection
-let rtcPeerConnection = [];
-let index = -1;
+//let rtcPeerConnection = [];
+let rtcPeerConnection;
+//let index = -1;
 
 //Provide a list of STUN servers used for the connection
 let iceServers = {
@@ -116,7 +117,7 @@ exampleBTN.addEventListener('click', () => {
     updateUserList();
     socket.emit('join', roomName);
     let row = document.getElementById('hiddenRow');
-    row.style.display = 'block';
+    row.style.display = 'flex';
 });
 //////////////////////////////////////////////
 
@@ -565,22 +566,22 @@ socket.on('ready', function(username) {
     if (creator) {
         index += 1;
         //We establish a connection through our Stun servers
-        rtcPeerConnection[index] = new RTCPeerConnection(iceServers);
+        rtcPeerConnection = new RTCPeerConnection(iceServers);
         //This is called every time we get a new ice candidate
-        rtcPeerConnection[index].onicecandidate = OnIceCandidateFunction;
+        rtcPeerConnection.onicecandidate = OnIceCandidateFunction;
         //This function get triggered when we get media stream from the peer with which we're connected
         //#################
-        //rtcPeerConnection[index].ontrack = OnTrackFunction;
+        rtcPeerConnection.ontrack = OnTrackFunction;
         //#############à####
         //Send media information to the peer. This function takes 0 for audio and 1 for video
         //Sending audio
-        rtcPeerConnection[index].addTrack(userStream.getTracks()[0], userStream);
+        rtcPeerConnection.addTrack(userStream.getTracks()[0], userStream);
         //Sending video
-        rtcPeerConnection[index].addTrack(userStream.getTracks()[1], userStream);
+        rtcPeerConnection.addTrack(userStream.getTracks()[1], userStream);
         //Create an offer which takes a success callback function and an error one
-        rtcPeerConnection[index].createOffer()
+        rtcPeerConnection.createOffer()
         .then(function(offer) {
-            rtcPeerConnection[index].setLocalDescription(offer);
+            rtcPeerConnection.setLocalDescription(offer);
             socket.emit('offer', offer, roomName, userList);
         })
         .catch(function(err) {
@@ -591,28 +592,29 @@ socket.on('ready', function(username) {
 
 //Exchange of public address information between ICE candidates
 socket.on('candidate', function(candidate) {
-    if (creator) {
-        var icecandidate = new RTCIceCandidate(candidate);
-        rtcPeerConnection[index].addIceCandidate(icecandidate);
-    }
+    //if (creator) {
+        
+    var icecandidate = new RTCIceCandidate(candidate);
+    rtcPeerConnection.addIceCandidate(icecandidate);
+    //}
 });
 
 //The person joining the room gets an offer from the creator to establish the connection
 socket.on('offer', function(offer, users) {
     //The person joining the room (receiving the offer) has to go through the same steps as the creator
-    if (!creator && !rtcPeerConnection[0]) {
+    if (!creator && !rtcPeerConnection) {
         userList = [];
         userList = users.slice(0);
         updateUserList();
-        rtcPeerConnection[0] = new RTCPeerConnection(iceServers);
-        rtcPeerConnection[0].onicecandidate = OnIceCandidateFunction;
-        rtcPeerConnection[0].ontrack = OnTrackFunction;
+        rtcPeerConnection = new RTCPeerConnection(iceServers);
+        rtcPeerConnection.onicecandidate = OnIceCandidateFunction;
+        rtcPeerConnection.ontrack = OnTrackFunction;
         //Set offer as remote description
-        rtcPeerConnection[0].setRemoteDescription(offer);
+        rtcPeerConnection.setRemoteDescription(offer);
         //The one joining doesn't create an offer but instead creates an answer
-        rtcPeerConnection[0].createAnswer()
+        rtcPeerConnection.createAnswer()
         .then(function(answer) {
-            rtcPeerConnection[0].setLocalDescription(answer)
+            rtcPeerConnection.setLocalDescription(answer)
             socket.emit('answer', answer, roomName);
         })
         .catch(function(err) {
@@ -623,10 +625,10 @@ socket.on('offer', function(offer, users) {
 
 //The creator gets back the answer from the user
 socket.on('answer', function(answer) {
-    if (creator) {
+    //if (creator) {
         //Set the answer as remote description
-        rtcPeerConnection[index].setRemoteDescription(answer);
-    }
+        rtcPeerConnection.setRemoteDescription(answer);
+    //}
 });
 
 
