@@ -8,16 +8,6 @@ let videoDevice = document.getElementById("videoDevice").innerHTML;
 let dataType = document.getElementById('dataType').innerHTML;
 
 
-///////////////////////////////////////////////
-let exampleBTN = document.getElementById("exampleBTN");
-exampleBTN.addEventListener('click', () => {
-    let row = document.getElementById('hiddenRow');
-    row.style.display = 'block';
-    userList.push(user);
-    updateUserList();
-    socket.emit('join', roomName);
-})
-//////////////////////////////////////////////
 //Select all the different buttons
 let muteBtn = document.getElementById("muteBtn");
 let hideCameraBtn = document.getElementById("hideCameraBtn");
@@ -105,6 +95,7 @@ let iceServers = {
 let creator = false;
 
 //When the document is ready join the room
+/*
 window.onload = function() {
     if (navigator.userAgent.indexOf("Firefox") != -1) {
         alert('Click ok to continue');
@@ -117,6 +108,17 @@ window.onload = function() {
         socket.emit('join', roomName);
     }
 };
+*/
+///////////////////////////////////////////////
+let exampleBTN = document.getElementById("exampleBTN");
+exampleBTN.addEventListener('click', () => {
+    userList.push(user);
+    updateUserList();
+    socket.emit('join', roomName);
+    let row = document.getElementById('hiddenRow');
+    row.style.display = 'block';
+});
+//////////////////////////////////////////////
 
 //Before the page get unloaded we delete the room from the database
 window.onbeforeunload = function() {
