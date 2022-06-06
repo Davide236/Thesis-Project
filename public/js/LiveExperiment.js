@@ -8,6 +8,16 @@ let videoDevice = document.getElementById("videoDevice").innerHTML;
 let dataType = document.getElementById('dataType').innerHTML;
 
 
+///////////////////////////////////////////////
+let exampleBTN = document.getElementById("exampleBTN");
+exampleBTN.addEventListener('click', () => {
+    let row = document.getElementById('hiddenRow');
+    row.style.display = 'block';
+    userList.push(user);
+    updateUserList();
+    socket.emit('join', roomName);
+})
+//////////////////////////////////////////////
 //Select all the different buttons
 let muteBtn = document.getElementById("muteBtn");
 let hideCameraBtn = document.getElementById("hideCameraBtn");
