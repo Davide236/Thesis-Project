@@ -127,7 +127,7 @@ function updateChart() {
         dataChart.data.datasets.forEach((dataset) => {
             if (dataset.name == 'Sensor') {
                 dataset.data.push(data[index]);
-            } else {
+            } else if (simulationData) {
                 let simulatedData = getSimulatedData(data[index]);
                 dataset.data.push(simulatedData);
             }
@@ -176,7 +176,7 @@ function closeSimulation() {
 
 function getSimulatedData(val) {
     //Add a formula here
-    return 3*value;
+    return val*value;
 }
 
 function trySimulation() {
