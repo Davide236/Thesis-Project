@@ -64,35 +64,15 @@ let time = 0;
 
 //Global variable for the stream
 let userStream;
-//We use RTCPeerConnection to establish the connection
+//We use RTCPeerConnection to establish the connection for the creator
 let rtcPeerConnection = [];
 let index = -1;
 
+//RTCPeerConnection used to save the connection of the client
 let clientRtcPeerConnection;
 
-//Provide a list of STUN servers used for the connection
-let iceServers;/* = {
-    iceServers: [
-        {
-            urls: 'turn:numb.viagenie.ca:5766',
-            credential: 'ChemicalTwins',
-            username: 'chemicaltwinsRUG@gmail.com'
-        },
-        {
-            urls: 'turn:numb.viagenie.ca:6156',
-            credential: 'ChemicalTwins',
-            username: 'chemicaltwinsRUG@gmail.com'
-        },
-        {
-            urls:"turn:numb.viagenie.ca", 
-            username:"webrtc@live.com", 
-            credential:"muazkh"
-        },
-        {urls: "stun:stun.services.mozilla.com"},
-        {urls: "stun:stun1.l.google.com:19302"},
-    ]
-}
-*/
+//Variable used to store a list of STUN servers used for the connection
+let iceServers;
 
 //Check if the user created or joined the room
 let creator = false;
@@ -426,6 +406,8 @@ socket.on('question', function(question, answers) {
         });
         $('#select-answer').append(selectHTML);
         showQuestion();
+        //Start the simulation for the user answer
+        startSimulation();
     }
 });
 
@@ -688,4 +670,8 @@ function addAnswerInput() {
     </form>
     `
     $('#answer-input').append(inputHTML);
+}
+
+function startSimulation() {
+    console.log("Starting the simulation");
 }

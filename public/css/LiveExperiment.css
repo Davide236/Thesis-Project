@@ -113,6 +113,7 @@ span {
 }
 
 
+
 #studentAnswers {
     border: 1px solid rgb(9,158,41);
     margin-right: 15%;
@@ -217,4 +218,9 @@ span {
 
 #joinBtn:hover:after{
   width: 100%;
+}
+
+#simulationAnswers input{
+    margin-top: 1rem;
+    width: 10%;
 }

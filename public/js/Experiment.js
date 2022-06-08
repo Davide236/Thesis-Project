@@ -10,7 +10,8 @@ let sidebarContent = document.querySelector('.sidebar-content');
 let experimentData = document.getElementById('experimentData');
 let chart = document.getElementById('dataChart');
 let currentData = document.getElementById('currentData');
-
+let simulationBtn = document.getElementById('simulationBtn');
+let simulationForm = document.getElementById('simulationForm');
 
 const video = document.getElementById('recorded-video');
 
@@ -28,6 +29,10 @@ let index = 0;
 //Flag for signalling the beginning of the data display
 let sendingData = false;
 
+//Value of the simulation
+let value = 0;
+//Flag that signals if we have to show the simulation
+let simulationData = false;
 
 //Chart which displays the recorded data
 const dataChart = new Chart(
@@ -37,8 +42,15 @@ const dataChart = new Chart(
         data: {
             labels: [],
             datasets: [{
+                name: 'Sensor',
                 label: `${dataType} at time t`,
                 backgroundColor: 'rgb(9,158,41)',
+                data: []
+            },
+            {
+                name: 'Simulation',
+                label: `${dataType} based on the simulation`,
+                backgroundColor: 'rgb(66, 152, 245)',
                 data: []
             }]
         },
@@ -75,6 +87,7 @@ window.onload = function() {
 
 //Add listeners to the video element
 function addListeners() {
+    simulationBtn.addEventListener('click', startSimulation);
     //If the user pauses the video then also the data stream is paused
     video.addEventListener('pause', ()=> {
         sendingData = false;
@@ -112,7 +125,12 @@ function updateChart() {
         dataChart.data.labels.push(index);
         //Push data on 'y-axis' (y.coordinates)
         dataChart.data.datasets.forEach((dataset) => {
-            dataset.data.push(data[index]);
+            if (dataset.name == 'Sensor') {
+                dataset.data.push(data[index]);
+            } else {
+                let simulatedData = getSimulatedData(data[index]);
+                dataset.data.push(simulatedData);
+            }
         });
         
         checkRemove();
@@ -130,7 +148,9 @@ function checkRemove() {
         //dataChart.data.labels.shift();
         dataChart.data.labels.splice(0,1);
         dataChart.data.datasets.forEach((dataset) => {
-            dataset.data.splice(0,1);
+            if (dataset.data.length > MAX_GRAPH) {
+                dataset.data.splice(0,1);
+            }
         });
     }
 }
@@ -139,10 +159,30 @@ function checkRemove() {
 //Function to hide the contents containing the data if the user opens the sidebar
 function toggleSidebar() {
     experimentData.classList.toggle('material-hidden');
-
     sidebar.classList.toggle('sidebar-shown');
     sidebarContent.classList.toggle('sidebar-content-shown');
 }
 
+function startSimulation() {
+    video.pause();
+    simulationForm.style.display = 'block';
+
+}
+
+function closeSimulation() {
+    video.play();
+    simulationForm.style.display = 'none';
+}
+
+function getSimulatedData(val) {
+    //Add a formula here
+    return 3*value;
+}
+
+function trySimulation() {
+    value = document.querySelector('input[name="LED"]:checked').value;
+    simulationData = true;
+    closeSimulation();
+}
 
 
