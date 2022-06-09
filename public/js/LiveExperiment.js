@@ -676,7 +676,7 @@ function closeSimulation() {
 //Function that calculates the difference between the data and the simulation
 function getSimulatedData(val) {
     //Add a formula here
-    return val*value;
+    return val*simulationValue;
 }
 
 //Function which get's the value inputted in the simulation tab and applies it to the graph
