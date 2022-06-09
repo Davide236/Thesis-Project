@@ -562,9 +562,8 @@ socket.on('candidate', function(candidate) {
 socket.on('offer', function(offer, users, server) {
     //The person joining the room (receiving the offer) has to go through the same steps as the creator
     if (!creator && !clientRtcPeerConnection) {
-        //
+        //Save list of ICE Servers sent from the experiment creator
         iceServers = JSON.parse(JSON.stringify(server));
-        //
         userList = [];
         userList = users.slice(0);
         updateUserList();
