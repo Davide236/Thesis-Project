@@ -38,7 +38,7 @@ let simulationData = false;
 const dataChart = new Chart(
     chart,
     {
-        type: 'line',
+        type: 'scatter',
         data: {
             labels: [],
             datasets: [{
