@@ -126,10 +126,10 @@ function updateChart() {
         //Push data on 'y-axis' (y.coordinates)
         dataChart.data.datasets.forEach((dataset) => {
             if (dataset.name == 'Sensor') {
-                dataset.data.push({'x':data[index], 'y': index});
+                dataset.data.push({x:data[index], y: index});
             } else if (simulationData) {
                 let simulatedData = getSimulatedData(data[index]);
-                dataset.data.push({'x': simulatedData, 'y': index});
+                dataset.data.push({x: simulatedData, y: index});
             }
         });
         
