@@ -599,6 +599,7 @@ socket.on('end-stream', function() {
 //Set a simulation constant that will not change anymore
 socket.on('stop_simulation', function() {
     simulationConstant = getSimulatedData(Number(currentData.textContent));
+    simulationBtn.style.display = 'none';
 })
 
 
