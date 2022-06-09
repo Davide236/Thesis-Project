@@ -113,6 +113,7 @@ const dataChart = new Chart(
         data: {
             labels: [],
             datasets: [{
+                name: 'Sensor',
                 label: `${dataType} at time t`,
                 backgroundColor: 'rgb(9,158,41)',
                 data: []

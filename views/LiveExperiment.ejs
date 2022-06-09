@@ -109,6 +109,23 @@
                 <br><hr>
                 <strong>Current Data: </strong> <span id="currentData"></span>
                 <br><hr>
+                <form action="#" class="form-container" style="display: none;" id="simulationForm">
+                    <div class="form-elements">
+                            <h3>Simulation</h3>
+                            <br><hr>
+                            <div class="form-group" id="simulationAnswers">
+                                <label for="question">How many leds do you want to turn on ? </label>
+                                <input type="radio" name="LED" value="1" checked>1
+                                <input type="radio" name="LED" value="2">2
+                                <input type="radio" name="LED" value="3">3
+                                <input type="radio" name="LED" value="4">4
+                                <input type="radio" name="LED" value="5">5
+                            </div>
+                            <br><hr>
+                            <button type="button" onclick="trySimulation()">Try</button>
+                            <button type="button" onclick="closeSimulation()">Close</button>
+                    </div>
+                </form>
             </div>
             <!--Sidebar for the experiment, where information such as the experiment name, description and user list are found-->
             <div class="sidebar">
