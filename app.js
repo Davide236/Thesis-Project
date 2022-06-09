@@ -33,11 +33,10 @@ let io = socket(server);
 //Post request to send data (from the script) to the application
 app.post("/live-data/:room", (req, res) => {
     const {room} = req.params;
-    const {value, student_val, average_answer} = req.body;
-    console.log(average_answer);
+    const {value} = req.body;
     res.status(200).send("Data Received");
     //Send the data to the room
-    io.sockets.to(room).emit('data', value, student_val, average_answer);
+    io.sockets.to(room).emit('data', value);
 });
 
 
@@ -121,6 +120,11 @@ io.on('connection', function(socket) {
     //User answers the question
     socket.on('user-answer', function(roomName, answer, user) {
         socket.broadcast.to(roomName).emit("user-answer", answer,user);
+    });
+
+    //End the simulations
+    socket.on('stop_simulation', function(roomName) {
+        socket.broadcast.to(roomName).emit('stop_simulation');
     });
 
 });

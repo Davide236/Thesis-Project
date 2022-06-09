@@ -47,9 +47,11 @@
                 <button id="endStreamBtn">End Stream</button>
                 <button id="askQuestionBtn">Ask Question</button>
                 <button id="showAnswerBtn">Show Answers</button>
+                <button id="stopSimulationBtn">Stop Simulations</button>
                 <% } else { %>
                 <!--Button for users other than the creator-->
                 <button id="leaveRoomBtn">Leave</button>
+                <button id="simulationBtn">Simulation</button>
                 <% } %>
             </div>
         </div>
@@ -107,9 +109,6 @@
                 <br><hr>
                 <strong>Current Data: </strong> <span id="currentData"></span>
                 <br><hr>
-                <canvas id="studentChart" style="display: none;"></canvas>
-                <br><hr>
-                <span id="averageAnswer" style="display: none;"></span>
             </div>
             <!--Sidebar for the experiment, where information such as the experiment name, description and user list are found-->
             <div class="sidebar">

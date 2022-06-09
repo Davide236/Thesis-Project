@@ -18,6 +18,8 @@ let showAnswerBtn = document.getElementById("showAnswerBtn");
 let recordBtn = document.getElementById('recordBtn');
 let stopRecordBtn = document.getElementById('stopRecordBtn');
 let saveRecordBtn = document.getElementById('saveRecordBtn')
+let simulationBtn = document.getElementById('simulationBtn');
+let stopSimulationBtn = document.getElementById('stopSimulationBtn');
 
 //Select all the different HTML elements that will be used later
 let userVideo = document.getElementById("experiment-video");
@@ -27,9 +29,7 @@ let sidebarContent = document.querySelector('.sidebar-content');
 let experimentData = document.getElementById('experimentData');
 let studentAnswers = document.getElementById('studentAnswers');
 let dChart = document.getElementById('dataChart');
-let sChart = document.getElementById('studentChart');
 let currentData = document.getElementById('currentData');
-let averageStudentAnswer = document.getElementById('averageAnswer');
 
 document.getElementById("sidebarButton").addEventListener('click', toggleSidebar);
 
@@ -77,6 +77,13 @@ let iceServers;
 //Check if the user created or joined the room
 let creator = false;
 
+//Value of the simulation
+let simulationValue = 0;
+//Flag that signals if we have to show the simulation
+let simulationData = false;
+//Value to keep constant after the simulation is done
+let simulationConstant = 0;
+
 //The join room event is handled by a button click. This happens
 //because some browsers don't allow the video to be shown if the 
 //user hasn't interacted with the page yet
@@ -109,37 +116,11 @@ const dataChart = new Chart(
                 label: `${dataType} at time t`,
                 backgroundColor: 'rgb(9,158,41)',
                 data: []
-            }]
-        },
-        options: {
-            scales: {
-                y: {
-                    title: {
-                        display: true,
-                        text: dataType
-                    }
-                },
-                x: {
-                    title: {
-                        display: true,
-                        text: 'Time (t)'
-                    }
-                }
-            }
-        }
-    }
-);
-
-//Chart used to display the data from the student answers
-const studentChart = new Chart(
-    sChart,
-    {
-        type: 'line',
-        data: {
-            labels: [],
-            datasets: [{
-                label: `${dataType} at time t based on students answers`,
-                backgroundColor: 'rgb(9,158,41)',
+            },
+            {
+                name: 'Simulation',
+                label: `${dataType} based on the simulation`,
+                backgroundColor: 'rgb(66, 152, 245)',
                 data: []
             }]
         },
@@ -161,6 +142,7 @@ const studentChart = new Chart(
         }
     }
 );
+
 
 //Function used to mute the stream
 function muteStream() {
@@ -243,7 +225,17 @@ function addToChart(chart,val) {
     recordingExperiment.push(val);
     chart.data.labels.push(time);
     chart.data.datasets.forEach((dataset) => {
-        dataset.data.push(val);
+        if (dataset.name == 'Sensor') {
+            dataset.data.push(val);
+        } else if (simulationData) {
+            if (simulationConstant) {
+                console.log('CONSTANT');
+                dataset.data.push(simulationConstant);
+            } else {
+                let simulatedData = getSimulatedData(val);
+                dataset.data.push(simulatedData);
+            }
+        }
     });
     checkRemove(chart);
     chart.update();
@@ -255,26 +247,18 @@ function checkRemove(chart) {
     if (length > MAX_GRAPH) {
         chart.data.labels.splice(0,1);
         chart.data.datasets.forEach((dataset) => {
-            dataset.data.splice(0,1);
+            if (dataset.data.length > MAX_GRAPH) {
+                dataset.data.splice(0,1);
+            }
         });
     }
 }
 
 //Socket listens when data arrives and adds it to the chart
-socket.on('data', function(values, student_val, average_answer) {
+socket.on('data', function(values) {
     time++;
     addToChart(dataChart,values);
     currentData.textContent = values;
-    //If we're also receiving data from the student answers then we display the second chart
-    if (student_val) {
-        if (!digitalCount) {
-            digitalCount++;
-            sChart.style.display = 'block';
-            averageStudentAnswer.style.display = 'block';
-            averageStudentAnswer.innerHTML = `<strong>Average Answer</strong> ${average_answer}`;
-        }
-        addToChart(studentChart, student_val);
-    }
 });
 
 
@@ -503,9 +487,8 @@ function saveRecording() {
 //Get user media if a room is created of joined
 socket.on('created', async function(server) {
     creator = true;
-    //
+    //Add ICE Servers for the stream
     iceServers = { iceServers: server};
-    //
     //Add event listeners for the creators' buttons
     hideCameraBtn.addEventListener('click', hideStream);
     muteBtn.addEventListener('click', muteStream);
@@ -515,6 +498,7 @@ socket.on('created', async function(server) {
     recordBtn.addEventListener('click', recordVideo);
     stopRecordBtn.addEventListener('click', stopRecording);
     saveRecordBtn.addEventListener('click', saveRecording);
+    stopSimulationBtn.addEventListener('click', stopSimulation);
     //Get the stream from the creator
     await getCamera();
     //mute video of creator
@@ -525,6 +509,7 @@ socket.on('created', async function(server) {
 socket.on('joined', function() {
     creator = false;
     leaveRoomBtn.addEventListener('click', leaveStream);
+    simulationBtn.addEventListener('click', startSimulation);
     //Tell that the user is ready to receive the media
     socket.emit('ready', roomName, user);
 });
@@ -612,6 +597,10 @@ socket.on('end-stream', function() {
     leaveStream('true');
 });
 
+//Set a simulation constant that will not change anymore
+socket.on('stop_simulation', function() {
+    simulationConstant = getSimulatedData(Number(currentData.textContent));
+})
 
 
 //Here we have to perform the handshake (exchange ice candidates)
@@ -672,6 +661,32 @@ function addAnswerInput() {
     $('#answer-input').append(inputHTML);
 }
 
+//Function which opens the simulation tab
 function startSimulation() {
-    console.log("Starting the simulation");
+    simulationForm.style.display = 'block';
+
 }
+
+//Function that closes the simulation tab
+function closeSimulation() {
+    simulationForm.style.display = 'none';
+}
+
+//Function that calculates the difference between the data and the simulation
+function getSimulatedData(val) {
+    //Add a formula here
+    return val*value;
+}
+
+//Function which get's the value inputted in the simulation tab and applies it to the graph
+function trySimulation() {
+    simulationValue = document.querySelector('input[name="LED"]:checked').value;
+    simulationData = true;
+    closeSimulation();
+}
+
+//Function which stops the simulation for the different users
+function stopSimulation() {
+    socket.emit('stop_simulation', roomName);
+}
+
