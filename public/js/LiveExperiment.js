@@ -227,14 +227,13 @@ function addToChart(chart,val) {
     chart.data.labels.push(time);
     chart.data.datasets.forEach((dataset) => {
         if (dataset.name == 'Sensor') {
-            dataset.data.push(val);
+            dataset.data.push({y:val,x: time});
         } else if (simulationData) {
             if (simulationConstant) {
-                console.log('CONSTANT');
-                dataset.data.push(simulationConstant);
+                dataset.data.push({y:simulationConstant, x:time});
             } else {
                 let simulatedData = getSimulatedData(val);
-                dataset.data.push(simulatedData);
+                dataset.data.push({y:simulatedData, x:time});
             }
         }
     });
