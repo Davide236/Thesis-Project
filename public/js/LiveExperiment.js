@@ -674,8 +674,27 @@ function closeSimulation() {
 
 //Function that calculates the difference between the data and the simulation
 function getSimulatedData(val) {
-    //Add a formula here
-    return val*simulationValue;
+    simulated_value = 0;
+    switch(simulationValue) {
+        case 20:
+            simulated_value = val/(5.5);
+            break;
+        case 40:
+            simulated_value = val/(8.1);
+            break;
+        case 60:
+            simulated_value = val/(10.1)
+            break;
+        case 80:
+            simulated_value = val/(12.1);
+            break;
+        case 100:
+            simulated_value = val/(14.3);
+            break;
+        default:
+            simulated_value = val;
+    }
+    return simulated_value;
 }
 
 //Function which get's the value inputted in the simulation tab and applies it to the graph

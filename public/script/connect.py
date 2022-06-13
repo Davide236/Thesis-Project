@@ -75,7 +75,6 @@ def send_data():
         headers = {"Content-Type": "application/json; charset=utf-8"}
         value = get_sensor_value()
         data = {'value': value}
-        print(data)
         try:
             requests.post(url = URL_post + room,headers=headers, json=data, timeout=1)
         except:
@@ -91,11 +90,6 @@ def find_student_value(student):
 
 
 def change_lights(value):
-    # The value has to be a number between 0-100
-    if value < 0:
-        value = 0
-    if value > 100:
-        value = 100
     # Send data to arduino
     arduino.write(bytes(str(value), 'utf-8'))
     
@@ -122,8 +116,7 @@ while True:
         print("Change value")
         student = values['student_name']
         value = find_student_value(student)
-        if value:
-            change_lights(value)
+        change_lights(value)
 
 # If the threads is still active then we terminate it
 if send_data_thread.is_alive():
