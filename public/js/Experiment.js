@@ -210,7 +210,7 @@ function getSimulatedData(val) {
 
 //Function which gets the value of the simulation the user wants to try
 function trySimulation() {
-    value = document.querySelector('input[name="LED"]:checked').value;
+    value = Number(document.querySelector('input[name="LED"]:checked').value);
     simulationData = true;
     closeSimulation();
 }
