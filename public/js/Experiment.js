@@ -201,7 +201,6 @@ function getSimulatedData(val) {
             break;
         default:
             simulated_value = val;
-            console.log('same');
             break;
     }
     console.log(simulated_value)
