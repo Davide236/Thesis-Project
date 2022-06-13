@@ -182,7 +182,8 @@ function closeSimulation() {
 //how the actual data might change if the value of the LED changes
 function getSimulatedData(val) {
     simulated_value = 0;
-    switch(simulated_value) {
+    console.log(value);
+    switch(value) {
         case 20:
             simulated_value = val/(5.5);
             break;
@@ -200,7 +201,10 @@ function getSimulatedData(val) {
             break;
         default:
             simulated_value = val;
+            console.log('same');
+            break;
     }
+    console.log(simulated_value)
     return simulated_value;
 }
 
