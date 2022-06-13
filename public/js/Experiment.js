@@ -163,22 +163,48 @@ function toggleSidebar() {
     sidebarContent.classList.toggle('sidebar-content-shown');
 }
 
+//Open the simulation form and pause the video
 function startSimulation() {
     video.pause();
     simulationForm.style.display = 'block';
 
 }
 
+//Close the simulation form and resume the video
 function closeSimulation() {
     video.play();
     simulationForm.style.display = 'none';
 }
 
+//Function which, based on the value of the intensity of the LED
+//will output a 'simulation' value of the Photoresistor based on previous
+//tests and experiments. This is supposed to give the student and idea on 
+//how the actual data might change if the value of the LED changes
 function getSimulatedData(val) {
-    //Add a formula here
-    return val*value;
+    simulated_value = 0;
+    switch(value) {
+        case 20:
+            simulated_value = val/(5.5);
+            break;
+        case 40:
+            simulated_value = val/(8.1);
+            break;
+        case 60:
+            simulated_value = val/(10.1)
+            break;
+        case 80:
+            simulated_value = val/(12.1);
+            break;
+        case 100:
+            simulated_value = val/(14.3);
+            break;
+        default:
+            simulated_value = val;
+    }
+    return simulated_value;
 }
 
+//Function which gets the value of the simulation the user wants to try
 function trySimulation() {
     value = document.querySelector('input[name="LED"]:checked').value;
     simulationData = true;

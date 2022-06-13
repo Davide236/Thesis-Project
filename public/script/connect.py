@@ -3,9 +3,10 @@ import requests
 import time
 import PySimpleGUI as sg
 import sys
+import serial
 
-#Import sensor data
-from sensor import get_value
+#Create Serial port object to connect to arduino
+arduino = serial.Serial(port='/dev/ttyACM0', baudrate=115200, timeout=.1)
 
 sys.tracebacklimit = None
 
@@ -17,7 +18,6 @@ URL_get = 'https://chemical-twins.herokuapp.com/data/live-data/'
 # Global variables used in the program
 student_answers = []
 room = ''
-formula = None
 allowed_terms = ['x', 'var', '(', ')', '+', '-', '*', '/']
 
 # Layout of the GUI for the user
@@ -50,24 +50,40 @@ def get_data():
         print("\nHTTP request non completed. Try to enter a different code and make sure that you have an active stream\n")
         return []
 
+# Function which gets data from the arduino sensor and formats it
+def get_sensor_value():
+    # Send data to arduino
+    arduino.write(bytes('1', 'utf-8'))
+    time.sleep(1)
+    # read a byte string
+    data_bytes = arduino.readline() 
+    # decode byte string into Unicode         
+    data_decoded = data_bytes.decode() 
+    # remove \n and \r 
+    data_cleaned = data_decoded.rstrip()
+    if data_cleaned:
+        # Turn data into floating point
+        data = float(data_cleaned)
+        return data
+    # If there is an error in getting the data
+    return 0
 
 # Function used to send data to the application every 2 seconds
 def send_data():
     while True:
         time.sleep(2)
         headers = {"Content-Type": "application/json; charset=utf-8"}
-        value = get_value()
+        value = get_sensor_value()
         data = {'value': value}
+        print(data)
         try:
             requests.post(url = URL_post + room,headers=headers, json=data, timeout=1)
         except:
             print("\nHTTP request non completed. Try to enter a different code and make sure that you have an active stream\n")
 
+# Let the creator decide to take one of the students answers
 def find_student_value(student):
-    print(student_answers)
-    print(student)
     for values in student_answers:
-        print(values)
         if values[0] == student:
             return values[1]
     print('No student found')
@@ -75,7 +91,13 @@ def find_student_value(student):
 
 
 def change_lights(value):
-    print(value)
+    # The value has to be a number between 0-100
+    if value < 0:
+        value = 0
+    if value > 100:
+        value = 100
+    # Send data to arduino
+    arduino.write(bytes(str(value), 'utf-8'))
     
 # Create two threads for sending data
 send_data_thread = multiprocessing.Process(target=send_data, args=())
@@ -102,9 +124,8 @@ while True:
         value = find_student_value(student)
         if value:
             change_lights(value)
-        #send_twins_thread.start()
 
-# If the threads are still active then we terminate them
+# If the threads is still active then we terminate it
 if send_data_thread.is_alive():
     send_data_thread.terminate()
 

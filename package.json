@@ -4,7 +4,7 @@
   "description": "Thesis project application",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "start": "node app.js"
   },
   "author": "Davide Rigoni",
@@ -20,6 +20,7 @@
     "express-session": "^1.17.2",
     "fs": "^0.0.1-security",
     "http": "^0.0.1-security",
+    "jest": "^28.1.1",
     "method-override": "^3.0.0",
     "mongoose": "^6.3.1",
     "multer": "^1.4.4",
