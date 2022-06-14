@@ -1,6 +1,7 @@
-var mod = require('../configuration/router-config');
-const router = mod.router;
-const passport = mod.passport;
+const mod = require('../configuration/router-config');
+const new_router = mod.newRouter();
+const router = new_router[0];
+const passport = new_router[1];
 const UserController = require('../controllers/user-controller');
 const { isLoggedIn } = require('../middleware/user-login');
 

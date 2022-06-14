@@ -128,7 +128,6 @@ exports.uploadExperiment = async function(req, res) {
         req.flash('success', 'Experiment saved successfully');
         res.redirect('/');
     } catch(err) {
-        console.log(err);
         req.flash('error', 'Error in saving the experiment, try again');
         res.redirect('/');
     }

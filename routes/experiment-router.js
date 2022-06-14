@@ -1,6 +1,7 @@
 // Require express and connect it to the router
 const mod = require('../configuration/router-config');
-const router = mod.router;
+const new_router = mod.newRouter();
+const router = new_router[0];
 
 //Setup of Multer, used to save temporarily the files (.mp4/.json) uploaded by the user
 const multer = require("multer");

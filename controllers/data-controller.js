@@ -11,7 +11,7 @@ exports.addStudentAnswers = async function(req, res) {
         await experiment.save();
         return res.status(200).send(" Student answers saved correctly");
     }
-    res.status(400).send("Error in saving the answers");
+    return res.status(400).send("Error in saving the answers");
 }
 
 //Function which retrieves all the student answers during a certain live-stream
@@ -21,16 +21,16 @@ exports.getUserAnswers = async function(req, res) {
     if (experiment) {
         return res.status(200).send(experiment.studentAnswer);
     }
-    res.status(404).send("Experiment not found");
+    return res.status(404).send("Experiment not found");
 }
 
 //Function which retrieves all experiment who are saved on the website
 exports.sendExperiments = async function(res) {
     let experiments = await Experiment.find({video: {$exists: true, $ne: []}});
     if (experiments) {
-        return res.send(experiments);
+        return res.status(200).send(experiments);
     }
-    res.status(400).send('Failed to find any experiments, try again later');
+    return res.status(400).send('Failed to find any experiments, try again later');
 }
 
 //Function which retrieves and sends an experiment given it's ID
@@ -40,7 +40,7 @@ exports.getExperimentData = async function(req, res) {
     if (! experiment) {
         return res.status(400).send('Did not find data for the experiment');
     }
-    res.status(200).send(experiment.data);
+    return res.status(200).send(experiment.data);
 }
 
 //Function which gets the data from a survey and saves it to the database
