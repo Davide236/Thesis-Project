@@ -3,20 +3,17 @@ const transport = require('../configuration/email-config');
 const { v4: uuidV4 } = require('uuid');
 
 //Function which logs in a user
-exports.userLogin = function(req, res) {
+exports.userLogin = function(req) {
     //Check if the users' account has already been verified
     if (req.user.verification.verified == false) {
-        req.flash('error', 'You need to verify your email first to access your account');
-        req.logout();
-        return res.redirect("/user/account");
+        return {code: '403', message: 'you need to verify your email first to access your account' }
     }
-    req.flash('success', 'You logged in successfully!');
-    res.redirect("/");
+    return {code: '200', message: 'You logged in successfully!'};
 }
 
 
 //Function which takes care of the signing up for the user
-exports.userSignup = async function (req, res) {
+exports.userSignup = async function (req) {
     const {fullName, username, password} = req.body;
     const user = new User({fullName, username});
     try {
@@ -35,45 +32,44 @@ exports.userSignup = async function (req, res) {
             On the following page: <a href="https://chemical-twins.herokuapp.com/user/verifyemail/${secretToken}">Email Verification</a><br/><br/>
             From the staff of Chemical Twins, we wish you a great time on our application!</p>`, 
         });
-        req.flash('success', 'Account Completed, now you only need to verify your email!');
-        res.redirect("/");
-    } catch(e) {
-        req.flash('error', e.message);
-        res.redirect("/user/account");
+        return {code: '200', message: 'Account Completed, now you only need to verify your email!'};
+    } catch(_e) {
+        return {code: '400', message: 'Unexpected error in saving your account, try again'};
     }
 }
 
 //Function for user logout
-exports.userLogout = function(req, res) {
-    req.logout();
-    req.flash('success', 'You logged out your account');
-    res.redirect("/");
+exports.userLogout = function(req) {
+    try {
+        req.logout();
+        return {code: '200', message: 'You logged out your account'}
+    } catch(_e) {
+        return {code: '400', message: 'An error occurred, try again!'};
+    }
 }
 
 //Function that implements the email verification for the users
-exports.verifyEmail = async function(req, res) {
+exports.verifyEmail = async function(req) {
     const {secretToken} = req.params;
     const user = await User.findOne({'verification.secretToken': secretToken});
     //Check if the user exists
     if (!user) {
-        req.flash('error', 'Wrong url, contact the team to get help with your verification');
-        return res.redirect("/");
+        return {code: '404', message: 'Wrong url, contact the team to get help with your verification'};
     }
     try {
         //Change the users' status to verified
         user.verification.verified = true;
         user.verification.secretToken = '';
         await user.save();
-        req.flash('success', 'Email verified correctly!');
-        res.redirect("/");
+        return {code: '200', message: 'Email verified correctly!'};
     } catch(err) {
-        res.status(400).send('Error in verifying you account');
+        return {code: '400', message: 'Error in verifying you account'};
     }
 }
 
 
 //Function which edits an account of a user
-exports.editAccount = async function(req, res) {
+exports.editAccount = async function(req) {
     const {fullName, password} = req.body;
     const user = await User.findById(req.user.id);
     if (fullName) {
@@ -84,44 +80,40 @@ exports.editAccount = async function(req, res) {
     }
     try {
         await user.save();
-        req.flash('success', 'Changes Applied Correctly');
-        res.redirect('/');
+        return {code: '200', message:'Changes Applied Correctly'};
     } catch (err) {
-        res.status(400).send('Error in saving the changes to your account');
+        return {code: '400', message:'Error in saving the changes to your account'};
     }
 }
 
 //Function which deletes the account of a user given its' ID
-exports.userDelete = async function(req, res) {
+exports.userDelete = async function(req) {
     try {
         const userID = req.user.id;
         req.logout();
         await User.deleteOne({_id: userID});
-        req.flash('success', 'Account deleted successfully');
-        res.redirect("/");
+        return {code :'200', message: 'Account deleted successfully'};
     } catch (err) {
-        res.status(400).send('Couldnt delete your account, try again');
+        return {code: '400', message: 'Couldnt delete your account, try again'};
     }
 }
 
 //Function which sets a new password for a user
-exports.setNewPassword = async function(req, res) {
+exports.setNewPassword = async function(req) {
     const {secretToken} = req.params;
     const {password} = req.body;
     //Find the user corresponding to the token
     const user = await User.findOne({'verification.passwordReset': secretToken});
     if (!user) {
-        req.flash('error', 'Error in finding your accound, try again');
-        return res.redirect("/");
+        return {code: '404',message: 'Error in finding your accound, try again'};
     }
     try {
         user.verification.passwordReset = '';
         await user.setPassword(password);
         await user.save();
-        req.flash("success", "Password changed correctly! Try to login to your account again");
-        res.redirect("/");
+        return {code: '200', message: 'Password changed correctly! Try to login to your account again'};
     } catch(err) {
-        res.status(400).send('There was an error in changing your password, try again');
+        return {code: '400',message:  'There was an error in changing your password, try again'};
     }
 }
 
@@ -132,8 +124,7 @@ exports.resetPassword = async function(req, res) {
     const user = await User.findOne({username});
     const secretToken = uuidV4();
     if (!user) {
-        req.flash('error', 'An account with this email doesnt exist');
-        return res.redirect("/user/account");
+        return {code: '404', message: 'An account with this email doesnt exist'};
     }
     user.verification.passwordReset = secretToken;
     try {
@@ -147,9 +138,8 @@ exports.resetPassword = async function(req, res) {
             To reset your password for the website <br> Chemical Twins click on the following link: <a href="https://chemical-twins.herokuapp.com/user/newpassword/${secretToken}">New password</a>
             <br>`, 
         });
-        req.flash('success', 'An email was sent to your account to get a new password');
-        res.redirect("/");
+        return {code: '200', message: 'An email was sent to your account to get a new password'};
     } catch(err) {
-        res.status(400).send('An unexpected error occurred, try again later');
+        return {code: '400', message: 'An unexpected error occurred, try again later'};
     }
 }

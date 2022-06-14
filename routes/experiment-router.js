@@ -11,6 +11,7 @@ const upload = multer({storage: storage});
 const ExperimentController = require('../controllers/experiment-controller');
 
 const { isLoggedIn } = require('../middleware/user-login');
+const {process_response} = require('../middleware/send-response');
 
 //Past Experiments page
 router.get('/pastexperiments', (_req, res) => {
@@ -18,7 +19,8 @@ router.get('/pastexperiments', (_req, res) => {
 });
 
 router.get('/searchexperiment', async (req, res) => {
-    await ExperimentController.searchExperiments(req, res);
+    let response = await ExperimentController.searchExperiments(req);
+    process_response(req, res, response,'/experiment/pastexperiments', "SearchExperiments");
 });
 
 
@@ -28,7 +30,8 @@ router.get('/create-live', isLoggedIn, (_req, res) => {
 
 
 router.post('/create-live', isLoggedIn, async (req, res) => {
-    await ExperimentController.createLive(req, res);
+    let response = await ExperimentController.createLive(req);
+    process_response(req, res, response, '/', 'LiveExperiment');
 });
 
 router.get('/leave', (req, res) => {
@@ -42,7 +45,8 @@ router.get('/delete/:room',isLoggedIn, async (req, res) => {
 
 
 router.post('/join-live', isLoggedIn, async (req, res) => {
-    await ExperimentController.joinLive(req, res);
+    let response = await ExperimentController.joinLive(req);
+    process_response(req, res, response,'/', "LiveExperiment");
 });
 
 
@@ -52,12 +56,14 @@ router.get('/upload-experiment', isLoggedIn, (_req, res) => {
 
 
 router.post('/upload-experiment', isLoggedIn, upload.fields([{name: 'expVideo'}, {name: 'expData'}]), async (req, res) => {
-    await ExperimentController.uploadExperiment(req, res);
+    let response = await ExperimentController.uploadExperiment(req);
+    process_response(req, res, response, '/', '/');
 });
 
 
 router.get('/display-exp/:id', async (req, res) => {
-    await ExperimentController.showExperiment(req, res);
+    let response = await ExperimentController.showExperiment(req);
+    process_response(req, res, response,'/experiment/pastexperiments', 'Experiment');
 });
 
 

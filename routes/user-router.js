@@ -4,7 +4,7 @@ const router = new_router[0];
 const passport = new_router[1];
 const UserController = require('../controllers/user-controller');
 const { isLoggedIn } = require('../middleware/user-login');
-
+const {process_response} = require('../middleware/send-response');
 
 router.get('/account', (_req, res) => {
     res.render("Account");
@@ -15,19 +15,23 @@ router.get('/editaccount', isLoggedIn, (_req, res) =>{
 });
 
 router.post("/deleteaccount", isLoggedIn, async (req, res) => {
-    await UserController.userDelete(req, res);
+    let response = await UserController.userDelete(req);
+    process_response(req,res,response, '/', '/');
 });
 
 router.post('/editaccount', isLoggedIn, async(req, res) => {
-    await UserController.editAccount(req, res);
+    let response = await UserController.editAccount(req);
+    process_response(req,res,response, '/', '/');
 });
 
 router.get('/verifyemail/:secretToken', async(req, res) => {
-    await UserController.verifyEmail(req, res);
+    let response = await UserController.verifyEmail(req);
+    process_response(req,res,response, '/', '/');
 });
 
 router.post('/passwordreset', async(req, res) =>{
-    await UserController.resetPassword(req, res);
+    let response = await UserController.resetPassword(req);
+    process_response(req,res,response, '/', '/');
 });
 
 router.get('/newpassword/:secretToken', (req, res) => {
@@ -36,20 +40,24 @@ router.get('/newpassword/:secretToken', (req, res) => {
 });
 
 router.post('/newpassword/:secretToken', async(req, res) => {
-    await UserController.setNewPassword(req, res);
+    let response = await UserController.setNewPassword(req);
+    process_response(req,res,response, '/', '/');
 });
 
 router.post('/signup', async (req, res) => {
-   await UserController.userSignup(req, res);
+   let response = await UserController.userSignup(req);
+   process_response(req,res,response, '/', '/');
 });
 
 
 router.post('/login', passport.authenticate('local', {failureFlash: true, failureRedirect: '/user/account'}), async (req,res) => {
-    UserController.userLogin(req, res);
+    let response = UserController.userLogin(req);
+    process_response(req,res,response, '/', '/');
 });
 
 router.get('/logout', isLoggedIn, (req, res) => {
-    UserController.userLogout(req, res);
+    let response = UserController.userLogout(req);
+    process_response(req,res,response, '/', '/');
 });
 
 
