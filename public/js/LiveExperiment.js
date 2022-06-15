@@ -234,7 +234,8 @@ function addToChart(chart,val) {
                 dataset.data.push({y:simulationConstant, x:time});
             } else {
                 let simulation = getSimulatedData(val);
-                simulatedData.textContent = simulation;
+                //Round to first decimal
+                simulatedData.textContent = Math.round(simulation * 10) /10;
                 dataset.data.push({y:simulation, x:time});
             }
         }

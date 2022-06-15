@@ -130,7 +130,8 @@ function updateChart() {
                 dataset.data.push({y:data[index], x: index});
             } else if (simulationData) {
                 let simulation = getSimulatedData(data[index]);
-                simulatedData.textContent = simulation;
+                //Round to first decimal
+                simulatedData.textContent = Math.round(simulation * 10) /10;
                 dataset.data.push({y: simulation, x: index});
             }
         });
