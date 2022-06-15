@@ -1,3 +1,4 @@
+//Function that configures a new router element
 exports.newRouter = function() {
     require('dotenv').config();
     //Get all the different modules and the setups needed for all different router.js

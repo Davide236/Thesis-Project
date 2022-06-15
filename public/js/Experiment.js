@@ -10,6 +10,7 @@ let sidebarContent = document.querySelector('.sidebar-content');
 let experimentData = document.getElementById('experimentData');
 let chart = document.getElementById('dataChart');
 let currentData = document.getElementById('currentData');
+let simulatedData = document.getElementById('simulatedData');
 let simulationBtn = document.getElementById('simulationBtn');
 let simulationForm = document.getElementById('simulationForm');
 
@@ -128,8 +129,9 @@ function updateChart() {
             if (dataset.name == 'Sensor') {
                 dataset.data.push({y:data[index], x: index});
             } else if (simulationData) {
-                let simulatedData = getSimulatedData(data[index]);
-                dataset.data.push({y: simulatedData, x: index});
+                let simulation = getSimulatedData(data[index]);
+                simulatedData.textContent = simulation;
+                dataset.data.push({y: simulation, x: index});
             }
         });
         
@@ -182,7 +184,6 @@ function closeSimulation() {
 //how the actual data might change if the value of the LED changes
 function getSimulatedData(val) {
     simulated_value = 0;
-    console.log(value);
     switch(value) {
         case 20:
             simulated_value = val/(5.5);
@@ -203,7 +204,6 @@ function getSimulatedData(val) {
             simulated_value = val;
             break;
     }
-    console.log(simulated_value)
     return simulated_value;
 }
 

@@ -30,6 +30,7 @@ let experimentData = document.getElementById('experimentData');
 let studentAnswers = document.getElementById('studentAnswers');
 let dChart = document.getElementById('dataChart');
 let currentData = document.getElementById('currentData');
+let simulatedData = document.getElementById('simulatedData'); 
 
 document.getElementById("sidebarButton").addEventListener('click', toggleSidebar);
 
@@ -232,8 +233,9 @@ function addToChart(chart,val) {
             if (simulationConstant) {
                 dataset.data.push({y:simulationConstant, x:time});
             } else {
-                let simulatedData = getSimulatedData(val);
-                dataset.data.push({y:simulatedData, x:time});
+                let simulation = getSimulatedData(val);
+                simulatedData.textContent = simulation;
+                dataset.data.push({y:simulation, x:time});
             }
         }
     });

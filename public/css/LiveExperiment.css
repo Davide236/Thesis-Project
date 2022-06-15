@@ -144,6 +144,11 @@ span {
     border: 1px solid rgb(9,158,41);
 }
 
+#simulatedData {
+    margin: 0.5rem;
+    border: 1px solid rgb(66, 152, 245); 
+}
+
 
 #recorded-video {
     margin-left: 2rem;
