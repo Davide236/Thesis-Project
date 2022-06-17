@@ -103,7 +103,7 @@ io.on('connection', function(socket) {
     //Once a user leave we signal it to all other users
     socket.on('user-left', function(roomName, user) {
         socket.broadcast.to(roomName).emit('user-left',user);
-    })
+    });
 
     //The creator of the rooms end the stream
     socket.on('end-stream', function(roomName) {

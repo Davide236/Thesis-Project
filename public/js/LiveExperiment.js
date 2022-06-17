@@ -420,6 +420,7 @@ async function getCamera() {
         video: {'deviceId': deviceId, width: 640, height: 480}
     })
     .then(function(stream) {
+        console.log(stream);
         recordBtn.disabled = false;
         userStream = stream;
         //Success, use stream
@@ -704,7 +705,7 @@ function getSimulatedData(val) {
 function trySimulation() {
     simulationValue = Number(document.querySelector('input[name="LED"]:checked').value);
     simulationData = true;
-    closeSimulation();
+    //closeSimulation();
 }
 
 //Function which stops the simulation for the different users

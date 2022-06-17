@@ -1,14 +1,12 @@
-// Get the modal
-var modal = document.getElementById("joinLiveModal");
-
-
 function joinRoom() {
+    var modal = document.getElementById("joinLiveModal");
     modal.style.display = "block";
 }
 
 
 //Close the modal
 window.onclick = function(event) {
+    var modal = document.getElementById("joinLiveModal");
     if (event.target == modal) {
       modal.style.display = "none";
     }
@@ -31,4 +29,10 @@ async function askPermission() {
         //Error
         alert('Couldnt get permission to access the camera. Please give permission before accessing this functionality!');
     });
+}
+
+
+module.exports = {
+    joinRoom,
+    askPermission
 }

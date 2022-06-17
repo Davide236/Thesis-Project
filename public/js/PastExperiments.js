@@ -52,13 +52,14 @@ function setArrow() {
 //Loads the experiments onto the page
 function loadExperiments() {
     setArrow();
-    experiments = sortExperiments(experiments);
+    experiments = sortExperiments(experiments, order);
     totalExperiments = experiments.length;
-    displayExperiments();
+    displayExperiments(experiments, toShow);
 }
 
 //For each experiment we display video, name and description
-function displayExperiments() {
+function displayExperiments(experiments, toShow) {
+    let totalExperiments = experiments.length;
     $('#experiments').html('');
     experimentsHTML = '';
     for (i=0; i<toShow; i++) {
@@ -83,19 +84,24 @@ function displayExperiments() {
 }
 
 /*Sort the reviews in the page depending on the user input*/
-function sortExperiments(experiments) {
+function sortExperiments(experiments, order) {
     if (order) {
         if ($('#sortSelect').val() == 'date') {
-            experiments.sort((a, b) => (a.date < b.date) ? 1 : -1);
+            experiments.sort((a, b) => (a.date > b.date) ? 1 : -1);
         } else {
             experiments.sort((a, b) => (a.name > b.name) ? 1 : -1);
         }
     } else {
         if ($('#sortSelect').val() == 'date') {
-            experiments.sort((a, b) => (a.date > b.date) ? 1 : -1);
+            experiments.sort((a, b) => (a.date < b.date) ? 1 : -1);
         } else {
             experiments.sort((a, b) => (a.name < b.name) ? 1 : -1);
         }
     }
     return experiments;
+}
+
+module.exports = {
+    sortExperiments,
+    displayExperiments
 }

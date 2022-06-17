@@ -1,15 +1,18 @@
-let passwordControl = document.getElementById('passwordSign');
-let feedback = document.getElementById('feedback');
-let show = false;
-//Pattern for the password
-let pattern = /(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/;
-
-//At each input on the password this function checks whether the password is valid or not
-passwordControl.addEventListener('input', checkValidPassword);
+window.onload = () => {
+  let passwordControl = document.getElementById('passwordSign');
+  //At each input on the password this function checks whether the password is valid or not
+  passwordControl.addEventListener('input', () => {
+    checkValidPassword(passwordControl.value);
+  });
+}
 
 //Function which check if the password is valid and gives feedback to the user
-function checkValidPassword() {
-    if ((!pattern.test(passwordControl.value) && !show) || !passwordControl.value) {
+function checkValidPassword(password) {
+    let feedback = document.getElementById('feedback');
+    let show = false;
+    //Pattern for the password
+    let pattern = /(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/;
+    if ((!pattern.test(password) && !show) || !password) {
       feedback.style.color = 'red';
       feedback.textContent = 'Password needs to have 8 characters including a uppercase letter and a number';
     } else {
@@ -52,3 +55,11 @@ function showPassword(action) {
   password.setAttribute('type', type);
   eye.classList.toggle('fa-eye-slash');
 }
+
+
+module.exports = 
+  {showPassword,
+    openPasswordForm,
+    closePasswordForm,
+    checkValidPassword};
+
