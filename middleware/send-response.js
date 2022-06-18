@@ -1,17 +1,22 @@
 // Middleware used to process the response from a certain endpoint and
 // answer correctly to it
 module.exports.process_response = (req, res, response, redirect, render) => {
-    switch(response.code) {
-        case '200':
+    response_status = Number(response.code);
+    switch(response_status) {
+        case 200:
             if (response.data) {
-                return res.status(200).render(render, response.data)
+                res.status(response_status);
+                return res.render(render, response.data)
             } else {
                 req.flash('success', response.message);
-                return res.status(200).redirect(redirect);
+                res.status(response_status);
+                return res.render(redirect, {message: req.flash('success')});
+                //return res.redirect(redirect);
             }
         default:
             req.flash('error',response.message);
-            stat = Number(response.code);
-            return res.status(stat).redirect(redirect);
+            //return res.redirect(redirect);
+            res.status(response_status);
+            return res.render(redirect, {message: req.flash('error')});
     }
 }

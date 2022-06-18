@@ -15,16 +15,19 @@ const {process_response} = require('../middleware/send-response');
 
 //Past Experiments page
 router.get('/pastexperiments', (_req, res) => {
+    res.status(200);
     res.render('PastExperiments');
 });
 
+
 router.get('/searchexperiment', async (req, res) => {
     let response = await ExperimentController.searchExperiments(req);
-    process_response(req, res, response,'/experiment/pastexperiments', "SearchExperiments");
+    process_response(req, res, response,'PastExperiments', "SearchExperiments");
 });
 
 
 router.get('/create-live', isLoggedIn, (_req, res) => {
+    res.status(200);
     res.render('CreateLiveForm');
 });
 
@@ -51,6 +54,7 @@ router.post('/join-live', isLoggedIn, async (req, res) => {
 
 
 router.get('/upload-experiment', isLoggedIn, (_req, res) => {
+    res.status(200);
     res.render('UploadExperiment');
 });
 
