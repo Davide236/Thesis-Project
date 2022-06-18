@@ -12,27 +12,35 @@ window.onclick = function(event) {
     }
 }
 
+async function askPermission() {
+    let response = await getPermission();
+    if (response) {
+        window.location.replace("https://chemical-twins.herokuapp.com/experiment/create-live");
+    } else {
+        alert('Couldnt get permission to access the camera. Please give permission before accessing this functionality!');
+    }
+}
 
 //Ask the users for permission to access video and audio devices
-async function askPermission() {
-    navigator.mediaDevices.getUserMedia({
+async function getPermission() {
+    return navigator.mediaDevices.getUserMedia({
         audio: true,
         video: true
     })
     //Start and immediately stop the stream
     .then(function(stream) {
         stream.getTracks()[0].stop();
-        stream.getTracks()[1].stop(); 
-        window.location.replace("https://chemical-twins.herokuapp.com/experiment/create-live");
+        stream.getTracks()[1].stop();
+        return true;
     })
     .catch(function(_err) {
         //Error
-        alert('Couldnt get permission to access the camera. Please give permission before accessing this functionality!');
+        return false;
     });
 }
 
 
 module.exports = {
     joinRoom,
-    askPermission
+    getPermission
 }

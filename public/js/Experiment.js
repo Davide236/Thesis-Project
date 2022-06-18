@@ -212,7 +212,5 @@ function getSimulatedData(val) {
 function trySimulation() {
     value = Number(document.querySelector('input[name="LED"]:checked').value);
     simulationData = true;
-    //closeSimulation();
 }
-
 

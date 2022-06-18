@@ -81,7 +81,7 @@ def send_data():
             print("\nHTTP request non completed. Try to enter a different code and make sure that you have an active stream\n")
 
 # Let the creator decide to take one of the students answers
-def find_student_value(student):
+def find_student_value(student, student_answers):
     for values in student_answers:
         if values[0] == student:
             return values[1]
@@ -115,7 +115,7 @@ while True:
     if event == "Use":
         print("Change value")
         student = values['student_name']
-        value = find_student_value(student)
+        value = find_student_value(student, student_answers)
         change_lights(value)
 
 # If the threads is still active then we terminate it

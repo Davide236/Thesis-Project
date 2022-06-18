@@ -420,7 +420,6 @@ async function getCamera() {
         video: {'deviceId': deviceId, width: 640, height: 480}
     })
     .then(function(stream) {
-        console.log(stream);
         recordBtn.disabled = false;
         userStream = stream;
         //Success, use stream

@@ -1,13 +1,17 @@
-const {joinRoom, askPermission} = require('../public/js/Homepage.js');
+const {joinRoom, getPermission} = require('../public/js/Homepage.js');
 
 Object.assign(navigator, {
     mediaDevices: {
-        getUserMedia: jest.fn().mockImplementation(() =>
-        Promise.resolve(
-            jest.fn()
-        ))
-    }
- });
+      getUserMedia: jest.fn().mockResolvedValue({
+        getTracks: jest
+          .fn()
+          .mockReturnValue([
+            { stop: jest.fn() },
+            { stop: jest.fn() },
+          ]),
+      }),
+    },
+});
 
 describe('Testing the DOM manipulation of Homepage.js', () => {
     jest.spyOn(navigator.mediaDevices, "getUserMedia");
@@ -25,9 +29,8 @@ describe('Testing the DOM manipulation of Homepage.js', () => {
     });
 
     it('Ask permission for camera', async () => {
-        await askPermission();
-        expect(window.location.href).toBe(
-            'https://chemical-twins.herokuapp.com/experiment/create-live');
+        let response = await getPermission();
+        expect(response).toBe(true);
     });
 
 });

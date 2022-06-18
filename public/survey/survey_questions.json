@@ -53,16 +53,6 @@
       "text": "Answer the question from the student account and then go back to your main one. You should be able to see the answers to the question (if not click on 'Show Answers'). Click on 'Save' and you should see a message telling you that the answers were saved"
     },
     {
-      "title": "Send Data Through Script",
-      "text": "Answer this question only if you're knowledgeable on Python, if not feel free to skip it.\n Download the given script and run it on your machine. Input any working formula for the first input and for the second input your room name. Now you should see a sequence of 1s displayed in the graph on the right",
-      "python": "Yes"
-    },
-    {
-      "title": "Retrieve Data Through Script",
-      "text": "Answer this question only if you're knowledgeable on Python, if not feel free to skip it.\n Now click on 'Retrieve Student Answers' and you should see the answer you previously saved. On top of that you should see a new graph with the data based on the retrieved answer and the formula you had in input",
-      "python": "Yes"
-    },
-    {
       "title": "Leave Stream",
       "text": "Through the 'student' profile try to leave the stream by clicking on 'Leave'. Once you do go back to your stream tab and check the users list. You should be able to see only your name now."
     },
