@@ -126,7 +126,7 @@ exports.uploadExperiment = async function(req) {
             }
         });
         await newExperiment.save();
-        return {code: '200', message: 'Experiment saved successfully'}
+        return {code: '201', message: 'Experiment saved successfully'}
     } catch(err) {
         return {code: '400', message: 'Error in saving the experiment, try again'};
     }

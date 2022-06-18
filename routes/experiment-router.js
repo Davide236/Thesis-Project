@@ -22,7 +22,7 @@ router.get('/pastexperiments', (_req, res) => {
 
 router.get('/searchexperiment', async (req, res) => {
     let response = await ExperimentController.searchExperiments(req);
-    process_response(req, res, response,'PastExperiments', "SearchExperiments");
+    process_response(req, res, response,'/experiment/pastexperiments', "SearchExperiments");
 });
 
 

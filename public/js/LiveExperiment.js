@@ -360,6 +360,7 @@ function showAnswer() {
 
 //Function which saves the student answers to the database
 function saveAnswers() {
+    console.log(answerList);
     $.ajax({
         type: "POST",
         url: `https://chemical-twins.herokuapp.com/data/add-answers/${roomName}`,

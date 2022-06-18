@@ -5,6 +5,7 @@ const Survey = require('../models/Survey');
 exports.addStudentAnswers = async function(req, res) {
     const {room} = req.params;
     const {answers} = req.body;
+    console.log(answers);
     let experiment = await Experiment.findOne({roomName: room});
     if (experiment && answers) {
         experiment.studentAnswer = Object.assign(answers);
