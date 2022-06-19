@@ -24,7 +24,9 @@ exports.userSignup = async function (req) {
         await newUser.save();
         //Send confirmation email
         await transport.sendMail({
-            from: process.env.EMAIL, to: newUser.username, subject: 'Chemical Twins email verification',
+            from: process.env.EMAIL,
+            to: newUser.username,
+            subject: 'Chemical Twins email verification',
             html: `
             <h1>Register on Chemical Twins</h1>
             <p>Hello ${newUser.fullName}, thank you for your registration on our website. <br/><br/>
@@ -33,7 +35,8 @@ exports.userSignup = async function (req) {
             From the staff of Chemical Twins, we wish you a great time on our application!</p>`, 
         });
         return {code: '200', message: 'Account Completed, now you only need to verify your email!'};
-    } catch(_e) {
+    } catch(e) {
+        console.log(e);
         return {code: '400', message: 'Unexpected error in saving your account, try again'};
     }
 }
