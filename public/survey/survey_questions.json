@@ -6,76 +6,76 @@
     },
     {
       "title": "Verify your Account",
-      "text": "Now you should go to your emails and have a new email from chemicaltwinsrug@gmail.com with a link to verify your account. Click on the link and you should be redirected to the homepage with a notification that your account is now verified."
+      "text": "After creating your account, please access your emails and have a new email from chemicaltwinsrug@zohomail.eu with a link to verify your account. After clicking on the link and you will be redirected to the homepage with a notification that your account is now verified."
     },
     {
       "title": "Login",
-      "text": "Now try to login the website with your email and password. To see that it worked open the navbar and you should see your username displayed there \n along with some links that you weren't previously able to see."
+      "text": "After vefication, login the website with your email and password. In the menu bar you should see your username displayed there \n along with some links that you weren't previously able to see."
     },
     {
       "title": "Edit your account",
-      "text": "Now that you've logged in your account you should be able to view different links on the navbar, one of those links goes to a page to edit your account. \nClick on the link and try to change your username through that. Once you do open the navbar and you should see a different name displayed on top (your new username)"
+      "text": "After you've logged into your account you should be able to view different links in the menu.\nClick on the 'edit account' and change your username through that (you don't need to also change your password so you can leave that empty). Once you have done that open the menu again and you should now see a different name displayed on top of the menu."
     },
     {
       "title": "Logout",
-      "text": "Now open the navbar once more and logout from the website. You should be able to see a log out button. Click on it and you should logout from the website \n To confirm that open the navbar once more and then you should't see your username anymore as well as the links to logout and edit your account"
+      "text": "Now open on the menu once more and logout from the website through the 'logout' button. You should receive a message confirming that you have logged out successfully."
     },
     {
       "title": "Password reset",
-      "text": "Now, after you logged out the website, go again to the login page. Under login click on 'Click Here' to open a new form to reset your password. \nInput the email you used to create the account and click on send email. Now go to your email inbox and check your new email from chemicaltwinsrug@gmail.com \nThis link should bring you to a new page where you can set a new password; do that and then try to login again with your new password."
+      "text": "Now, after you logged out of the website, please go again to the 'account' page. Under 'login' click on 'Click Here' to open a new form to reset your password. \nInput the email you used to create your account and click on 'send email'. After, please check whether you received a new email from chemicaltwinsrug@zohomail.eu \nThe link in the email will bring you to a new page where you can set a new password. Please do that and after try to login again with your new password."
     },
     {
       "title": "Start Stream",
-      "text": "Be sure that you're logged in the website for this. Click on 'create live' (you'll need to give access to your camera for that) and you should be redirected to a form. \nFill in the form with whatever you want but keep in mind the room name and password you set. Complete the form and you should be redirected to a live streaming page."
+      "text": "For the following step, please make sure that you are logged into your account. Scroll to the bottom of the Homepage and click on 'create live' (note: you will need to give access to your camera for that). \nFill in the form with whatever you want but keep in mind the room name and password you set. Complete the form and you should be redirected to a live streaming page."
     },
     {
       "title": "Test Mute/Hide",
-      "text": "Now try to use the buttons to hide your camera and mute the stream to hide and mute the stream"
+      "text": "Now try to use the buttons to hide your camera and mute the stream."
     },
     {
       "title": "Save Recordings",
-      "text": "Now try to record your stream. Click on the record button and let it run for a couple of second at least. Then press on 'stop' and then 'save recording'.\n You should then be able to download a .mp4 file with your video and a .json file with the experiment data (empty for now)"
+      "text": "Now try to record your stream. Click on the record button and let it run for a couple of seconds at least. Then press on 'stop' and then 'save recording'.\n You should then be able to download a .mp4 file with your video and a .json file with the experiment data."
     },
     {
       "title": "Join The Stream",
-      "text": "Now open a new tab on a different browser, in incognite mode or on a different google account. Go to the website and login with the following credentials.\n Email: student@gmail.com, Password: Experiment1 \n. Once you've done that click on 'Join live' and input the room name and password you used on your other page (provided that you didn't end the stream).\n Now you should be able to see your stream from this account too. "
+      "text": "Now open a new tab on a different browser or in incognito mode. Go to the website and login with the following credentials.\n Email: student@gmail.com, Password: Experiment1 \n. Once you've done that click on 'Join live' and input the room name and password you used on your other page (provided that you didn't end the stream).\n Now you will be able to see your stream from this account too. "
     },
     {
       "title": "Check connected users",
-      "text": "Open the sidebar on the stream and see the list of connected users. It should be you and this 'student' account"
+      "text": "Please open the sidebar on right side of the stream and look at the 'user list'. Check whether you can see you own name and the student account."
     },
     {
       "title": "Ask Questions",
-      "text": "From your main account click on the 'ask question' button. Add some answers to your question through the 'Add Answer' button and then ask the question. \nIn the student account you should see a question form with as answers choice having the answers you added before."
+      "text": "From your main account (the one that created the live stream) now click on the 'ask question' button. After, type a question in the 'question' box. Then click on the 'Add Answer' button, type in a number and add the number to the answer option through the green '+' button. Now click on the ask button. \n Now in the other account you should see the question you just ask along with the answer choice you gave."
     },
     {
       "title": "Answer and Save Question",
-      "text": "Answer the question from the student account and then go back to your main one. You should be able to see the answers to the question (if not click on 'Show Answers'). Click on 'Save' and you should see a message telling you that the answers were saved"
+      "text": "From the 'student' account choose an answer and click on the 'answer' button to submit your answer. After go back to your main account and you should be able to see the answers to the question (if not click on 'Show Answers'). Click on 'Save' and you should see a message telling you that the answers were saved correctly."
     },
     {
       "title": "Leave Stream",
-      "text": "Through the 'student' profile try to leave the stream by clicking on 'Leave'. Once you do go back to your stream tab and check the users list. You should be able to see only your name now."
+      "text": "On the 'student' account leave the live stream by clicking on 'leave' button (under the video). Now you can close this tab and go back to the livestream from your main account. Please check again the 'user list' on the right side bar and you will now only see your username now."
     },
     {
       "title": "End Stream",
-      "text": "Click on end stream and a message from the application should tell you that the room was deleted correctly and send you back to the homepage."
+      "text": "Please click on 'end stream' (under the video) and a message from the application will tell you that the room was deleted correctly and send you back to the homepage."
     },
     {
       "title": "Upload Experiment",
-      "text": "Save the following video and data file and, while being logged in, click on upload experiment and upload the video and data while filling the rest of the form however you prefer. \n Click on 'Upload' and after some time you should be redirected to the homepage with a text saying that the experiment was uploaded correctly",
+      "text": "In this folling step you will upload a video and data file on website. To do that, save the following video and data file. On the Homepage, click on 'upload experiment' and upload the video and data that you just downloaded and fill the rest of the form however you prefer. \n Click on 'Upload' and after you will be redirected to the homepage with a confirmation message saying that the experiment was uploaded correctly.",
       "files": "Yes"
     },
     {
       "title": "Past Experiments",
-      "text": "Click on 'Past Experiments' and you should be redirected to a page with some previously uploaded experiment. Try to click on one of them and then play it to see that it works correctly"
+      "text": "Go to the homepage and click on 'Past Experiments' and you will be redirected to a page with some previously uploaded experiment. Click on the name of one of them and then play it. You will now be able to see the video along with collected data on a graph."
     },
     {
       "title": "Search Experiment",
-      "text": "Go again to 'Past Experiments' and this time search for an experiment. Once you do you should see a list (can also be empty) of experiments that contain you searched words in their title"
+      "text": "Go again to 'Past Experiments' and this time search for the name of an experiment and press 'enter'. Now you do you will see a list of experiments that contain you searched words in their title (the list can also be empty if no experiment match your search)."
     },
     {
       "title": "Delete your account",
-      "text": "While logged in open the navbar, go to edit your account and click on 'delete your account'. Now you should be logged out and if you try to login again you won't be able to."
+      "text": "While logged in open the menu, go to 'edit account' and click on 'delete your account'. You will now be logged out. If you try to login again this should not work."
     }
   ]
 }

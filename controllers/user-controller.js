@@ -26,13 +26,13 @@ exports.userSignup = async function (req) {
         await transport.sendMail({
             from: process.env.EMAIL,
             to: newUser.username,
-            subject: 'Chemical Twins email verification',
+            subject: 'Science Twins email verification',
             html: `
-            <h1>Register on Chemical Twins</h1>
+            <h1>Register on Science Twins</h1>
             <p>Hello ${newUser.fullName}, thank you for your registration on our website. <br/><br/>
             The last step in the registration process is to verify your email by clicking on the following link: <br/>
             On the following page: <a href="https://chemical-twins.herokuapp.com/user/verifyemail/${secretToken}">Email Verification</a><br/><br/>
-            From the staff of Chemical Twins, we wish you a great time on our application!</p>`, 
+            From the staff of Science Twins, we wish you a great time on our application!</p>`, 
         });
         return {code: '200', message: 'Account Completed, now you only need to verify your email!'};
     } catch(e) {
@@ -134,11 +134,11 @@ exports.resetPassword = async function(req, res) {
         await user.save();
         //Send email to user to reset their password
         await transport.sendMail({
-            from: process.env.EMAIL, to: username, subject: 'Chemical twins new password',
+            from: process.env.EMAIL, to: username, subject: 'Science twins new password',
             html: `
-            <h1>Reset your Chemical Twins password </h1>
+            <h1>Reset your Science Twins password </h1>
             Hello ${user.fullName},
-            To reset your password for the website <br> Chemical Twins click on the following link: <a href="https://chemical-twins.herokuapp.com/user/newpassword/${secretToken}">New password</a>
+            To reset your password for the website <br> Science Twins click on the following link: <a href="https://chemical-twins.herokuapp.com/user/newpassword/${secretToken}">New password</a>
             <br>`, 
         });
         return {code: '200', message: 'An email was sent to your account to get a new password'};

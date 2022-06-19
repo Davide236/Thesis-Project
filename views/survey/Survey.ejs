@@ -60,7 +60,7 @@
                 <%i++%>
             <% } %>
             <div class="form-group questions" style="display: none;">
-                <p>Was the website easy to navigate? (1 being 'it was not easy' and 5 being 'it was very easy')</p>
+                <p>Now lastly, we are very interested in your user experience. <br> Was the website easy to navigate? (1 = 'it was not easy', 5 = 'it was very easy')</p>
                 <input type="radio" name="answer<%=i%>" value="1">1
                 <input type="radio" name="answer<%=i%>" value="2">2
                 <input type="radio" name="answer<%=i%>" value="3">3
@@ -70,17 +70,7 @@
                 <button onclick="nextQuestion()" type="button">Continue</button>
             </div>
             <div class="form-group questions" style="display: none;">
-                <p>Were the functionalities of the website easy to understand? (1 being 'it was not easy' and 5 being 'it was very easy')</p>
-                <input type="radio" name="answer<%=i+1%>" value="1">1
-                <input type="radio" name="answer<%=i+1%>" value="2">2
-                <input type="radio" name="answer<%=i+1%>" value="3">3
-                <input type="radio" name="answer<%=i+1%>" value="4">4
-                <input type="radio" name="answer<%=i+1%>" value="5">5
-                <br><hr>
-                <button onclick="nextQuestion()" type="button">Continue</button>
-            </div>
-            <div class="form-group questions" style="display: none;">
-                <p>How was your experience using the website? (1 being 'bad' and 5 being 'very good')</p>
+                <p>Were the functionalities (e.g., login, starting stream etc.) of the website easy to understand? (1 = 'it was not easy', 5 = 'it was very easy')</p>
                 <input type="radio" name="answer<%=i+1%>" value="1">1
                 <input type="radio" name="answer<%=i+1%>" value="2">2
                 <input type="radio" name="answer<%=i+1%>" value="3">3
