@@ -10,15 +10,9 @@ arduino = serial.Serial(port='/dev/ttyACM0', baudrate=115200, timeout=.1)
 
 sys.tracebacklimit = None
 
-# Get and post address for sending and retrieving data
-
-URL_post = 'https://chemical-twins.herokuapp.com/live-data/'
-URL_get = 'https://chemical-twins.herokuapp.com/data/live-data/'
-
 # Global variables used in the program
 student_answers = []
 room = ''
-allowed_terms = ['x', 'var', '(', ')', '+', '-', '*', '/']
 
 # Layout of the GUI for the user
 layout = [[sg.Text('The room name has to be the same name used \n in the application to create the stream')],
@@ -35,8 +29,9 @@ window = sg.Window('Chemical Twins', layout, size=(1500,1000))
 
 
 # Function which gets data (students' answers) from the application during a live stream  
-def get_data():
+def get_data(room):
     global student_answers
+    URL_get = 'https://chemical-twins.herokuapp.com/data/live-data/'
     try:
         response = requests.get(url = URL_get + room)
         # If the response is good (200) then we calculate the average value amongst all the answers
@@ -45,7 +40,7 @@ def get_data():
             for d in data:
                 # Array of student + answer to display to the user
                 student_answers.append([d['username'],d['answer']]) 
-            return student_answers
+        return student_answers
     except:
         print("\nHTTP request non completed. Try to enter a different code and make sure that you have an active stream\n")
         return []
@@ -68,17 +63,25 @@ def get_sensor_value():
     # If there is an error in getting the data
     return 0
 
-# Function used to send data to the application every 2 seconds
-def send_data():
+
+def data_clock():
     while True:
         time.sleep(2)
-        headers = {"Content-Type": "application/json; charset=utf-8"}
-        value = get_sensor_value()
-        data = {'value': value}
-        try:
-            requests.post(url = URL_post + room,headers=headers, json=data, timeout=1)
-        except:
+        err = send_data(room)
+        if not err:
             print("\nHTTP request non completed. Try to enter a different code and make sure that you have an active stream\n")
+        
+# Function used to send data to the application every 2 seconds
+def send_data(room):
+    URL_post = 'https://chemical-twins.herokuapp.com/live-data/'
+    headers = {"Content-Type": "application/json; charset=utf-8"}
+    value = get_sensor_value()
+    data = {'value': value}
+    try:
+        requests.post(url = URL_post + room,headers=headers, json=data, timeout=1)
+        return 1
+    except:
+        return 0
 
 # Let the creator decide to take one of the students answers
 def find_student_value(student, student_answers):
@@ -94,7 +97,7 @@ def change_lights(value):
     arduino.write(bytes(str(value), 'utf-8'))
     
 # Create two threads for sending data
-send_data_thread = multiprocessing.Process(target=send_data, args=())
+send_data_thread = multiprocessing.Process(target=data_clock, args=())
 
 # Check for input in the GUI
 while True:
@@ -110,7 +113,7 @@ while True:
         send_data_thread.start()
     if event == "Retrieve Student Answers":
         # Get data from the application
-        window.Element('answer_histogram').Update(get_data())
+        window.Element('answer_histogram').Update(get_data(room))
         window['Use'].update(disabled=False)
     if event == "Use":
         print("Change value")
