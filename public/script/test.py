@@ -2,11 +2,6 @@ import unittest
 import function_test as functions
 
 
-
-#####
-#https://stackoverflow.com/questions/46492209/how-to-emulate-data-from-a-serial-port-using-python-3-unittest-mocks
-#https://docs.python.org/3/library/unittest.mock.html
-# The test based on unittest module
 class ScriptTest(unittest.TestCase):
     
     def test_get_user_answers(self):
