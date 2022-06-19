@@ -5,7 +5,6 @@ const Survey = require('../models/Survey');
 exports.addStudentAnswers = async function(req, res) {
     const {room} = req.params;
     const {answers} = req.body;
-    console.log(answers);
     let experiment = await Experiment.findOne({roomName: room});
     if (experiment && answers) {
         experiment.studentAnswer = Object.assign(answers);
@@ -38,7 +37,7 @@ exports.sendExperiments = async function(res) {
 exports.getExperimentData = async function(req, res) {
     const {id} = req.params;
     const experiment = await Experiment.findById(id);
-    if (! experiment) {
+    if (!experiment) {
         return res.status(400).send('Did not find data for the experiment');
     }
     return res.status(200).send(experiment.data);

@@ -2,7 +2,7 @@
   "questions": [
     {
       "title": "Create an Account",
-      "text": "Try to create an account in the web application with a your email. You can do this by opening the navigation bar and by clicking on 'account'. You'll be redirected to the page to create a new account. Once you do that a you should be redirected to the homepage and receive an email to verify your account."
+      "text": "Try to create an account in the web application using your email address. You can do this by opening the menu bar (i.e. 3 lines) and by clicking on 'account'. You will be redirected to a page on which you can create a new account. Once you do that you will be redirected to the homepage and receive an email to verify your account."
     },
     {
       "title": "Verify your Account",
