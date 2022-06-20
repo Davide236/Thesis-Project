@@ -140,5 +140,12 @@ exports.showExperiment = async function(req) {
         return {code: '404', message: 'Error in retrieving the experiment'};
     }
     const user = await User.findById(experiment.author);
-    return {code: '200', data: {experiment, user}};
+    let fullName;
+    //Scenario in which the user deleted their account
+    if (!user) {
+        fullName = 'undefined';
+    } else {
+        fullName = user.fullName;
+    }
+    return {code: '200', data: {experiment, fullName}};
 }
