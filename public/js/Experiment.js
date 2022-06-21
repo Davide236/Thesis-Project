@@ -16,8 +16,6 @@ let simulationForm = document.getElementById('simulationForm');
 
 const video = document.getElementById('recorded-video');
 
-document.getElementById("sidebarButton").addEventListener('click', toggleSidebar);
-
 let data;
 
 //Variable that keeps track of how many numbers display on the graph
@@ -88,6 +86,7 @@ window.onload = function() {
 
 //Add listeners to the video element
 function addListeners() {
+    document.getElementById("sidebarButton").addEventListener('click', toggleSidebar);
     simulationBtn.addEventListener('click', startSimulation);
     //If the user pauses the video then also the data stream is paused
     video.addEventListener('pause', ()=> {
@@ -104,6 +103,7 @@ function addListeners() {
     video.addEventListener('completed', () => {
         sendingData = false;
     });
+
     //Check if video started playing (especially after pausing it)
     video.addEventListener('play', () => {
         if (video.currentTime >= (minutes*60) + seconds) {
@@ -184,4 +184,3 @@ function trySimulation() {
     value = Number(document.querySelector('input[name="LED"]:checked').value);
     simulationData = true;
 }
-
