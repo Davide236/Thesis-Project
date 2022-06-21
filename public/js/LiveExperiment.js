@@ -233,7 +233,7 @@ function addToChart(chart,val) {
             if (simulationConstant) {
                 dataset.data.push({y:simulationConstant, x:time});
             } else {
-                let simulation = getSimulatedData(val);
+                let simulation = getSimulatedData(simulationValue);
                 //Round to first decimal
                 simulatedData.textContent = Math.round(simulation * 10) /10;
                 dataset.data.push({y:simulation, x:time});
@@ -601,7 +601,7 @@ socket.on('end-stream', function() {
 
 //Set a simulation constant that will not change anymore
 socket.on('stop_simulation', function() {
-    simulationConstant = getSimulatedData(Number(currentData.textContent));
+    simulationConstant = getSimulatedData(simulationValue);
     simulationBtn.style.display = 'none';
 })
 
@@ -675,30 +675,6 @@ function closeSimulation() {
     simulationForm.style.display = 'none';
 }
 
-//Function that calculates the difference between the data and the simulation
-function getSimulatedData(val) {
-    value = 0;
-    switch(simulationValue) {
-        case 20:
-            value = val/(5.5);
-            break;
-        case 40:
-            value = val/(8.1);
-            break;
-        case 60:
-            value = val/(10.1)
-            break;
-        case 80:
-            value = val/(12.1);
-            break;
-        case 100:
-            value = val/(14.3);
-            break;
-        default:
-            value = val;
-    }
-    return value;
-}
 
 //Function which get's the value inputted in the simulation tab and applies it to the graph
 function trySimulation() {
