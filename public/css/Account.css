@@ -41,9 +41,12 @@ button:hover {
     color: rgb(9,158,41);
 }
 
+p span {
+    color: rgb(9,158,41);
+}
+
 p span:hover {
     cursor: pointer;
-    color: rgb(9,158,41);
 }
 
 

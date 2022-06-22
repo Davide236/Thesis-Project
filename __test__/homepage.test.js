@@ -1,5 +1,6 @@
 const {joinRoom, getPermission} = require('../public/js/Homepage.js');
 
+//Mock the functions of navigator, in this case we mock the get track function
 Object.assign(navigator, {
     mediaDevices: {
       getUserMedia: jest.fn().mockResolvedValue({

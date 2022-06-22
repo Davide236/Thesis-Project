@@ -3,10 +3,11 @@ const {checkValidPassword,
     closePasswordForm,
     showPassword} = require('../public/js/Account.js');
 
-
+//Test which tests the functions of the file Account.js
 describe('Testing the DOM manipulation of Account.js', () => {
 
     beforeEach(() => {
+        //We need to use the html body to mock some of the dom manipulation
         document.body.innerHTML = `
         <div class="form-group">
         <label>Password</label>

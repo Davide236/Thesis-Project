@@ -1,5 +1,6 @@
 const {getVideoDevices} = require('../public/js/CreateLiveForm.js');
 
+//Use an object to mock the functions of navigator
 Object.assign(navigator, {
     mediaDevices: {
         enumerateDevices: () => {

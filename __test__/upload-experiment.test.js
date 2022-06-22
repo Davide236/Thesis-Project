@@ -22,7 +22,7 @@ describe('Testing the DOM manipulation of UploadExperiment.js', () => {
     it('Test loader text', () => {
     
         let loader_text = document.getElementById('loader-text');
-
+        //Dispatch an event to see the reaction of the DOM
         window.dispatchEvent(new Event("beforeunload"));
         expect(loader_text.style.display).toBe('block');
     });

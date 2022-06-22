@@ -1,5 +1,6 @@
 const SocketMock = require('socket.io-mock');
 
+//Test the main functioning of socket.io in the context of the web application
 describe('Testing the main functionalities of Socket.io', () => {
     let socket;
     let roomCreated;

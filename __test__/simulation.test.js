@@ -1,5 +1,6 @@
 const {getSimulatedData} = require('../public/js/Simulation.js');
 
+//Test the simulation function with different values
 describe('Testing the simulation functions', () => {
 
     it('Check the return value of the simulation function for LED:0', () => {
