@@ -185,7 +185,7 @@ function deleteRoom() {
     $.ajax({
         url: `https://chemical-twins.herokuapp.com/experiment/delete/${roomName}`,
         type: 'GET',
-        success: function(res) {alert(res)},
+        success: function(res) {alert(res); window.location.replace('/experiment/leave');},
         error: function(res) {alert('Code '+res.status +':' + res.responseText)}
     });
 }
@@ -219,7 +219,7 @@ function endStream(flag) {
     //Delete the stream
     deleteRoom();
     //Redirect to homepage
-    window.location.replace('/experiment/leave');
+    //window.location.replace('/experiment/leave');
 }
 
 //Function used to add a value in a given chart
