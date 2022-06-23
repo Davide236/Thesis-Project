@@ -6,7 +6,7 @@ function getSimulatedData(val) {
     //Approximation of the base luminosity value
     Base_Luminosity = 0.55;
     LED_luminosity = (22)*(val/100);
-    return 500/(LED_luminosity+Base_Luminosity) + 50
+    return 500/(LED_luminosity+Base_Luminosity) + 50;
 }
 
 module.exports = {
