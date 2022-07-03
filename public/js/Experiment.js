@@ -1,20 +1,20 @@
 //Get variables
-let id = document.getElementById('exp_id').innerHTML;
-let minutes = document.getElementById('minutes').innerHTML;
-let seconds = document.getElementById('seconds').innerHTML;
-let dataType = document.getElementById('dataType').innerHTML;
+let id;
+let minutes;
+let seconds;
+let dataType;
 
 //Select html elements
-let sidebar = document.querySelector('.sidebar');
-let sidebarContent = document.querySelector('.sidebar-content');
-let experimentData = document.getElementById('experimentData');
-let chart = document.getElementById('dataChart');
-let currentData = document.getElementById('currentData');
-let simulatedData = document.getElementById('simulatedData');
-let simulationBtn = document.getElementById('simulationBtn');
-let simulationForm = document.getElementById('simulationForm');
+let sidebar;
+let sidebarContent;
+let experimentData;
+let chart;
+let currentData;
+let simulatedData;
+let simulationBtn;
+let simulationForm;
 
-const video = document.getElementById('recorded-video');
+let video;
 
 let data;
 
@@ -34,44 +34,65 @@ let value = 0;
 let simulationData = false;
 
 //Chart which displays the recorded data
-const dataChart = new Chart(
-    chart,
-    {
-        type: 'line',
-        data: {
-            labels: [],
-            datasets: [{
-                name: 'Sensor',
-                label: `${dataType} at time t`,
-                backgroundColor: 'rgb(9,158,41)',
-                data: []
-            },
-            {
-                name: 'Simulation',
-                label: `${dataType} based on the simulation`,
-                backgroundColor: 'rgb(66, 152, 245)',
-                data: []
-            }]
-        },
-        options: {
-            scales: {
-                y: {
-                    title: {
-                        display: true,
-                        text: dataType
-                    }
+let dataChart;
+
+function setChart() {
+    dataChart = new Chart(
+        chart,
+        {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [{
+                    name: 'Sensor',
+                    label: `${dataType} at time t`,
+                    backgroundColor: 'rgb(9,158,41)',
+                    data: []
                 },
-                x: {
-                    title: {
-                        display: true,
-                        text: 'Time (t)'
+                {
+                    name: 'Simulation',
+                    label: `${dataType} based on the simulation`,
+                    backgroundColor: 'rgb(66, 152, 245)',
+                    data: []
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        title: {
+                            display: true,
+                            text: dataType
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Time (t)'
+                        }
                     }
                 }
             }
         }
-    }
+    
+    );
+}
 
-);
+function setVariables() {
+    id = document.getElementById('exp_id').innerHTML;
+    minutes = document.getElementById('minutes').innerHTML;
+    seconds = document.getElementById('seconds').innerHTML;
+    dataType = document.getElementById('dataType').innerHTML;
+    sidebar = document.querySelector('.sidebar');
+    sidebarContent = document.querySelector('.sidebar-content');
+    experimentData = document.getElementById('experimentData');
+    chart = document.getElementById('dataChart');
+    currentData = document.getElementById('currentData');
+    simulatedData = document.getElementById('simulatedData');
+    simulationBtn = document.getElementById('simulationBtn');
+    simulationForm = document.getElementById('simulationForm');
+    video = document.getElementById('recorded-video');
+
+}
 
 //Get the recorded data from the database
 window.onload = function() {
@@ -80,7 +101,7 @@ window.onload = function() {
         type: 'GET',
         success: function(res) {data = res.slice();},
         error: function(res) {alert('Code '+res.status +':' + res.responseText)},
-        complete: function() {addListeners();}
+        complete: function() {setVariables(); setChart(); addListeners();}
     });
 };
 
@@ -183,4 +204,17 @@ function closeSimulation() {
 function trySimulation() {
     value = Number(document.querySelector('input[name="LED"]:checked').value);
     simulationData = true;
+    return value;
+}
+
+
+module.exports = {
+    startSimulation,
+    setVariables, 
+    closeSimulation, 
+    trySimulation,
+    setChart,
+    updateChart,
+    addListeners,
+    sendingData,
 }

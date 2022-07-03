@@ -1,5 +1,6 @@
+//File used for the configuration of nodemailer, API used for email verifications
+
 require('dotenv').config();
-//Configuration of nodemailer, API used for email verifications
 const nodemailer = require('nodemailer');
 
 

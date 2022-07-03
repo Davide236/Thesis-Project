@@ -9,7 +9,7 @@ exports.addStudentAnswers = async function(req, res) {
     if (experiment && answers) {
         experiment.studentAnswer = Object.assign(answers);
         await experiment.save();
-        return res.status(200).send(" Student answers saved correctly");
+        return res.status(200).send("Student answers saved correctly");
     }
     return res.status(400).send("Error in saving the answers");
 }

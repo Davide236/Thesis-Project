@@ -1,32 +1,15 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-    <!--Page of the website used to display a live stream of an experiment-->
-	<title>Live Experiment</title>
+const functions = require('../public/js/LiveExperiment.js');
 
-	<link rel="stylesheet" href="../css/LiveExperiment.css">
-    <link rel="stylesheet" href="../css/General.css">
 
-    <!--BOOTSTRAP Links-->
-    <!-- CSS only -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <!-- JavaScript Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-    <!--jQuery Script-->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-    <!--Socket IO-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.js"></script>
-    <!--Chart JS-->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-</head>
-<body>
-    <%- include ("./partials/Navbar") %>
-    <%- include ("./partials/FlashMessage") %>
-    <p id="roomName" hidden><%=roomName%></p>
-    <p id="username" hidden><%=username%></p>
-    <p id="videoDevice" hidden><%=videoDevice%></p>
-    <p id="dataType" hidden><%=dataType%></p>
+describe('Testing the DOM manipulation of LiveExperiment.js', () => {
+    console.error = jest.fn();
+    beforeEach(() => {
+        //We need to use the html body to mock some of the dom manipulation
+        document.body.innerHTML = `
+        <p id="roomName" hidden>room</p>
+    <p id="username" hidden>username</p>
+    <p id="videoDevice" hidden>camera</p>
+    <p id="dataType" hidden>temp</p>
     <button id="joinBtn"><span> Click to join </span></button>
     <div class="row" id="hiddenRow" style="display: none;">
         <div class="col-7">
@@ -116,10 +99,10 @@
                             <br><hr>
                             <div class="form-group" id="simulationAnswers">
                                 <label for="question">What intensity of the LED you want (0-100)? </label>
-                                <input type="radio" name="LED" value="20" checked>20
+                                <input type="radio" name="LED" value="20">20
                                 <input type="radio" name="LED" value="40">40
                                 <input type="radio" name="LED" value="60">60
-                                <input type="radio" name="LED" value="80">80
+                                <input type="radio" name="LED" value="80" checked>80
                                 <input type="radio" name="LED" value="100">100
                             </div>
                             <br><hr>
@@ -139,11 +122,11 @@
                     <div class="experiment-info">
                         <h3>Experiment Info</h3>
                         <br><hr>
-                        <strong>Name: </strong> <span><%=expName%></span>
+                        <strong>Name: </strong> <span>name</span>
                         <br><hr>
-                        <strong>Description: </strong> <span><%=expDescription%></span>
+                        <strong>Description: </strong> <span>description</span>
                         <br><hr>
-                        <strong>Data Type: </strong> <span><%=dataType%></span>
+                        <strong>Data Type: </strong> <span>data type</span>
                         <br><hr>
                     </div>
                     <div class="users-list">
@@ -156,9 +139,36 @@
         </div>
     </div>
 
-</body>
-<script src="https://cdn.socket.io/4.5.0/socket.io.min.js" integrity="sha384-7EyYLQZgWBi67fBtVxw60/OWl1kjsfrPFcaU0pp0nAh+i8FD068QogUvg85Ewy1k" crossorigin="anonymous"></script>
-<script src="../js/Simulation.js"></script>
-<script src="../js/webRTC.js"></script>
-<script src="../js/LiveExperiment.js"></script>
-</html>
+        `;
+        functions.setVariables();
+    });
+
+    it('Opening Simulation', () =>  {
+        functions.startSimulation();
+        let sim = document.getElementById('simulationForm');
+        expect(sim.style.display).toBe('block');
+    });
+
+    it('Closing Simulation', () =>  {
+        functions.closeSimulation();
+        let sim = document.getElementById('simulationForm');
+        expect(sim.style.display).toBe('none');
+    });
+
+    it('Getting Simulation value', () =>  {
+        let val = functions.trySimulation();
+        expect(val).toBe(80);
+    });
+
+    it('Show question form', () => {
+        functions.showQuestion();
+        let questionForm = document.getElementById('questionForm');
+        expect(questionForm.style.display).toBe('block');
+    });
+
+    it('Close question form', () => {
+        functions.closeQuestionForm();
+        let questionForm = document.getElementById('questionForm');
+        expect(questionForm.style.display).toBe('none');
+    });
+});

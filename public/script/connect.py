@@ -7,7 +7,6 @@ import serial
 
 #Create Serial port object to connect to arduino
 arduino = serial.Serial(port='/dev/ttyACM0', baudrate=115200, timeout=.1)
-
 sys.tracebacklimit = None
 
 # Global variables used in the program
@@ -24,7 +23,7 @@ layout = [[sg.Text('The room name has to be the same name used \n in the applica
           [sg.Text("Use student answer (input name):", font=('Arial', 13, 'bold')), sg.InputText(size=(20,0), key='student_name'), sg.Button("Use", disabled=True)]]
 
 # Initialize the window
-window = sg.Window('Chemical Twins', layout, size=(1500,1000))
+window = sg.Window('Science Twins', layout, size=(1500,1000))
 
 
 

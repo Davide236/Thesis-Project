@@ -12,6 +12,8 @@ window.onclick = function(event) {
     }
 }
 
+
+// Function used to ask the permission to the user to use their camera for the stream
 async function askPermission() {
     let response = await getPermission();
     if (response) {

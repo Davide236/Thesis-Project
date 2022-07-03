@@ -1,3 +1,4 @@
+// File used to configure and connect to the database for the application
 require('dotenv').config();
 //Configuration of the database
 const mongoose = require('mongoose'),

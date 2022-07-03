@@ -14,6 +14,7 @@
 </head>
 <body>
     <div class="container">
+        <!--Introduction to the survey-->
         <div id="surveyIntro">
             <h3>Survey for Science Twins app requirements</h3>
             <p>This is a survey made for the testing of the Science Twins web application, developed for a thesis project. <br>
@@ -29,6 +30,7 @@
             <div id="progress">0%</div>
         </div>
         <form action="../data/submit-survey" id="surveyForm" method="POST" style="display: none;">
+            <!--Display the questions one by one with a different number-->
             <%let i = 0%>
             <% for (question of questions) { %>
                 <div class="form-group questions" style="display: none;">
@@ -59,6 +61,7 @@
                 </div>
                 <%i++%>
             <% } %>
+            <!--Questions regarding the user experience on the website-->
             <div class="form-group questions" style="display: none;">
                 <p>Now lastly, we are very interested in your user experience. <br> Was the website easy to navigate? (1 = 'it was not easy', 5 = 'it was very easy')</p>
                 <input type="radio" name="answer<%=i%>" value="1">1
@@ -79,6 +82,7 @@
                 <br><hr>
                 <button onclick="nextQuestion()" type="button">Finish</button>
             </div>
+            <!--Submit the survey-->
             <div id="finishSurvey" style="display: none;">
                 <p>Thank you so much for partecipating in the survey, your answers will be very helpful in the improvement and further development of Science Twins. <br>
                 We hope to see you soon on this website again</p>

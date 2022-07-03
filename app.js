@@ -13,8 +13,9 @@ app.get("/how-it-works", (_req, res) => {
     res.render("HowItWorks");
 });
 
-
+// Route to get the survey page
 app.get("/survey", (_req, res) => {
+    // Render the questions from a Json file
     let questions_list = require('./public/survey/survey_questions.json');
     let questions = questions_list['questions'];
     res.render("survey/Survey", {questions});
@@ -30,7 +31,9 @@ let server = app.listen(PORT, () => {
 let io = socket(server);
 
 
-//Post request to send data (from the script) to the application
+// Post request to send data (from the script) to the application
+// this post request gets the data from the sensors and sends it
+// to the stream
 app.post("/live-data/:room", (req, res) => {
     const {room} = req.params;
     const {value} = req.body;

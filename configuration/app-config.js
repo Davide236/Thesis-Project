@@ -1,3 +1,7 @@
+// This file is used to configure the 'app' variable, which is used as
+// an express object to implement the routing in the application and its
+// different functionalities
+
 require('dotenv').config();
 //Get all the different modules and the setups needed for App.js
 const express = require('express'),
