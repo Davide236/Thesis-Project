@@ -1,4 +1,4 @@
-const URL = `http://localhost:3000`;//'https://chemical-twins.herokuapp.com';
+const URL = 'https://chemical-twins.herokuapp.com';
 
 
 function joinRoom() {
