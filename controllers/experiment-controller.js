@@ -95,7 +95,7 @@ exports.uploadExperiment = async function(req) {
     const {expName, expDescription, minutes, seconds, dataType} = req.body;
     //Get the video and files from the form (uploaded to Multer)
     const {expVideo, expData} = req.files;
-    let url, filename = '';
+    let url = '', filename = '';
     let rawdata = fs.readFileSync(expData[0].path);
     //Parse the JSON data to an array
     let parsedData = JSON.parse(rawdata);
@@ -106,7 +106,7 @@ exports.uploadExperiment = async function(req) {
     try {
         //UPLOAD LARGE to exceed the 100mb limit
         //Chunk size is 20mb by default
-        await cloudinary.uploader.upload_large(expVideo[0].path, {resource_type: 'video'}, function(err, data) {
+        await cloudinary.uploader.upload(expVideo[0].path, {resource_type: 'video'}, function(err, data) {
             if (err) {console.warn(err);}
             if (!data) {return;}
             url = data.url;
