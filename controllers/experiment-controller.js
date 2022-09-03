@@ -104,10 +104,14 @@ exports.uploadExperiment = async function(req) {
     });
     //Try to upload the video to Cloudinary to save it
     try {
-        await cloudinary.uploader.upload(expVideo[0].path, {resource_type: 'video'}, function(err, data) {
+        //UPLOAD LARGE to exceed the 100mb limit
+        //Chunk size is 20mb by default
+        await cloudinary.uploader.upload_large(expVideo[0].path, {resource_type: 'video'}, function(err, data) {
             if (err) {console.warn(err);}
             if (!data) {return;}
             url = data.url;
+            //Add https
+            url = url.replace('http', 'https');
             filename = data.public_id;
         });
         const newExperiment = await new Experiment({
