@@ -1,3 +1,6 @@
+const URL = `http://localhost:3000`;//'https://chemical-twins.herokuapp.com';
+
+
 function joinRoom() {
     var modal = document.getElementById("joinLiveModal");
     modal.style.display = "block";
@@ -17,7 +20,7 @@ window.onclick = function(event) {
 async function askPermission() {
     let response = await getPermission();
     if (response) {
-        window.location.replace("https://chemical-twins.herokuapp.com/experiment/create-live");
+        window.location.replace(`${URL}/experiment/create-live`);
     } else {
         alert('Couldnt get permission to access the camera. Please give permission before accessing this functionality!');
     }

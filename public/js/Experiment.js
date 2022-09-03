@@ -1,3 +1,5 @@
+const URL = `http://localhost:3000`;//'https://chemical-twins.herokuapp.com';
+
 //Get variables
 let id;
 let minutes;
@@ -97,7 +99,7 @@ function setVariables() {
 //Get the recorded data from the database
 window.onload = function() {
     $.ajax({
-        url: `https://chemical-twins.herokuapp.com/data/get-data/${id}`,
+        url: `${URL}/data/get-data/${id}`,
         type: 'GET',
         success: function(res) {data = res.slice();},
         error: function(res) {alert('Code '+res.status +':' + res.responseText)},
