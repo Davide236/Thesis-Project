@@ -1,7 +1,7 @@
 const URL = 'https://chemical-twins.herokuapp.com';
 
 //Get variables
-let id;
+let id = document.getElementById('exp_id').innerHTML;
 let minutes;
 let seconds;
 let dataType;
@@ -80,7 +80,6 @@ function setChart() {
 }
 
 function setVariables() {
-    id = document.getElementById('exp_id').innerHTML;
     minutes = document.getElementById('minutes').innerHTML;
     seconds = document.getElementById('seconds').innerHTML;
     dataType = document.getElementById('dataType').innerHTML;
@@ -93,7 +92,6 @@ function setVariables() {
     simulationBtn = document.getElementById('simulationBtn');
     simulationForm = document.getElementById('simulationForm');
     video = document.getElementById('recorded-video');
-
 }
 
 //Get the recorded data from the database
